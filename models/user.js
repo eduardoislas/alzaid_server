@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
 
 let validRoles = {
-    values: ['ADMIN', 'user', 'ENFERMERIA', 'FASE_INICIAL', 'FASE_INTERMEDIA', 'FASE_AVANZADA', 'HIGIENE', 'FISIOTERAPIA', 'NUTRICION', 'PSICOLOGO', 'FAMILIAR'],
+    values: ['ADMIN', 'USER', 'ENFERMERIA', 'FASE_INICIAL', 'FASE_INTERMEDIA', 'FASE_AVANZADA', 'HIGIENE', 'FISIOTERAPIA', 'NUTRICION', 'PSICOLOGO', 'FAMILIAR'],
     message: '{VALUE} no es un rol válido'
 };
 
@@ -20,7 +20,7 @@ let userSchema = new Schema({
     },
     role: {
         type: String,
-        default: 'user',
+        default: 'USER',
         enum: validRoles
     },
     status: {
