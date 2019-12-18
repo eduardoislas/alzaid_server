@@ -19,9 +19,9 @@ let userSchema = new Schema({
         required: [true, 'La contraseña es obligatoria']
     },
     role: {
-        type: String,
-        default: 'USER',
-        enum: validRoles
+        type: Schema.Types.ObjectId,
+        ref: 'Catalog',
+        required: false
     },
     status: {
         type: Boolean,

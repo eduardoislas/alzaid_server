@@ -10,6 +10,7 @@ const app = express();
 
 app.get('/user', (req, res) => {
     User.find({}, 'name role status')
+        .populate('role', 'name')
         .exec((err, users) => {
             if (err) {
                 return res.status(400).json({
@@ -48,7 +49,7 @@ app.post('/user', (req, res) => {
     });
 });
 
-app.put('/user/:id', [verificaToken, verificaAdmin_Role], (req, res) => {
+app.put('/user/:id', (req, res) => {
     let id = req.params.id;
     let body = _.pick(req.body, ['password', 'role']);
     User.findByIdAndUpdate(id, body, { new: true, runValidators: true }, (err, userDB) => {
@@ -77,7 +78,7 @@ app.put('/user/:id', [verificaToken, verificaAdmin_Role], (req, res) => {
     });
 })
 
-app.delete('/user/:id', [verificaToken, verificaAdmin_Role], (req, res) => {
+app.delete('/user/:id', (req, res) => {
     let id = req.params.id;
     let changeStatus = {
         status: false

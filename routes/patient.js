@@ -86,7 +86,7 @@ app.delete('/patient/:id', (req, res) => {
     }
     Patient.findByIdAndUpdate(id, changeStatus, { new: true }, (err, patientDeleted) => {
         if (err) {
-            return res.status(400).json({
+            return res.status(500).json({
                 sucess: false,
                 err
             });
