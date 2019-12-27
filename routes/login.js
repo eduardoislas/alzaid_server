@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 const User = require('../models/user');
+const Catalog = require('../models/catalog');
 
 const app = express();
 
@@ -41,7 +42,7 @@ app.post('/login', (req, res) => {
             user: userDB,
             token
         });
-    })
+    }).populate('role', 'name');
 });
 
 
