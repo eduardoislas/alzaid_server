@@ -8,7 +8,8 @@ const app = express();
 //Obtener todos los pacientes activos
 app.get('/patient', (req, res) => {
     //El parámetro status solicita los pacientes activos
-    Patient.find({ status: true }, 'name lastName lastNameSecond birthdate registerdate img')
+    Patient.find({ status: true }, 'name lastName lastNameSecond birthdate registerdate phase img')
+        .populate('phase', 'name')
         .exec((err, patients) => {
             if (err) {
                 return res.status(400).json({
@@ -35,6 +36,7 @@ app.post('/patient', (req, res) => {
         lastNameSecond: body.lastNameSecond,
         birthdate: Date.parse(body.birthdate),
         registerdate: Date.parse(body.registerdate),
+        phase: body.phase,
         img: body.img
     });
 

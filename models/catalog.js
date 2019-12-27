@@ -11,6 +11,10 @@ let catalogSchema = new Schema({
         type: String,
         required: [true, 'El tipo es requerido']
     },
+    value: {
+        type: Number,
+        required: false
+    },
     status: {
         type: Boolean,
         default: true

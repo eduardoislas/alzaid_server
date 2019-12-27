@@ -25,6 +25,11 @@ let patientSchema = new Schema({
         type: Date,
         required: false
     },
+    phase: {
+        type: Schema.Types.ObjectId,
+        ref: 'Catalog',
+        required: [true, 'La fase es requerida']
+    },
     img: {
         type: String,
         required: false,
