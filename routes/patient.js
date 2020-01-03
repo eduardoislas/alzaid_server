@@ -8,7 +8,7 @@ const app = express();
 //Obtener todos los pacientes activos
 app.get('/patient', (req, res) => {
     //El parámetro status solicita los pacientes activos
-    Patient.find({ status: true }, 'name lastName lastNameSecond birthdate registerdate phase img')
+    Patient.find({ status: true }, 'name lastName lastNameSecond birthdate registerdate phase phaseHistory img')
         .populate('phase', 'name')
         .exec((err, patients) => {
             if (err) {
@@ -30,6 +30,7 @@ app.get('/patient', (req, res) => {
 //Agregar un Paciente a la BD
 app.post('/patient', (req, res) => {
     let body = req.body;
+    let fecha = new Date();
     let patient = new Patient({
         name: body.name,
         lastName: body.lastName,
@@ -40,6 +41,11 @@ app.post('/patient', (req, res) => {
         img: body.img
     });
 
+    let ph = {
+        phase: patient.phase,
+        date: fecha.setHours(fecha.getHours() - 7)
+    };
+    patient.phaseHistory = [ph];
     patient.save((err, patientDB) => {
         if (err) {
             return res.status(400).json({
@@ -51,14 +57,15 @@ app.post('/patient', (req, res) => {
             success: true,
             patient: patientDB
         });
-    });
+    }).populate('phaseHistory', 'phase', 'name')
 });
 
-//Editar un Paciente
+//Editar un paciente, actualizando su historial de Fase
 app.put('/patient/:id', (req, res) => {
     let id = req.params.id;
-    let body = _.pick(req.body, ['name', 'lastName', 'lastNameSecond', 'birthdate', 'registerdate', 'img']);
-    Patient.findByIdAndUpdate(id, body, { new: true, runValidators: true }, (err, patientDB) => {
+    let body = req.body;
+    let fecha = new Date();
+    Patient.findById(id, (err, patientDB) => {
         if (err) {
             return res.status(500).json({
                 success: false,
@@ -73,11 +80,47 @@ app.put('/patient/:id', (req, res) => {
                 }
             });
         }
-        res.json({
-            success: true,
-            patient: patientDB
+        let faseAnterior = patientDB.phase;
+        patientDB.name = body.name;
+        patientDB.lastName = body.lastName;
+        patientDB.lastNameSecond = body.lastNameSecond;
+        patientDB.birthdate = body.birthdate;
+        patientDB.registerdate = body.registerdate;
+        patientDB.img = body.img;
+        patientDB.phase = body.phase;
+        console.log(faseAnterior);
+        console.log(patientDB.phase);
+        // Si hubo cambios de Fase, se busca la fase activa del paciente y se cambia status a falso
+        if (String(faseAnterior) !== String(patientDB.phase)) {
+            console.log("Entró");
+            for (let x of patientDB.phaseHistory) {
+                if (x.status == true) {
+                    x.status = false;
+                }
+            };
+            let ph = {
+                phase: patientDB.phase,
+                date: fecha.setHours(fecha.getHours() - 7)
+            };
+            patientDB.phaseHistory.push(ph);
+        } else {
+            console.log("no entró");
+        }
+
+        //Se manda a guardar el objeto Paciente con sus nuevos campos
+        patientDB.save((err, patientSaved) => {
+            if (err) {
+                return res.status(500).json({
+                    success: false,
+                    err
+                });
+            }
+            res.json({
+                success: true,
+                patient: patientSaved
+            })
         })
-    });
+    })
 })
 
 //Eliminar un paciente

@@ -17,7 +17,7 @@ app.get('/dailyRecord', (req, res) => {
         .skip(desde)
         .limit(limite)
         .sort('date')
-        .populate('patient', 'name lastName')
+        .populate('patient', 'name lastName lastNameSecond phase')
         .exec((err, drs) => {
             if (err) {
                 return res.status(400).json({
@@ -45,6 +45,7 @@ app.get('/dailyRecord/patient/:id', (req, res) => {
         .skip(desde)
         .limit(limite)
         .sort('date')
+        .populate('patient', 'name lastName lastNameSecond')
         .exec((err, drs) => {
             if (err) {
                 return res.status(400).json({
@@ -63,7 +64,7 @@ app.get('/dailyRecord/patient/:id', (req, res) => {
 });
 
 //Registra una asistencia en el DailyRecord
-app.post('/dailyRecord/:id', verificaToken, (req, res) => {
+app.post('/dailyRecord/:id', (req, res) => {
     let idP = req.params.id;
     let fecha = new Date();
     let dailyRecord = new DailyRecord({
@@ -86,7 +87,7 @@ app.post('/dailyRecord/:id', verificaToken, (req, res) => {
 });
 
 //Registra la hora de salida en el dailyRecord
-app.put('/dailyRecord/:id', verificaToken, (req, res) => {
+app.put('/dailyRecord/:id', (req, res) => {
     let id = req.params.id;
     let salida = new Date();
     salida = salida.setHours(salida.getHours() - 7);

@@ -38,7 +38,24 @@ let patientSchema = new Schema({
     status: {
         type: Boolean,
         default: true
-    }
+    },
+    phaseHistory: [{
+        phase: {
+            type: Schema.Types.ObjectId,
+            ref: 'Catalog',
+            required: true
+        },
+        date: {
+            type: Date,
+            required: [true, 'La fecha de Cambio de fase es requerida']
+        },
+        status: {
+            type: Boolean,
+            default: true
+        }
+    }]
 });
+
+
 
 module.exports = mongoose.model('Patient', patientSchema)
