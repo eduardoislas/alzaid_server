@@ -40,9 +40,8 @@ app.post('/patient', (req, res) => {
         phase: body.phase,
         img: body.img
     });
-
     let ph = {
-        phase: patient.phase,
+        phase: body.phase,
         date: fecha.setHours(fecha.getHours() - 7)
     };
     patient.phaseHistory = [ph];
@@ -57,7 +56,7 @@ app.post('/patient', (req, res) => {
             success: true,
             patient: patientDB
         });
-    }).populate('phaseHistory', 'phase', 'name')
+    })
 });
 
 //Editar un paciente, actualizando su historial de Fase
@@ -88,11 +87,8 @@ app.put('/patient/:id', (req, res) => {
         patientDB.registerdate = body.registerdate;
         patientDB.img = body.img;
         patientDB.phase = body.phase;
-        console.log(faseAnterior);
-        console.log(patientDB.phase);
         // Si hubo cambios de Fase, se busca la fase activa del paciente y se cambia status a falso
         if (String(faseAnterior) !== String(patientDB.phase)) {
-            console.log("Entró");
             for (let x of patientDB.phaseHistory) {
                 if (x.status == true) {
                     x.status = false;
@@ -103,10 +99,7 @@ app.put('/patient/:id', (req, res) => {
                 date: fecha.setHours(fecha.getHours() - 7)
             };
             patientDB.phaseHistory.push(ph);
-        } else {
-            console.log("no entró");
         }
-
         //Se manda a guardar el objeto Paciente con sus nuevos campos
         patientDB.save((err, patientSaved) => {
             if (err) {
