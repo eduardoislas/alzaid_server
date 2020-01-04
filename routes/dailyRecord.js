@@ -116,9 +116,9 @@ app.put('/dailyRecord/:id', (req, res) => {
 // Guardar Signos vitales en el DailyRecord
 app.put('/dailyRecord/vitalSign/:id', (req, res) => {
     let id = req.params.id;
+    // Pendiente ver cómo recibiremos el listado de signos vitales
     let signos = [{ vitalSign: '5e028a4371b134856e8cad3e', date: '2020-01-10', value: 120, valueB: 80 }, { vitalSign: '5e028a4371b134856e8cad41', date: '2020-01-10', value: 100 }];
 
-    //console.log(signos);
     DailyRecord.findById(id, (err, drDB) => {
         if (err) {
             return res.status(500).json({
@@ -158,7 +158,50 @@ app.put('/dailyRecord/vitalSign/:id', (req, res) => {
     });
 });
 
+//
+app.put('/dailyRecord/attitude/:id', (req, res) => {
+    let id = req.params.id;
+    // Pendiente ver cómo recibiremos el listado de signos vitales
+    let signos = [{ vitalSign: '5e028a4371b134856e8cad3e', date: '2020-01-10', value: 120, valueB: 80 }, { vitalSign: '5e028a4371b134856e8cad41', date: '2020-01-10', value: 100 }];
 
+    DailyRecord.findById(id, (err, drDB) => {
+        if (err) {
+            return res.status(500).json({
+                success: false,
+                err
+            });
+        }
+        if (!drDB) {
+            return res.status(400).json({
+                success: false,
+                err: {
+                    message: 'El DailyRecord no existe'
+                }
+            });
+        }
+        for (let x of signos) {
+            let a = {
+                vitalSign: x.vitalSign,
+                date: x.date,
+                value: x.value,
+                valueB: x.valueB
+            };
+            drDB.vitalSigns.push(a);
+        };
+        drDB.save((err, drSaved) => {
+            if (err) {
+                return res.status(500).json({
+                    success: false,
+                    err
+                });
+            }
+            res.json({
+                success: true,
+                patient: drSaved
+            })
+        });
+    });
+});
 
 
 
