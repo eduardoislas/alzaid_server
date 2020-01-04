@@ -15,7 +15,26 @@ let dailyRecordSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Patient',
         required: [true, 'El paciente es requerido']
-    }
+    },
+    vitalSigns: [{
+        vitalSign: {
+            type: Schema.Types.ObjectId,
+            ref: 'Catalog',
+            required: true
+        },
+        date: {
+            type: Date,
+            required: [true, 'La fecha de lectura es requerida']
+        },
+        value: {
+            type: Number,
+            required: true
+        },
+        valueB: {
+            type: Number,
+            required: false
+        }
+    }]
 });
 
 
