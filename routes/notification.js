@@ -53,7 +53,7 @@ app.get('/notification', (req, res) => {
 app.post('/notification', (req, res) => {
     let body = req.body;
     let fecha = new Date();
-    let areas = ['5e028a4371b134856e8caae0', '5e028a4371b134856e8caad4'];
+    let areas = ['5e028dd93a7fdc35b4ec2028', '5e028dd93a7fdc35b4ec2023'];
 
     let notification = new Notification({
         date: fecha.setHours(fecha.getHours() - 7),
