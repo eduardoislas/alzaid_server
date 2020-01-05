@@ -10,7 +10,6 @@ const app = express();
 
 app.get('/user', (req, res) => {
     User.find({}, 'name role status')
-        .populate('role', 'name')
         .exec((err, users) => {
             if (err) {
                 return res.status(400).json({

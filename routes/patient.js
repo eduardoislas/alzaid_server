@@ -9,7 +9,29 @@ const app = express();
 app.get('/patient', (req, res) => {
     //El parámetro status solicita los pacientes activos
     Patient.find({ status: true }, 'name lastName lastNameSecond birthdate registerdate phase phaseHistory img')
-        .populate('phase', 'name')
+        .exec((err, patients) => {
+            if (err) {
+                return res.status(400).json({
+                    success: false,
+                    err
+                });
+            }
+            Patient.countDocuments({ status: true }, (err, conteo) => {
+                res.json({
+                    success: true,
+                    patients,
+                    count: conteo
+                });
+            })
+        })
+})
+
+//Obtener todos los pacientes activos por fase
+app.get('/patient/:fase', (req, res) => {
+    let fase = req.params.fase;
+    let regex = new RegExp(fase, 'i');
+    //El parámetro status solicita los pacientes activos
+    Patient.find({ status: true, phase: regex }, 'name lastName lastNameSecond birthdate registerdate phase phaseHistory img')
         .exec((err, patients) => {
             if (err) {
                 return res.status(400).json({

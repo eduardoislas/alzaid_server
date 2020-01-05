@@ -41,7 +41,7 @@ app.post('/login', (req, res) => {
             user: userDB,
             token
         });
-    }).populate('role', 'name');
+    });
 });
 
 

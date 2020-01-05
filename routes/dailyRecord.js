@@ -39,11 +39,11 @@ app.get('/dailyRecord', (req, res) => {
 //Obtiene todos los dailyRecords por Paciente
 app.get('/dailyRecord/patient/:id', (req, res) => {
     let idP = req.params.id;
-    let desde = Number(req.query.desde || 0);
-    let limite = Number(req.query.limite || 100);
+    //let desde = Number(req.query.desde || 0);
+    //let limite = Number(req.query.limite || 100);
     DailyRecord.find({ patient: idP }, 'date exitHour patient')
-        .skip(desde)
-        .limit(limite)
+        //.skip(desde)
+        //.limit(limite)
         .sort('date')
         .populate('patient', 'name lastName lastNameSecond')
         .exec((err, drs) => {
