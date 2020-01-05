@@ -14,9 +14,7 @@ app.get('/notification', (req, res) => {
         //.skip(desde)
         //.limit(limite)
         .sort('date')
-        .populate('type', 'name')
-        .populate('patient', 'name lastName lastNameSecond')
-        .populate('user', 'name')
+        .populate('patient', 'name lastName lastNameSecond phase')
         .exec((err, notifs) => {
             if (err) {
                 return res.status(400).json({
@@ -41,9 +39,10 @@ app.get('/notification', (req, res) => {
             }
             res.json({
                 success: true,
-                vigentes
+                vigentes,
+                count: vigentes.length
             });
-        })
+        });
 });
 
 
@@ -53,7 +52,7 @@ app.get('/notification', (req, res) => {
 app.post('/notification', (req, res) => {
     let body = req.body;
     let fecha = new Date();
-    let areas = ['5e028dd93a7fdc35b4ec2028', '5e028dd93a7fdc35b4ec2023'];
+    let areas = ['HIGIENE', 'ENFERMERIA', 'FASE_INICIAL'];
 
     let notification = new Notification({
         date: fecha.setHours(fecha.getHours() - 7),

@@ -20,13 +20,11 @@ let notificationSchema = new Schema({
         required: [true, 'La descripción es requerida']
     },
     type: {
-        type: Schema.Types.ObjectId,
-        ref: 'Catalog',
+        type: String,
         required: true
     },
     area: [{
-        type: Schema.Types.ObjectId,
-        ref: 'Catalog',
+        type: String,
         required: true
     }],
     patient: {
@@ -35,8 +33,7 @@ let notificationSchema = new Schema({
         required: true
     },
     user: {
-        type: Schema.Types.ObjectId,
-        ref: 'User',
+        type: String,
         required: true
     },
     status: {

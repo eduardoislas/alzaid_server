@@ -11,11 +11,11 @@ let DailyRecord = require('../models/dailyRecord');
 
 //Obtiene todos los dailyRecords
 app.get('/dailyRecord', (req, res) => {
-    let desde = Number(req.query.desde || 0);
-    let limite = Number(req.query.limite || 100);
+    //let desde = Number(req.query.desde || 0);
+    //let limite = Number(req.query.limite || 100);
     DailyRecord.find({}, 'date exitHour patient')
-        .skip(desde)
-        .limit(limite)
+        //.skip(desde)
+        //.limit(limite)
         .sort('date')
         .populate('patient', 'name lastName lastNameSecond phase')
         .exec((err, drs) => {
@@ -45,7 +45,7 @@ app.get('/dailyRecord/patient/:id', (req, res) => {
         //.skip(desde)
         //.limit(limite)
         .sort('date')
-        .populate('patient', 'name lastName lastNameSecond')
+        .populate('patient', 'name lastName lastNameSecond phase')
         .exec((err, drs) => {
             if (err) {
                 return res.status(400).json({
@@ -117,7 +117,7 @@ app.put('/dailyRecord/:id', (req, res) => {
 app.put('/dailyRecord/vitalSign/:id', (req, res) => {
     let id = req.params.id;
     // Pendiente ver cómo recibiremos el listado de signos vitales
-    let signos = [{ vitalSign: '5e028a4371b134856e8cad3e', date: '2020-01-10', value: 120, valueB: 80 }, { vitalSign: '5e028a4371b134856e8cad41', date: '2020-01-10', value: 100 }];
+    let signos = [{ vitalSign: 'Presión arterial', date: '2020-01-10', value: 120, valueB: 80 }, { vitalSign: 'Frecuencia cardíaca', date: '2020-01-10', value: 100 }];
 
     DailyRecord.findById(id, (err, drDB) => {
         if (err) {
@@ -159,49 +159,49 @@ app.put('/dailyRecord/vitalSign/:id', (req, res) => {
 });
 
 //
-app.put('/dailyRecord/attitude/:id', (req, res) => {
-    let id = req.params.id;
-    // Pendiente ver cómo recibiremos el listado de signos vitales
-    let signos = [{ vitalSign: '5e028a4371b134856e8cad3e', date: '2020-01-10', value: 120, valueB: 80 }, { vitalSign: '5e028a4371b134856e8cad41', date: '2020-01-10', value: 100 }];
+// app.put('/dailyRecord/attitude/:id', (req, res) => {
+//     let id = req.params.id;
+//     // Pendiente ver cómo recibiremos el listado de signos vitales
+//     let signos = [{ vitalSign: '5e028a4371b134856e8cad3e', date: '2020-01-10', value: 120, valueB: 80 }, { vitalSign: '5e028a4371b134856e8cad41', date: '2020-01-10', value: 100 }];
 
-    DailyRecord.findById(id, (err, drDB) => {
-        if (err) {
-            return res.status(500).json({
-                success: false,
-                err
-            });
-        }
-        if (!drDB) {
-            return res.status(400).json({
-                success: false,
-                err: {
-                    message: 'El DailyRecord no existe'
-                }
-            });
-        }
-        for (let x of signos) {
-            let a = {
-                vitalSign: x.vitalSign,
-                date: x.date,
-                value: x.value,
-                valueB: x.valueB
-            };
-            drDB.vitalSigns.push(a);
-        };
-        drDB.save((err, drSaved) => {
-            if (err) {
-                return res.status(500).json({
-                    success: false,
-                    err
-                });
-            }
-            res.json({
-                success: true,
-                patient: drSaved
-            })
-        });
-    });
-});
+//     DailyRecord.findById(id, (err, drDB) => {
+//         if (err) {
+//             return res.status(500).json({
+//                 success: false,
+//                 err
+//             });
+//         }
+//         if (!drDB) {
+//             return res.status(400).json({
+//                 success: false,
+//                 err: {
+//                     message: 'El DailyRecord no existe'
+//                 }
+//             });
+//         }
+//         for (let x of signos) {
+//             let a = {
+//                 vitalSign: x.vitalSign,
+//                 date: x.date,
+//                 value: x.value,
+//                 valueB: x.valueB
+//             };
+//             drDB.vitalSigns.push(a);
+//         };
+//         drDB.save((err, drSaved) => {
+//             if (err) {
+//                 return res.status(500).json({
+//                     success: false,
+//                     err
+//                 });
+//             }
+//             res.json({
+//                 success: true,
+//                 patient: drSaved
+//             })
+//         });
+//     });
+// });
 
 
 

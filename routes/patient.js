@@ -39,7 +39,7 @@ app.get('/patient/:fase', (req, res) => {
                     err
                 });
             }
-            Patient.countDocuments({ status: true }, (err, conteo) => {
+            Patient.countDocuments({ status: true, phase: regex }, (err, conteo) => {
                 res.json({
                     success: true,
                     patients,

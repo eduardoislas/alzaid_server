@@ -18,8 +18,7 @@ let dailyRecordSchema = new Schema({
     },
     vitalSigns: [{
         vitalSign: {
-            type: Schema.Types.ObjectId,
-            ref: 'Catalog',
+            type: String,
             required: true
         },
         date: {
