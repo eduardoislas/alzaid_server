@@ -8,7 +8,7 @@ const app = express();
 //Obtener todos los pacientes activos
 app.get('/patient', (req, res) => {
     //El parámetro status solicita los pacientes activos
-    Patient.find({ status: true }, 'name lastName lastNameSecond birthdate registerdate phase phaseHistory img')
+    Patient.find({ status: true })
         .exec((err, patients) => {
             if (err) {
                 return res.status(400).json({
@@ -31,7 +31,7 @@ app.get('/patient/:fase', (req, res) => {
     let fase = req.params.fase;
     let regex = new RegExp(fase, 'i');
     //El parámetro status solicita los pacientes activos
-    Patient.find({ status: true, phase: regex }, 'name lastName lastNameSecond birthdate registerdate phase phaseHistory img')
+    Patient.find({ status: true, phase: regex })
         .exec((err, patients) => {
             if (err) {
                 return res.status(400).json({
@@ -67,6 +67,11 @@ app.post('/patient', (req, res) => {
         date: fecha.setHours(fecha.getHours() - 7)
     };
     patient.phaseHistory = [ph];
+    patient.technicalSupport = [{ name: "Andadera" }, { name: "Lentes" }];
+    patient.diagnosis = body.diagnosis;
+    patient.allergies = body.allergies;
+    patient.medicines = body.medicines;
+    patient.physicalLimitations = body.physicalLimitations;
     patient.save((err, patientDB) => {
         if (err) {
             return res.status(400).json({
@@ -122,6 +127,11 @@ app.put('/patient/:id', (req, res) => {
             };
             patientDB.phaseHistory.push(ph);
         }
+        patientDB.technicalSupport = [{ name: "Andadera" }, { name: "Lentes" }];
+        patientDB.diagnosis = body.diagnosis;
+        patientDB.allergies = body.allergies;
+        patientDB.medicines = body.medicines;
+        patientDB.physicalLimitations = body.physicalLimitations;
         //Se manda a guardar el objeto Paciente con sus nuevos campos
         patientDB.save((err, patientSaved) => {
             if (err) {

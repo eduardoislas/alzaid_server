@@ -33,7 +33,69 @@ let dailyRecordSchema = new Schema({
             type: Number,
             required: false
         }
-    }]
+    }],
+    technicalSupport: [{
+        name: {
+            type: String,
+            required: false
+        }
+    }],
+    attitude: [{
+        name: {
+            type: String,
+            required: false
+        },
+        hour: {
+            type: Date,
+            required: false
+        },
+        performance: {
+            type: Number,
+            required: false
+        }
+    }],
+    behavior: [{
+        name: {
+            type: String,
+            required: false
+        },
+        hour: {
+            type: Date,
+            required: false
+        },
+        performance: {
+            type: Number,
+            required: false
+        }
+    }],
+    crisis: [{
+        name: {
+            type: String,
+            required: false
+        },
+        hour: {
+            type: Date,
+            required: false
+        },
+        observation: {
+            type: String,
+            required: false
+        }
+    }],
+    hygiene: [{
+        name: {
+            type: String,
+            required: false
+        },
+        hour: {
+            type: Date,
+            required: false
+        },
+        reason: {
+            type: String,
+            required: false
+        }
+    }],
 });
 
 

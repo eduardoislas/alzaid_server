@@ -51,6 +51,48 @@ let patientSchema = new Schema({
             type: Boolean,
             default: true
         }
+    }],
+    technicalSupport: [{
+        name: {
+            type: String,
+            required: false
+        }
+    }],
+    diagnosis: [{
+        name: {
+            type: String,
+            required: false
+        },
+        status: {
+            type: Boolean,
+            default: true
+        }
+    }],
+    allergies: [{
+        name: {
+            type: String,
+            required: false
+        }
+    }],
+    medicines: [{
+        name: {
+            type: String,
+            required: false
+        },
+        status: {
+            type: Boolean,
+            default: true
+        }
+    }],
+    physicalLimitations: [{
+        name: {
+            type: String,
+            required: false
+        },
+        status: {
+            type: Boolean,
+            default: true
+        }
     }]
 });
 

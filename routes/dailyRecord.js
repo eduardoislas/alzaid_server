@@ -13,7 +13,7 @@ let DailyRecord = require('../models/dailyRecord');
 app.get('/dailyRecord', (req, res) => {
     //let desde = Number(req.query.desde || 0);
     //let limite = Number(req.query.limite || 100);
-    DailyRecord.find({}, 'date exitHour patient vitalSigns')
+    DailyRecord.find({})
         //.skip(desde)
         //.limit(limite)
         .sort('date')
@@ -41,7 +41,7 @@ app.get('/dailyRecord/patient/:id', (req, res) => {
     let idP = req.params.id;
     //let desde = Number(req.query.desde || 0);
     //let limite = Number(req.query.limite || 100);
-    DailyRecord.find({ patient: idP }, 'date exitHour patient vitalSigns')
+    DailyRecord.find({ patient: idP })
         //.skip(desde)
         //.limit(limite)
         .sort('date')
