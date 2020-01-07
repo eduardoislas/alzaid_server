@@ -17,6 +17,9 @@ app.use(bodyParser.json());
 //Configuración global de rutas
 app.use(require('./routes/index'));
 
+//Servir el contenido público
+app.use(express.static(__dirname + '/public'));
+
 
 //Conexión a MongoDB
 mongoose.connect(process.env.URLDB, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true },

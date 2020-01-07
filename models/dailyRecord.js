@@ -45,11 +45,11 @@ let dailyRecordSchema = new Schema({
             type: String,
             required: false
         },
-        hour: {
-            type: Date,
+        time: {
+            type: String,
             required: false
         },
-        performance: {
+        score: {
             type: Number,
             required: false
         }
@@ -59,11 +59,11 @@ let dailyRecordSchema = new Schema({
             type: String,
             required: false
         },
-        hour: {
-            type: Date,
+        time: {
+            type: String,
             required: false
         },
-        performance: {
+        score: {
             type: Number,
             required: false
         }
@@ -73,8 +73,8 @@ let dailyRecordSchema = new Schema({
             type: String,
             required: false
         },
-        hour: {
-            type: Date,
+        time: {
+            type: String,
             required: false
         },
         observation: {
@@ -87,11 +87,11 @@ let dailyRecordSchema = new Schema({
             type: String,
             required: false
         },
-        hour: {
-            type: Date,
+        time: {
+            type: String,
             required: false
         },
-        reason: {
+        observation: {
             type: String,
             required: false
         }

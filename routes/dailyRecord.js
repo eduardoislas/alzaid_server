@@ -87,11 +87,11 @@ app.post('/dailyRecord/:id', (req, res) => {
 });
 
 //Registra la hora de salida en el dailyRecord
-app.put('/dailyRecord/:id', (req, res) => {
+app.put('/dailyRecord/exit/:id', (req, res) => {
     let id = req.params.id;
     let salida = new Date();
     salida = salida.setHours(salida.getHours() - 7);
-    DailyRecord.findByIdAndUpdate(id, { exitHour: salida }, { new: true, runValidators: true }, (err, drDB) => {
+    DailyRecord.findOneAndUpdate(id, { exitHour: salida }, { new: true, runValidators: true }, (err, drDB) => {
         if (err) {
             return res.status(500).json({
                 success: false,
@@ -158,51 +158,211 @@ app.put('/dailyRecord/vitalSign/:id', (req, res) => {
     });
 });
 
-//
-// app.put('/dailyRecord/attitude/:id', (req, res) => {
-//     let id = req.params.id;
-//     // Pendiente ver cómo recibiremos el listado de signos vitales
-//     let signos = [{ vitalSign: '5e028a4371b134856e8cad3e', date: '2020-01-10', value: 120, valueB: 80 }, { vitalSign: '5e028a4371b134856e8cad41', date: '2020-01-10', value: 100 }];
+// Guardar attitudes en el DailyRecord
+app.put('/dailyRecord/attitude/:id', (req, res) => {
+    let id = req.params.id;
+    let attitudes = [{ name: 'Delirio', time: 'Mañana', score: 4 }, { name: 'Enfado', time: 'Tarde', score: 3 }];
 
-//     DailyRecord.findById(id, (err, drDB) => {
-//         if (err) {
-//             return res.status(500).json({
-//                 success: false,
-//                 err
-//             });
-//         }
-//         if (!drDB) {
-//             return res.status(400).json({
-//                 success: false,
-//                 err: {
-//                     message: 'El DailyRecord no existe'
-//                 }
-//             });
-//         }
-//         for (let x of signos) {
-//             let a = {
-//                 vitalSign: x.vitalSign,
-//                 date: x.date,
-//                 value: x.value,
-//                 valueB: x.valueB
-//             };
-//             drDB.vitalSigns.push(a);
-//         };
-//         drDB.save((err, drSaved) => {
-//             if (err) {
-//                 return res.status(500).json({
-//                     success: false,
-//                     err
-//                 });
-//             }
-//             res.json({
-//                 success: true,
-//                 patient: drSaved
-//             })
-//         });
-//     });
-// });
+    DailyRecord.findById(id, (err, drDB) => {
+        if (err) {
+            return res.status(500).json({
+                success: false,
+                err
+            });
+        }
+        if (!drDB) {
+            return res.status(400).json({
+                success: false,
+                err: {
+                    message: 'El DailyRecord no existe'
+                }
+            });
+        }
+        for (let x of attitudes) {
+            let a = {
+                name: x.name,
+                time: x.time,
+                score: x.score
+            };
+            drDB.attitude.push(a);
+        };
+        drDB.save((err, drSaved) => {
+            if (err) {
+                return res.status(500).json({
+                    success: false,
+                    err
+                });
+            }
+            res.json({
+                success: true,
+                patient: drSaved
+            })
+        });
+    });
+});
 
+// Guardar behaviors en el DailyRecord
+app.put('/dailyRecord/behavior/:id', (req, res) => {
+    let id = req.params.id;
+    let behaviors = [{ name: 'Agresión', time: 'Mañana', score: 4 }, { name: 'Apatía', time: 'Tarde', score: 3 }];
+
+    DailyRecord.findById(id, (err, drDB) => {
+        if (err) {
+            return res.status(500).json({
+                success: false,
+                err
+            });
+        }
+        if (!drDB) {
+            return res.status(400).json({
+                success: false,
+                err: {
+                    message: 'El DailyRecord no existe'
+                }
+            });
+        }
+        for (let x of behaviors) {
+            let a = {
+                name: x.name,
+                time: x.time,
+                score: x.score
+            };
+            drDB.behavior.push(a);
+        };
+        drDB.save((err, drSaved) => {
+            if (err) {
+                return res.status(500).json({
+                    success: false,
+                    err
+                });
+            }
+            res.json({
+                success: true,
+                patient: drSaved
+            })
+        });
+    });
+});
+
+// Guardar crisis en el DailyRecord
+app.put('/dailyRecord/crisis/:id', (req, res) => {
+    let id = req.params.id;
+    let crisis = { name: 'Llanto', time: 'Mañana', observation: 'Se siente solo(a)' };
+
+    DailyRecord.findById(id, (err, drDB) => {
+        if (err) {
+            return res.status(500).json({
+                success: false,
+                err
+            });
+        }
+        if (!drDB) {
+            return res.status(400).json({
+                success: false,
+                err: {
+                    message: 'El DailyRecord no existe'
+                }
+            });
+        }
+        drDB.crisis.push(crisis);
+        drDB.save((err, drSaved) => {
+            if (err) {
+                return res.status(500).json({
+                    success: false,
+                    err
+                });
+            }
+            res.json({
+                success: true,
+                patient: drSaved
+            })
+        });
+    });
+});
+
+// Guardar Hygiene en el DailyRecord
+app.put('/dailyRecord/hygiene/:id', (req, res) => {
+    let id = req.params.id;
+    let higiene = [{ name: 'Micción', time: 'Mañana', observation: 'Normal' }, { name: 'Cambio de ropa', time: 'Tarde', observation: 'Incontinencia' }];
+
+    DailyRecord.findById(id, (err, drDB) => {
+        if (err) {
+            return res.status(500).json({
+                success: false,
+                err
+            });
+        }
+        if (!drDB) {
+            return res.status(400).json({
+                success: false,
+                err: {
+                    message: 'El DailyRecord no existe'
+                }
+            });
+        }
+        for (let x of higiene) {
+            let a = {
+                name: x.name,
+                time: x.time,
+                observation: x.observation
+            };
+            drDB.hygiene.push(a);
+        };
+        drDB.save((err, drSaved) => {
+            if (err) {
+                return res.status(500).json({
+                    success: false,
+                    err
+                });
+            }
+            res.json({
+                success: true,
+                patient: drSaved
+            })
+        });
+    });
+});
+
+// Guardar Apoyo técnico en el DailyRecord
+app.put('/dailyRecord/technicalsupport/:id', (req, res) => {
+    let id = req.params.id;
+    let ts = [{ name: 'Andadera' }, { name: 'Aretes' }];
+
+    DailyRecord.findById(id, (err, drDB) => {
+        if (err) {
+            return res.status(500).json({
+                success: false,
+                err
+            });
+        }
+        if (!drDB) {
+            return res.status(400).json({
+                success: false,
+                err: {
+                    message: 'El DailyRecord no existe'
+                }
+            });
+        }
+        for (let x of ts) {
+            let a = {
+                name: x.name
+            };
+            drDB.technicalSupport.push(a);
+        };
+        drDB.save((err, drSaved) => {
+            if (err) {
+                return res.status(500).json({
+                    success: false,
+                    err
+                });
+            }
+            res.json({
+                success: true,
+                patient: drSaved
+            })
+        });
+    });
+});
 
 
 module.exports = app;
