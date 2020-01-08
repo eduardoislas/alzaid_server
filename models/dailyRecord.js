@@ -96,6 +96,36 @@ let dailyRecordSchema = new Schema({
             required: false
         }
     }],
+    meal: [{
+        type: {
+            type: String,
+            required: false
+        },
+        performance: {
+            type: Number,
+            required: false
+        },
+        quantity: {
+            type: String,
+            required: false
+        },
+        foodType: {
+            type: String,
+            required: false
+        },
+        independence: {
+            type: Number,
+            required: false
+        },
+        functional: {
+            type: Number,
+            required: false
+        },
+        chewingPerformance: {
+            type: Number,
+            required: false
+        }
+    }]
 });
 
 

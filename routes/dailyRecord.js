@@ -365,4 +365,52 @@ app.put('/dailyRecord/technicalsupport/:id', (req, res) => {
 });
 
 
+// Guardar Comida para el DailyRecord
+app.put('/dailyRecord/meal/:id', (req, res) => {
+    let id = req.params.id;
+    //let meal = req.params.meal;
+    //let meal = { type: 'Colacion', performance: 5 };
+    let meal = { type: 'Comida', performance: 5, quantity: "Poco", foodType: "Papilla", independence: 4, functional: 3, chewingPerformance: 5 };
+    DailyRecord.findById(id, (err, drDB) => {
+        if (err) {
+            return res.status(500).json({
+                success: false,
+                err
+            });
+        }
+        if (!drDB) {
+            return res.status(400).json({
+                success: false,
+                err: {
+                    message: 'El DailyRecord no existe'
+                }
+            });
+        }
+        let a = {
+            type: meal.type,
+            performance: meal.performance,
+            quantity: meal.quantity,
+            foodType: meal.foodType,
+            independence: meal.independence,
+            functional: meal.functional,
+            chewingPerformance: meal.chewingPerformance
+        };
+        drDB.meal.push(a);
+        drDB.save((err, drSaved) => {
+            if (err) {
+                return res.status(500).json({
+                    success: false,
+                    err
+                });
+            }
+            res.json({
+                success: true,
+                patient: drSaved
+            })
+        });
+    });
+});
+
+
+
 module.exports = app;
