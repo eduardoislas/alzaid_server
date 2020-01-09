@@ -17,7 +17,7 @@ app.get('/dailyRecord', (req, res) => {
         //.skip(desde)
         //.limit(limite)
         .sort('date')
-        .populate('patient', 'name lastName lastNameSecond phase')
+        .populate('patient', 'name lastName lastNameSecond phase img')
         .exec((err, drs) => {
             if (err) {
                 return res.status(400).json({
@@ -28,13 +28,44 @@ app.get('/dailyRecord', (req, res) => {
             DailyRecord.countDocuments({}, (err, conteo) => {
                 res.json({
                     success: true,
-                    drs,
-                    cuantos: conteo
+                    cuantos: conteo,
+                    drs
                 });
             })
         })
 });
 
+//Obtiene todos los dailyRecords
+app.get('/dailyRecord/date', (req, res) => {
+    //let desde = Number(req.query.desde || 0);
+    //let limite = Number(req.query.limite || 100);
+    //let hoy = new Date();
+    let ayer = new Date();
+    let manana = new Date();
+    let today = new Date(req.body.date);
+    ayer.setDate(today.getDate() - 1);
+    manana.setDate(today.getDate() + 1);
+    DailyRecord.find({ "date": { "$gte": ayer, "$lte": manana } })
+        //.skip(desde)
+        //.limit(limite)
+        .sort('date')
+        .populate('patient', 'name lastName lastNameSecond phase img')
+        .exec((err, drs) => {
+            if (err) {
+                return res.status(400).json({
+                    success: false,
+                    err
+                });
+            }
+            DailyRecord.countDocuments({ "date": { "$gte": ayer, "$lte": manana } }, (err, conteo) => {
+                res.json({
+                    success: true,
+                    cuantos: conteo,
+                    drs
+                });
+            })
+        })
+});
 
 //Obtiene todos los dailyRecords por Paciente
 app.get('/dailyRecord/patient/:id', (req, res) => {

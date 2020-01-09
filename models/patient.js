@@ -32,7 +32,7 @@ let patientSchema = new Schema({
     img: {
         type: String,
         required: false,
-        default: "https://www.google.com/url?sa=i&source=images&cd=&ved=2ahUKEwj8mL_J4OjmAhVDjK0KHcgbCK4QjRx6BAgBEAQ&url=https%3A%2F%2Ficons8.com%2Ficon%2F23264%2Fuser&psig=AOvVaw3q3D2YXzYsh4nql7uXcbdd&ust=1578186381499122"
+        default: "https://img.icons8.com/color/48/000000/matrix-architect.png"
     },
     status: {
         type: Boolean,
