@@ -39,7 +39,8 @@ app.post('/login', (req, res) => {
         res.json({
             success: true,
             user: userDB,
-            token
+            token,
+            expiresIn: process.env.CADUCIDAD_TOKEN
         });
     });
 });
