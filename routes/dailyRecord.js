@@ -43,15 +43,19 @@ app.get('/dailyRecord/today', (req, res) => {
     let ayer = new Date();
     let manana = new Date();
     let today = new Date();
-    today.setHours(today.getHours() - 7)
-    ayer.setHours(today.getHours() - 7)
-    manana.setHours(today.getHours() - 7)
-    ayer.setDate(today.getDate() - 1);
-    manana.setDate(today.getDate() + 1);
+    today.setHours(today.getHours() - 7);
+    ayer = new Date(ayer.setDate(today.getDate() - 1));
+    manana = new Date(manana.setDate(today.getDate() + 1));
+    ayer.setHours(ayer.getHours() - 7);
+    manana.setHours(manana.getHours() - 7);
+    // ayer.setHours(today.getHours() - 7)
+    // manana.setHours(today.getHours() - 7)
+    // ayer.setDate(today.getDate() - 1);
+    // manana.setDate(today.getDate() + 1);
     console.log(today);
     console.log(ayer);
     console.log(manana);
-    DailyRecord.find({ "date": { "$gte": ayer, "$lte": manana } })
+    DailyRecord.find({ "date": { "$gte": ayer, "$lte": manana }, exit: false })
         //.skip(desde)
         //.limit(limite)
         .sort('date')
@@ -63,7 +67,7 @@ app.get('/dailyRecord/today', (req, res) => {
                     err
                 });
             }
-            DailyRecord.countDocuments({ "date": { "$gte": ayer, "$lte": manana } }, (err, conteo) => {
+            DailyRecord.countDocuments({ "date": { "$gte": ayer, "$lte": manana }, exit: false }, (err, conteo) => {
                 res.json({
                     success: true,
                     cuantos: conteo,
@@ -128,7 +132,7 @@ app.put('/dailyRecord/exit/:id', (req, res) => {
     let id = req.params.id;
     let salida = new Date();
     salida = salida.setHours(salida.getHours() - 7);
-    DailyRecord.findByIdAndUpdate(id, { exitHour: salida }, { new: true, runValidators: true, useFindAndModify: false }, (err, drDB) => {
+    DailyRecord.findByIdAndUpdate(id, { exitHour: salida, exit: true }, { new: true, runValidators: true, useFindAndModify: false }, (err, drDB) => {
         if (err) {
             return res.status(500).json({
                 success: false,

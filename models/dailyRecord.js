@@ -11,6 +11,10 @@ let dailyRecordSchema = new Schema({
         type: Date,
         required: false
     },
+    exit: {
+        type: Boolean,
+        default: false
+    },
     patient: {
         type: Schema.Types.ObjectId,
         ref: 'Patient',
