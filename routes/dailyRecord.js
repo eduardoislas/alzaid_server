@@ -36,15 +36,20 @@ app.get('/dailyRecord', (req, res) => {
 });
 
 //Obtiene todos los dailyRecords
-app.get('/dailyRecord/date', (req, res) => {
+app.get('/dailyRecord/:date', (req, res) => {
     //let desde = Number(req.query.desde || 0);
     //let limite = Number(req.query.limite || 100);
     //let hoy = new Date();
     let ayer = new Date();
     let manana = new Date();
-    let today = new Date(req.body.date);
+    let today = new Date(req.params.date);
+    today.setHours(today.getHours() - 7);
+    console.log(req.params.date);
+    console.log(today);
     ayer.setDate(today.getDate() - 1);
     manana.setDate(today.getDate() + 1);
+    console.log(ayer);
+    console.log(manana);
     DailyRecord.find({ "date": { "$gte": ayer, "$lte": manana } })
         //.skip(desde)
         //.limit(limite)
