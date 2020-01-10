@@ -128,7 +128,7 @@ app.put('/dailyRecord/exit/:id', (req, res) => {
     let id = req.params.id;
     let salida = new Date();
     salida = salida.setHours(salida.getHours() - 7);
-    DailyRecord.findOneAndUpdate(id, { exitHour: salida }, { new: true, runValidators: true }, (err, drDB) => {
+    DailyRecord.findByIdAndUpdate(id, { exitHour: salida }, { new: true, runValidators: true, useFindAndModify: false }, (err, drDB) => {
         if (err) {
             return res.status(500).json({
                 success: false,
