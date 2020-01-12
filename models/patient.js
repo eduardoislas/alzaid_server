@@ -5,6 +5,10 @@ let Schema = mongoose.Schema;
 
 
 let patientSchema = new Schema({
+    expedient: {
+        type: Number,
+        required: false,
+    },
     name: {
         type: String,
         required: [true, 'El nombre es requerido']

@@ -19,8 +19,8 @@ app.get('/patient', (req, res) => {
             Patient.countDocuments({ status: true }, (err, conteo) => {
                 res.json({
                     success: true,
-                    patients,
-                    count: conteo
+                    count: conteo,
+                    patients
                 });
             })
         })
@@ -42,8 +42,8 @@ app.get('/patient/:fase', (req, res) => {
             Patient.countDocuments({ status: true, phase: regex }, (err, conteo) => {
                 res.json({
                     success: true,
-                    patients,
-                    count: conteo
+                    count: conteo,
+                    patients
                 });
             })
         })
@@ -53,37 +53,41 @@ app.get('/patient/:fase', (req, res) => {
 app.post('/patient', (req, res) => {
     let body = req.body;
     let fecha = new Date();
-    let patient = new Patient({
-        name: body.name,
-        lastName: body.lastName,
-        lastNameSecond: body.lastNameSecond,
-        birthdate: Date.parse(body.birthdate),
-        registerdate: Date.parse(body.registerdate),
-        phase: body.phase,
-        img: body.img
-    });
-    let ph = {
-        phase: body.phase,
-        date: fecha.setHours(fecha.getHours() - 7)
-    };
-    patient.phaseHistory = [ph];
-    patient.technicalSupport = [{ name: "Andadera" }, { name: "Lentes" }];
-    patient.diagnosis = body.diagnosis;
-    patient.allergies = body.allergies;
-    patient.medicines = body.medicines;
-    patient.physicalLimitations = body.physicalLimitations;
-    patient.save((err, patientDB) => {
-        if (err) {
-            return res.status(400).json({
-                success: false,
-                err
-            });
-        }
-        res.json({
-            success: true,
-            patient: patientDB
+    Patient.countDocuments({}, (err, conteo) => {
+        let patient = new Patient({
+            name: body.name,
+            lastName: body.lastName,
+            lastNameSecond: body.lastNameSecond,
+            birthdate: Date.parse(body.birthdate),
+            registerdate: Date.parse(body.registerdate),
+            phase: body.phase,
+            img: body.img,
         });
-    })
+        let ph = {
+            phase: body.phase,
+            date: fecha.setHours(fecha.getHours() - 7)
+        };
+        cuantos = Patient.find().count();
+        patient.phaseHistory = [ph];
+        patient.technicalSupport = [{ name: "Andadera" }, { name: "Lentes" }];
+        patient.diagnosis = body.diagnosis;
+        patient.allergies = body.allergies;
+        patient.medicines = body.medicines;
+        patient.physicalLimitations = body.physicalLimitations;
+        patient.expedient = conteo + 1;
+        patient.save((err, patientDB) => {
+            if (err) {
+                return res.status(400).json({
+                    success: false,
+                    err
+                });
+            }
+            res.json({
+                success: true,
+                patient: patientDB
+            });
+        })
+    });
 });
 
 //Editar un paciente, actualizando su historial de Fase
