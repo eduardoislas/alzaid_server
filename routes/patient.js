@@ -69,7 +69,7 @@ app.post('/patient', (req, res) => {
         };
         cuantos = Patient.find().count();
         patient.phaseHistory = [ph];
-        patient.technicalSupport = [{ name: "Andadera" }, { name: "Lentes" }];
+        patient.technicalSupport = body.technicalSupport;
         patient.diagnosis = body.diagnosis;
         patient.allergies = body.allergies;
         patient.medicines = body.medicines;
