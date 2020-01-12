@@ -53,7 +53,8 @@ app.get('/patient/:fase', (req, res) => {
 app.post('/patient', (req, res) => {
     let body = req.body;
     let fecha = new Date();
-    let ts = [];
+    let ts = body.technicalSupport;
+    let temp = [];
     Patient.countDocuments({}, (err, conteo) => {
         let patient = new Patient({
             name: body.name,
@@ -69,10 +70,11 @@ app.post('/patient', (req, res) => {
             date: fecha.setHours(fecha.getHours() - 7)
         };
         patient.phaseHistory = [ph];
-        for (let x of body.technicalSupport) {
-            ts.push(x);
+        for (let x of ts) {
+            let a = { name: x };
+            temp.push(a);
         }
-        patient.technicalSupport = ts;
+        patient.technicalSupport = temp;
         patient.diagnosis = body.diagnosis;
         patient.allergies = body.allergies;
         patient.medicines = body.medicines;
