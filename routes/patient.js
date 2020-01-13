@@ -56,19 +56,11 @@ app.get('/patient/:fase', (req, res) => {
     let fase = req.params.fase;
     let regex = new RegExp(fase, 'i');
     //El parámetro status solicita los pacientes activos
-    Patient.findById(id, (err, patientDB) => {
+    Patient.find({ status: true, phase: regex }, (err, patients) => {
         if (err) {
             return res.status(500).json({
                 success: false,
                 err
-            });
-        }
-        if (!patientDB) {
-            return res.status(400).json({
-                success: false,
-                err: {
-                    message: 'Paciente no encontrado'
-                }
             });
         }
         Patient.countDocuments({ status: true, phase: regex }, (err, conteo) => {
