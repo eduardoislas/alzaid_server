@@ -26,27 +26,59 @@ app.get('/patient', (req, res) => {
         })
 })
 
+//Devuelve un paciente por ID
+app.get('/patient/id/:id', (req, res) => {
+    let id = req.params.id;
+    Patient.findById(id, (err, patient) => {
+        if (err) {
+            return res.status(500).json({
+                sucess: false,
+                err
+            });
+        };
+        if (!patient) {
+            return res.status(400).json({
+                success: false,
+                err: {
+                    message: 'Paciente no encontrado'
+                }
+            })
+        }
+        res.json({
+            success: true,
+            patient
+        })
+    })
+})
+
 //Obtener todos los pacientes activos por fase
 app.get('/patient/:fase', (req, res) => {
     let fase = req.params.fase;
     let regex = new RegExp(fase, 'i');
     //El parámetro status solicita los pacientes activos
-    Patient.find({ status: true, phase: regex })
-        .exec((err, patients) => {
-            if (err) {
-                return res.status(400).json({
-                    success: false,
-                    err
-                });
-            }
-            Patient.countDocuments({ status: true, phase: regex }, (err, conteo) => {
-                res.json({
-                    success: true,
-                    count: conteo,
-                    patients
-                });
-            })
+    Patient.findById(id, (err, patientDB) => {
+        if (err) {
+            return res.status(500).json({
+                success: false,
+                err
+            });
+        }
+        if (!patientDB) {
+            return res.status(400).json({
+                success: false,
+                err: {
+                    message: 'Paciente no encontrado'
+                }
+            });
+        }
+        Patient.countDocuments({ status: true, phase: regex }, (err, conteo) => {
+            res.json({
+                success: true,
+                count: conteo,
+                patients
+            });
         })
+    })
 })
 
 //Agregar un Paciente a la BD
