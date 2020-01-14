@@ -52,9 +52,7 @@ app.get('/dailyRecord/today', (req, res) => {
     // manana.setHours(today.getHours() - 7)
     // ayer.setDate(today.getDate() - 1);
     // manana.setDate(today.getDate() + 1);
-    console.log(today);
-    console.log(ayer);
-    console.log(manana);
+
     DailyRecord.find({ "date": { "$gte": ayer, "$lte": manana }, exit: false })
         //.skip(desde)
         //.limit(limite)
@@ -157,10 +155,8 @@ app.put('/dailyRecord/exit/:id', (req, res) => {
 // Guardar Signos vitales en el DailyRecord
 app.put('/dailyRecord/vitalSign/:id', (req, res) => {
     let id = req.params.id;
-    // Pendiente ver cómo recibiremos el listado de signos vitales
     let signos = [{}];
     signos = req.body.vitalSigns;
-    //let signos = [{ vitalSign: 'Presión arterial', date: '2020-01-10', value: 120, valueB: 80 }, { vitalSign: 'Frecuencia cardíaca', date: '2020-01-10', value: 100 }];
 
     DailyRecord.findById(id, (err, drDB) => {
         if (err) {
@@ -178,9 +174,10 @@ app.put('/dailyRecord/vitalSign/:id', (req, res) => {
             });
         }
         for (let x of signos) {
+            let fecha = new Date(x.date);
             let a = {
                 vitalSign: x.vitalSign,
-                date: x.date,
+                date: fecha.setHours(fecha.getHours() - 7),
                 value: x.value,
                 valueB: x.valueB
             };
