@@ -158,7 +158,9 @@ app.put('/dailyRecord/exit/:id', (req, res) => {
 app.put('/dailyRecord/vitalSign/:id', (req, res) => {
     let id = req.params.id;
     // Pendiente ver cómo recibiremos el listado de signos vitales
-    let signos = [{ vitalSign: 'Presión arterial', date: '2020-01-10', value: 120, valueB: 80 }, { vitalSign: 'Frecuencia cardíaca', date: '2020-01-10', value: 100 }];
+    let signos = [{}];
+    signos = req.body.vitalSigns;
+    //let signos = [{ vitalSign: 'Presión arterial', date: '2020-01-10', value: 120, valueB: 80 }, { vitalSign: 'Frecuencia cardíaca', date: '2020-01-10', value: 100 }];
 
     DailyRecord.findById(id, (err, drDB) => {
         if (err) {
@@ -451,7 +453,6 @@ app.put('/dailyRecord/meal/:id', (req, res) => {
         });
     });
 });
-
 
 
 module.exports = app;
