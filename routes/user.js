@@ -9,7 +9,7 @@ const { verificaToken, verificaAdmin_Role } = require('../middlewares/authentica
 const app = express();
 
 app.get('/user', (req, res) => {
-    User.find({}, 'name role status')
+    User.find({ status: true }, 'name role status')
         .exec((err, users) => {
             if (err) {
                 return res.status(400).json({
@@ -17,7 +17,7 @@ app.get('/user', (req, res) => {
                     err
                 });
             }
-            User.countDocuments({}, (err, conteo) => {
+            User.countDocuments({ status: true }, (err, conteo) => {
                 res.json({
                     success: true,
                     users,
@@ -25,6 +25,30 @@ app.get('/user', (req, res) => {
                 });
             })
         })
+});
+
+app.get('/user/:id', (req, res) => {
+    let id = req.params.id;
+    User.findById(id, (err, user) => {
+        if (err) {
+            return res.status(500).json({
+                sucess: false,
+                err
+            });
+        };
+        if (!user) {
+            return res.status(400).json({
+                success: false,
+                err: {
+                    message: 'Usuario no encontrado'
+                }
+            })
+        }
+        res.json({
+            success: true,
+            user
+        })
+    })
 });
 
 app.post('/user', (req, res) => {

@@ -323,7 +323,7 @@ app.put('/dailyRecord/crisis/:id', (req, res) => {
 // Guardar Hygiene en el DailyRecord
 app.put('/dailyRecord/hygiene/:id', (req, res) => {
     let id = req.params.id;
-    let higiene = [{ name: 'Micción', time: 'Mañana', observation: 'Normal' }, { name: 'Cambio de ropa', time: 'Tarde', observation: 'Incontinencia' }];
+    let hygiene = [{ name: 'Micción', time: 'Mañana', observation: 'Normal' }, { name: 'Cambio de ropa', time: 'Tarde', observation: 'Incontinencia' }];
 
     DailyRecord.findById(id, (err, drDB) => {
         if (err) {
@@ -340,7 +340,7 @@ app.put('/dailyRecord/hygiene/:id', (req, res) => {
                 }
             });
         }
-        for (let x of higiene) {
+        for (let x of hygiene) {
             let a = {
                 name: x.name,
                 time: x.time,
