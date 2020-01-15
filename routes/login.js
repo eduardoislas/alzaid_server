@@ -25,6 +25,14 @@ app.post('/login', (req, res) => {
                 }
             })
         }
+        if (!userDB.status) {
+            return res.status(400).json({
+                success: false,
+                err: {
+                    message: 'Usuario inactivo'
+                }
+            })
+        }
         if (!bcrypt.compareSync(body.password, userDB.password)) {
             return res.status(400).json({
                 success: false,
