@@ -26,6 +26,30 @@ app.get('/catalog', (req, res) => {
         })
 });
 
+app.get('/catalog/id/:id', (req, res) => {
+    let id = req.params.id;
+    Catalog.findById(id, (err, catalog) => {
+        if (err) {
+            return res.status(500).json({
+                sucess: false,
+                err
+            });
+        };
+        if (!catalog) {
+            return res.status(400).json({
+                success: false,
+                err: {
+                    message: 'Catálogo no encontrado'
+                }
+            })
+        }
+        res.json({
+            success: true,
+            catalog
+        })
+    })
+});
+
 
 //Obtiene todos los catálogos por tipo
 app.get('/catalog/:type', (req, res) => {

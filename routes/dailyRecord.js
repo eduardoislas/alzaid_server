@@ -43,11 +43,11 @@ app.get('/dailyRecord/today', (req, res) => {
     let ayer = new Date();
     let manana = new Date();
     let today = new Date();
-    today.setHours(today.getHours() - 7);
+    // today.setHours(today.getHours() - 7);
     ayer = new Date(ayer.setDate(today.getDate() - 1));
     manana = new Date(manana.setDate(today.getDate() + 1));
-    ayer.setHours(ayer.getHours() - 7);
-    manana.setHours(manana.getHours() - 7);
+    // ayer.setHours(ayer.getHours() - 7);
+    // manana.setHours(manana.getHours() - 7);
     // ayer.setHours(today.getHours() - 7)
     // manana.setHours(today.getHours() - 7)
     // ayer.setDate(today.getDate() - 1);
@@ -107,7 +107,8 @@ app.post('/dailyRecord/:id', (req, res) => {
     let idP = req.params.id;
     let fecha = new Date();
     let dailyRecord = new DailyRecord({
-        date: fecha.setHours(fecha.getHours() - 7),
+        // date: fecha.setHours(fecha.getHours() - 7),
+        date: fecha,
         patient: idP
     });
 
@@ -129,7 +130,7 @@ app.post('/dailyRecord/:id', (req, res) => {
 app.put('/dailyRecord/exit/:id', (req, res) => {
     let id = req.params.id;
     let salida = new Date();
-    salida = salida.setHours(salida.getHours() - 7);
+    // salida = salida.setHours(salida.getHours() - 7);
     DailyRecord.findByIdAndUpdate(id, { exitHour: salida, exit: true }, { new: true, runValidators: true, useFindAndModify: false }, (err, drDB) => {
         if (err) {
             return res.status(500).json({
@@ -177,7 +178,7 @@ app.put('/dailyRecord/vitalSign/:id', (req, res) => {
             let fecha = new Date(x.date);
             let a = {
                 vitalSign: x.vitalSign,
-                date: fecha.setHours(fecha.getHours() - 7),
+                date: fecha,
                 value: x.value,
                 valueB: x.valueB
             };
@@ -201,7 +202,9 @@ app.put('/dailyRecord/vitalSign/:id', (req, res) => {
 // Guardar attitudes en el DailyRecord
 app.put('/dailyRecord/attitude/:id', (req, res) => {
     let id = req.params.id;
-    let attitudes = [{ name: 'Delirio', time: 'Mañana', score: 4 }, { name: 'Enfado', time: 'Tarde', score: 3 }];
+    let attitudes = [{}];
+    attitudes = req.body.attitudes;
+    // let attitudes = [{ name: 'Delirio', time: 'Mañana', score: 4 }, { name: 'Enfado', time: 'Tarde', score: 3 }];
 
     DailyRecord.findById(id, (err, drDB) => {
         if (err) {
@@ -244,7 +247,8 @@ app.put('/dailyRecord/attitude/:id', (req, res) => {
 // Guardar behaviors en el DailyRecord
 app.put('/dailyRecord/behavior/:id', (req, res) => {
     let id = req.params.id;
-    let behaviors = [{ name: 'Agresión', time: 'Mañana', score: 4 }, { name: 'Apatía', time: 'Tarde', score: 3 }];
+    let behaviors = [{}];
+    behaviors = req.params.behaviors;
 
     DailyRecord.findById(id, (err, drDB) => {
         if (err) {
@@ -287,8 +291,8 @@ app.put('/dailyRecord/behavior/:id', (req, res) => {
 // Guardar crisis en el DailyRecord
 app.put('/dailyRecord/crisis/:id', (req, res) => {
     let id = req.params.id;
-    let crisis = { name: 'Llanto', time: 'Mañana', observation: 'Se siente solo(a)' };
-
+    let crisis = [{}];
+    crisis = req.params.crisis;
     DailyRecord.findById(id, (err, drDB) => {
         if (err) {
             return res.status(500).json({
@@ -323,7 +327,8 @@ app.put('/dailyRecord/crisis/:id', (req, res) => {
 // Guardar Hygiene en el DailyRecord
 app.put('/dailyRecord/hygiene/:id', (req, res) => {
     let id = req.params.id;
-    let hygiene = [{ name: 'Micción', time: 'Mañana', observation: 'Normal' }, { name: 'Cambio de ropa', time: 'Tarde', observation: 'Incontinencia' }];
+    let hygiene = [{}];
+    hygiene = req.params.hygiene;
 
     DailyRecord.findById(id, (err, drDB) => {
         if (err) {
@@ -366,7 +371,8 @@ app.put('/dailyRecord/hygiene/:id', (req, res) => {
 // Guardar Apoyo técnico en el DailyRecord
 app.put('/dailyRecord/technicalsupport/:id', (req, res) => {
     let id = req.params.id;
-    let ts = [{ name: 'Andadera' }, { name: 'Aretes' }];
+    let ts = [{}];
+    ts = req.params.hygiene;
 
     DailyRecord.findById(id, (err, drDB) => {
         if (err) {
@@ -408,9 +414,10 @@ app.put('/dailyRecord/technicalsupport/:id', (req, res) => {
 // Guardar Comida para el DailyRecord
 app.put('/dailyRecord/meal/:id', (req, res) => {
     let id = req.params.id;
-    //let meal = req.params.meal;
+    let meal = {}
+    meal = req.params.meal;
     //let meal = { type: 'Colacion', performance: 5 };
-    let meal = { type: 'Comida', performance: 5, quantity: "Poco", foodType: "Papilla", independence: 4, functional: 3, chewingPerformance: 5 };
+    //let meal = { type: 'Comida', performance: 5, quantity: "Poco", foodType: "Papilla", independence: 4, functional: 3, chewingPerformance: 5 };
     DailyRecord.findById(id, (err, drDB) => {
         if (err) {
             return res.status(500).json({

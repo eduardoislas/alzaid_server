@@ -91,7 +91,7 @@ app.post('/patient', (req, res) => {
         });
         let ph = {
             phase: body.phase,
-            date: fecha.setHours(fecha.getHours() - 7)
+            date: fecha
         };
         patient.phaseHistory = [ph];
         for (let x of ts) {
@@ -124,6 +124,8 @@ app.put('/patient/:id', (req, res) => {
     let id = req.params.id;
     let body = req.body;
     let fecha = new Date();
+    let ts = body.technicalSupport;
+    let temp = [];
     Patient.findById(id, (err, patientDB) => {
         if (err) {
             return res.status(500).json({
@@ -156,11 +158,15 @@ app.put('/patient/:id', (req, res) => {
             };
             let ph = {
                 phase: patientDB.phase,
-                date: fecha.setHours(fecha.getHours() - 7)
+                date: fecha
             };
             patientDB.phaseHistory.push(ph);
         }
-        patientDB.technicalSupport = [{ name: "Andadera" }, { name: "Lentes" }];
+        for (let x of ts) {
+            let a = { name: x };
+            temp.push(a);
+        }
+        patientDB.technicalSupport = temp;
         patientDB.diagnosis = body.diagnosis;
         patientDB.allergies = body.allergies;
         patientDB.medicines = body.medicines;
