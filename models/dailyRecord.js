@@ -50,7 +50,7 @@ let dailyRecordSchema = new Schema({
             required: false
         },
         time: {
-            type: String,
+            type: Number,
             required: false
         },
         score: {
@@ -64,7 +64,7 @@ let dailyRecordSchema = new Schema({
             required: false
         },
         time: {
-            type: String,
+            type: Number,
             required: false
         },
         score: {
