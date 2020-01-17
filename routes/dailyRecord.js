@@ -39,21 +39,15 @@ app.get('/dailyRecord', (req, res) => {
 app.get('/dailyRecord/today', (req, res) => {
     //let desde = Number(req.query.desde || 0);
     //let limite = Number(req.query.limite || 100);
-    //let hoy = new Date();
-    let ayer = new Date();
-    let manana = new Date();
-    let today = new Date();
-    // today.setHours(today.getHours() - 7);
-    ayer = new Date(ayer.setDate(today.getDate() - 1));
-    manana = new Date(manana.setDate(today.getDate() + 1));
-    // ayer.setHours(ayer.getHours() - 7);
-    // manana.setHours(manana.getHours() - 7);
-    // ayer.setHours(today.getHours() - 7)
-    // manana.setHours(today.getHours() - 7)
-    // ayer.setDate(today.getDate() - 1);
-    // manana.setDate(today.getDate() + 1);
+    let fechaInicial = new Date();
+    let dia = fechaInicial.getDate();
+    let mes = fechaInicial.getMonth();
+    let anio = fechaInicial.getFullYear();
 
-    DailyRecord.find({ "date": { "$gte": ayer, "$lte": manana }, exit: false })
+    let fecha = new Date(anio, mes, dia);
+    let manana = new Date(anio, mes, dia + 1)
+
+    DailyRecord.find({ $and: [{ date: { $gte: fecha } }, { date: { $lt: manana } }], exit: false })
         //.skip(desde)
         //.limit(limite)
         .sort('date')
@@ -65,7 +59,41 @@ app.get('/dailyRecord/today', (req, res) => {
                     err
                 });
             }
-            DailyRecord.countDocuments({ "date": { "$gte": ayer, "$lte": manana }, exit: false }, (err, conteo) => {
+            DailyRecord.countDocuments({ $and: [{ date: { $gte: fecha } }, { date: { $lt: manana } }], exit: false }, (err, conteo) => {
+                res.json({
+                    success: true,
+                    cuantos: conteo,
+                    drs
+                });
+            })
+        })
+});
+
+//Obtiene todos los dailyRecords por fecha dada
+app.get('/dailyRecord/date/:date', (req, res) => {
+    //let desde = Number(req.query.desde || 0);
+    //let limite = Number(req.query.limite || 100);
+    let fechaInicial = new Date(req.params.date);
+    let dia = fechaInicial.getDate();
+    let mes = fechaInicial.getMonth();
+    let anio = fechaInicial.getFullYear();
+
+    let fecha = new Date(anio, mes, dia);
+    let manana = new Date(anio, mes, dia + 1)
+
+    DailyRecord.find({ $and: [{ date: { $gte: fecha } }, { date: { $lt: manana } }] })
+        //.skip(desde)
+        //.limit(limite)
+        .sort('date')
+        .populate('patient', 'name lastName lastNameSecond phase img')
+        .exec((err, drs) => {
+            if (err) {
+                return res.status(400).json({
+                    success: false,
+                    err
+                });
+            }
+            DailyRecord.countDocuments({ "date": { "$eq": fecha } }, (err, conteo) => {
                 res.json({
                     success: true,
                     cuantos: conteo,
