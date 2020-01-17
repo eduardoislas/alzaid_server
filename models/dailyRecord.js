@@ -129,7 +129,67 @@ let dailyRecordSchema = new Schema({
             type: Number,
             required: false
         }
-    }]
+    }],
+    phaseBinnacle: {
+        orientation: {
+            type: Boolean,
+            required: false
+        },
+        date: {
+            type: Boolean,
+            required: false
+        },
+        observation: {
+            type: String,
+            required: false
+        },
+        activities: [{
+            name: {
+                type: String,
+                required: false
+            },
+            type: {
+                type: String,
+                required: false
+            },
+            performance: {
+                type: Number,
+                required: false
+            }
+        }]
+    },
+    physioBinnacle: {
+        startMood: {
+            type: Number,
+            required: false
+        },
+        endMood: {
+            type: Number,
+            required: false
+        },
+        startTime: {
+            type: Date,
+            required: false
+        },
+        endTime: {
+            type: Date,
+            required: false
+        },
+        activities: [{
+            name: {
+                type: String,
+                required: false
+            },
+            type: {
+                type: String,
+                required: false
+            },
+            performance: {
+                type: Number,
+                required: false
+            }
+        }]
+    }
 });
 
 
