@@ -8,9 +8,8 @@ app.get('/notification', (req, res) => {
     //let desde = Number(req.query.desde || 0);
     //let limite = Number(req.query.limite || 100);
     let fecha = new Date();
-    fecha = fecha.setHours(fecha.getHours() - 7);
     let vigentes = [];
-    Notification.find({ status: true }, 'date expiration_date high_priority description type area patient user')
+    Notification.find({ status: true })
         //.skip(desde)
         //.limit(limite)
         .sort('date')
@@ -52,10 +51,14 @@ app.get('/notification', (req, res) => {
 app.post('/notification', (req, res) => {
     let body = req.body;
     let fecha = new Date();
-    let areas = ['HIGIENE', 'ENFERMERIA', 'FASE_INICIAL'];
+    let areas = [];
+
+    for (x of body.areas) {
+        areas.push(x);
+    }
 
     let notification = new Notification({
-        date: fecha.setHours(fecha.getHours() - 7),
+        date: fecha,
         expiration_date: Date.parse(body.expiration),
         high_priority: body.priority,
         description: body.description,
