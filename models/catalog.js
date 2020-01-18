@@ -15,6 +15,10 @@ let catalogSchema = new Schema({
         type: Number,
         required: false
     },
+    classification: {
+        type: String,
+        required: false
+    },
     status: {
         type: Boolean,
         default: true

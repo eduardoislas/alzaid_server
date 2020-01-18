@@ -7,7 +7,7 @@ const app = express();
 //Obtener todos los catalogos
 app.get('/catalog', (req, res) => {
     //El parámetro status solicita los catalogos
-    Catalog.find({ status: true }, 'name type value')
+    Catalog.find({ status: true })
         .sort('type')
         .exec((err, catalogs) => {
             if (err) {
@@ -19,8 +19,8 @@ app.get('/catalog', (req, res) => {
             Catalog.countDocuments({ status: true }, (err, conteo) => {
                 res.json({
                     success: true,
-                    catalogs,
-                    count: conteo
+                    count: conteo,
+                    catalogs
                 });
             })
         })
@@ -56,7 +56,7 @@ app.get('/catalog/:type', (req, res) => {
     let type = req.params.type;
     let regex = new RegExp(type, 'i');
 
-    Catalog.find({ type: regex }, 'name type value')
+    Catalog.find({ type: regex })
         .sort('name')
         .exec((err, catalogs) => {
             if (err) {
@@ -68,8 +68,8 @@ app.get('/catalog/:type', (req, res) => {
             Catalog.countDocuments({ type: regex }, (err, conteo) => {
                 res.json({
                     success: true,
-                    catalogs,
-                    cuantos: conteo
+                    cuantos: conteo,
+                    catalogs
                 });
             })
         })
