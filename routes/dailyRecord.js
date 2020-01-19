@@ -361,7 +361,12 @@ app.put('/dailyRecord/crisis/:id', (req, res) => {
                 }
             });
         }
-        drDB.crisis.push(crisis);
+        let c = {
+            name: crisis.name,
+            time: crisis.time,
+            observation: crisis.observation
+        }
+        drDB.crisis.push(c);
         drDB.save((err, drSaved) => {
             if (err) {
                 return res.status(500).json({
