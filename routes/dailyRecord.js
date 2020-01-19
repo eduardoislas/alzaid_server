@@ -302,7 +302,7 @@ app.put('/dailyRecord/attitude/:id', (req, res) => {
 app.put('/dailyRecord/behavior/:id', (req, res) => {
     let id = req.params.id;
     let behaviors = [{}];
-    behaviors = req.params.behaviors;
+    behaviors = req.body.behaviors;
 
     DailyRecord.findById(id, (err, drDB) => {
         if (err) {
@@ -386,7 +386,7 @@ app.put('/dailyRecord/crisis/:id', (req, res) => {
 app.put('/dailyRecord/hygiene/:id', (req, res) => {
     let id = req.params.id;
     let hygiene = [{}];
-    hygiene = req.params.hygiene;
+    hygiene = req.body.hygiene;
 
     DailyRecord.findById(id, (err, drDB) => {
         if (err) {
@@ -430,7 +430,7 @@ app.put('/dailyRecord/hygiene/:id', (req, res) => {
 app.put('/dailyRecord/technicalsupport/:id', (req, res) => {
     let id = req.params.id;
     let ts = [{}];
-    ts = req.params.hygiene;
+    ts = req.body.ts;
 
     DailyRecord.findById(id, (err, drDB) => {
         if (err) {
@@ -473,7 +473,7 @@ app.put('/dailyRecord/technicalsupport/:id', (req, res) => {
 app.put('/dailyRecord/meal/:id', (req, res) => {
     let id = req.params.id;
     let meal = {}
-    meal = req.params.meal;
+    meal = req.body.meal;
     //let meal = { type: 'Colacion', performance: 5 };
     //let meal = { type: 'Comida', performance: 5, quantity: "Poco", foodType: "Papilla", independence: 4, functional: 3, chewingPerformance: 5 };
     DailyRecord.findById(id, (err, drDB) => {
