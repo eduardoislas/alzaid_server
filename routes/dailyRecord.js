@@ -345,8 +345,7 @@ app.put('/dailyRecord/behavior/:id', (req, res) => {
 // Guardar crisis en el DailyRecord
 app.put('/dailyRecord/crisis/:id', (req, res) => {
     let id = req.params.id;
-    let crisis = [];
-    crisis = req.params.crisis;
+    let crisis = req.params.crisis;
     DailyRecord.findById(id, (err, drDB) => {
         if (err) {
             return res.status(500).json({
