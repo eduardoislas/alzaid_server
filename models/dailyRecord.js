@@ -148,7 +148,7 @@ let dailyRecordSchema = new Schema({
                 type: String,
                 required: false
             },
-            type: {
+            classification: {
                 type: String,
                 required: false
             },
@@ -180,7 +180,7 @@ let dailyRecordSchema = new Schema({
                 type: String,
                 required: false
             },
-            type: {
+            classification: {
                 type: String,
                 required: false
             },
@@ -193,4 +193,4 @@ let dailyRecordSchema = new Schema({
 });
 
 
-module.exports = mongoose.model('DailyRecord', dailyRecordSchema)
+module.exports = mongoose.model('DailyRecord', dailyRecordSchema);

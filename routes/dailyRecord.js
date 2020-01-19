@@ -6,6 +6,7 @@ let { verificaToken } = require('../middlewares/authentication');
 let app = express();
 
 let DailyRecord = require('../models/dailyRecord');
+let DailyProgram = require('../models/dailyProgram');
 
 
 
@@ -34,6 +35,31 @@ app.get('/dailyRecord', (req, res) => {
             })
         })
 });
+
+//Devuelve un DR por ID
+app.get('/dailyrecord/id/:id', (req, res) => {
+    let id = req.params.id;
+    DailyRecord.findById(id, (err, dr) => {
+        if (err) {
+            return res.status(500).json({
+                sucess: false,
+                err
+            });
+        };
+        if (!dr) {
+            return res.status(400).json({
+                success: false,
+                err: {
+                    message: 'DR no encontrado'
+                }
+            })
+        }
+        res.json({
+            success: true,
+            dr
+        })
+    })
+})
 
 //Obtiene todos los dailyRecords
 app.get('/dailyRecord/today', (req, res) => {
@@ -486,5 +512,61 @@ app.put('/dailyRecord/meal/:id', (req, res) => {
     });
 });
 
+
+//Registra un DailyProgram 
+app.post('/dailyRecord/dp/dailyProgram', (req, res) => {
+    let body = req.params.body;
+    let fecha = new Date();
+    let acts = []
+    let actividades = body.activities;
+    //let actividades = ['5e249002cabd3430cf956201', '5e249001cabd3430cf9561b2'];
+    for (x of actividades) {
+        acts.push(x);
+    }
+    let dailyProgram = new DailyProgram({
+        date: fecha,
+        phase: body.phase,
+        activities: acts
+    });
+
+    dailyProgram.save((err, dpDB) => {
+        if (err) {
+            return res.status(500).json({
+                success: false,
+                err
+            });
+        }
+        res.json({
+            success: true,
+            dailyProgram: dpDB
+        });
+    });
+});
+
+//Obtiene los dailYProgram
+app.get('/dailyRecord/dp/dailyProgram', (req, res) => {
+    //let desde = Number(req.query.desde || 0);
+    //let limite = Number(req.query.limite || 100);
+    DailyProgram.find({})
+        //.skip(desde)
+        //.limit(limite)
+        .sort('date')
+        .populate('activities', 'name classification')
+        .exec((err, dps) => {
+            if (err) {
+                return res.status(400).json({
+                    success: false,
+                    err
+                });
+            }
+            DailyProgram.countDocuments({}, (err, conteo) => {
+                res.json({
+                    success: true,
+                    cuantos: conteo,
+                    dps
+                });
+            })
+        })
+});
 
 module.exports = app;
