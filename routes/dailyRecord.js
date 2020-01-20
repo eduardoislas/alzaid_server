@@ -531,7 +531,7 @@ app.post('/dailyRecord/dp/dailyProgram', (req, res) => {
     }
     let dailyProgram = new DailyProgram({
         date: fecha,
-        phase: 'Inicial',
+        phase: body.phase,
         activities: acts
     });
 
