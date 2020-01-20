@@ -562,6 +562,7 @@ app.get('/dailyRecord/dp/dailyProgram', (req, res) => {
         //.skip(desde)
         //.limit(limite)
         .sort('date')
+        .populate('activities', 'name classification')
         .exec((err, dps) => {
             if (err) {
                 return res.status(400).json({
