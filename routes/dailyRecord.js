@@ -521,15 +521,17 @@ app.put('/dailyRecord/meal/:id', (req, res) => {
 app.post('/dailyRecord/dp/dailyProgram', (req, res) => {
     let body = req.params.body;
     let fecha = new Date();
-    let acts = []
-    let actividades = body.activities;
-    //let actividades = ['5e249002cabd3430cf956201', '5e249001cabd3430cf9561b2'];
-    for (x of actividades) {
-        acts.push(x);
+    let acts = [];
+    for (x of body.activities) {
+        let a = {
+            name: x.name,
+            classification: x.classification
+        }
+        acts.push(a);
     }
     let dailyProgram = new DailyProgram({
         date: fecha,
-        phase: body.phase,
+        phase: 'Inicial',
         activities: acts
     });
 
