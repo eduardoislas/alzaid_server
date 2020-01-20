@@ -519,10 +519,9 @@ app.put('/dailyRecord/meal/:id', (req, res) => {
 
 //Registra un DailyProgram 
 app.post('/dailyRecord/dp/dailyProgram', (req, res) => {
-    let body = req.params.body;
     let fecha = new Date();
     let acts = [];
-    for (x of body.activities) {
+    for (x of req.body.activities) {
         let a = {
             name: x.name,
             classification: x.classification
@@ -531,7 +530,7 @@ app.post('/dailyRecord/dp/dailyProgram', (req, res) => {
     }
     let dailyProgram = new DailyProgram({
         date: fecha,
-        phase: body.phase,
+        phase: req.body.phase,
         activities: acts
     });
 
