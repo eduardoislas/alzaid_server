@@ -520,7 +520,6 @@ app.put('/dailyRecord/meal/:id', (req, res) => {
 //Registra un DailyProgram 
 app.post('/dailyRecord/dp/dailyProgram', (req, res) => {
     let fecha = new Date();
-    console.log(req);
     let acts = [];
     for (x of req.body.activities) {
         let a = {
@@ -528,15 +527,21 @@ app.post('/dailyRecord/dp/dailyProgram', (req, res) => {
             classification: x.classification
         }
         acts.push(a);
+        console.log(acts);
     }
+    console.log(acts);
     let dailyProgram = new DailyProgram({
         date: fecha,
         phase: req.body.phase,
         activities: acts
     });
-    console.log(dailyProgram);
+    console.log(acts);
+    for (f of dailyProgram.activities) {
+        console.log(f);
+    }
     dailyProgram.save((err, dpDB) => {
         if (err) {
+            console.log(err);
             return res.status(500).json({
                 success: false,
                 err

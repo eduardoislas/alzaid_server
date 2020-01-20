@@ -12,8 +12,14 @@ let dailyProgramSchema = new Schema({
         required: false
     },
     activities: [{
-        type: Schema.Types.ObjectId,
-        ref: 'Catalog',
+        name: {
+            type: String,
+            required: false
+        },
+        classification: {
+            type: String,
+            required: false
+        }
     }]
 });
 
