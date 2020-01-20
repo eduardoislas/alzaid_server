@@ -520,6 +520,7 @@ app.put('/dailyRecord/meal/:id', (req, res) => {
 //Registra un DailyProgram 
 app.post('/dailyRecord/dp/dailyProgram', (req, res) => {
     let fecha = new Date();
+    console.log(req);
     let acts = [];
     for (x of req.body.activities) {
         let a = {
