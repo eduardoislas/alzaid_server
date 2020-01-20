@@ -534,7 +534,7 @@ app.post('/dailyRecord/dp/dailyProgram', (req, res) => {
         phase: req.body.phase,
         activities: acts
     });
-
+    console.log(dailyProgram);
     dailyProgram.save((err, dpDB) => {
         if (err) {
             return res.status(500).json({
