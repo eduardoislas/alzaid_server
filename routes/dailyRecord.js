@@ -518,24 +518,98 @@ app.put('/dailyRecord/meal/:id', (req, res) => {
 
 
 //Registra un DailyProgram 
+// app.post('/dailyRecord/dp/dailyProgram', (req, res) => {
+//     let fecha = new Date();
+//     let acts = [];
+//     for (x of req.body.activities) {
+//         let a = {
+//             name: x.name,
+//             classification: x.classification
+//         }
+//         acts.push(a);
+//     }
+//     let dailyProgram = new DailyProgram({
+//         date: fecha,
+//         phase: req.body.phase,
+//         activities: acts
+//     });
+//     for (f of dailyProgram.activities) {}
+//     dailyProgram.save((err, dpDB) => {
+//         if (err) {
+//             return res.status(500).json({
+//                 success: false,
+//                 err
+//             });
+//         }
+//         res.json({
+//             success: true,
+//             dailyProgram: dpDB
+//         });
+//     });
+// });
 app.post('/dailyRecord/dp/dailyProgram', (req, res) => {
     let fecha = new Date();
-    let acts = [];
-    for (x of req.body.activities) {
+    let acts = req.body.activities;
+    let attention = [];
+    let calculus = [];
+    let sensory = [];
+    let language = [];
+    let memory = [];
+    let reminiscence = [];
+    for (x of acts.attention) {
         let a = {
             name: x.name,
             classification: x.classification
         }
-        acts.push(a);
+        attention.push(a);
     }
-    console.log(acts);
+    for (x of acts.calculus) {
+        let a = {
+            name: x.name,
+            classification: x.classification
+        }
+        calculus.push(a);
+    }
+    for (x of acts.sensory) {
+        let a = {
+            name: x.name,
+            classification: x.classification
+        }
+        sensory.push(a);
+    }
+    for (x of acts.language) {
+        let a = {
+            name: x.name,
+            classification: x.classification
+        }
+        language.push(a);
+    }
+    for (x of acts.memory) {
+        let a = {
+            name: x.name,
+            classification: x.classification
+        }
+        memory.push(a);
+    }
+    for (x of acts.reminiscence) {
+        let a = {
+            name: x.name,
+            classification: x.classification
+        }
+        reminiscence.push(a);
+    }
     let dailyProgram = new DailyProgram({
         date: fecha,
         phase: req.body.phase,
-        activities: acts
+        activities: {
+            attention: attention,
+            calculus: calculus,
+            sensory: sensory,
+            language: language,
+            memory: memory,
+            reminiscence: reminiscence
+        }
     });
-    console.log(acts);
-    for (f of dailyProgram.activities) {}
     dailyProgram.save((err, dpDB) => {
         if (err) {
             return res.status(500).json({
@@ -573,6 +647,57 @@ app.get('/dailyRecord/dp/dailyProgram', (req, res) => {
                 });
             })
         })
+});
+
+// Guardar Comida para el DailyRecord
+app.put('/dailyRecord/physio/:id', (req, res) => {
+    let id = req.params.id;
+    let body = req.body;
+    let acts = [];
+    for (x of req.body.activities) {
+        let a = {
+            name: x.name,
+            classification: x.classification,
+            performance: x.performance
+        }
+        acts.push(a);
+    }
+    DailyRecord.findById(id, (err, drDB) => {
+        if (err) {
+            return res.status(500).json({
+                success: false,
+                err
+            });
+        }
+        if (!drDB) {
+            return res.status(400).json({
+                success: false,
+                err: {
+                    message: 'El DailyRecord no existe'
+                }
+            });
+        }
+        let a = {
+            startMood: body.startMood,
+            endMood: body.endMood,
+            startTime: body.startTime,
+            endTime: body.endTime,
+            activities: acts
+        };
+        drDB.meal.push(a);
+        drDB.save((err, drSaved) => {
+            if (err) {
+                return res.status(500).json({
+                    success: false,
+                    err
+                });
+            }
+            res.json({
+                success: true,
+                patient: drSaved
+            })
+        });
+    });
 });
 
 module.exports = app;
