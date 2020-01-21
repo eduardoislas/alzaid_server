@@ -527,7 +527,6 @@ app.post('/dailyRecord/dp/dailyProgram', (req, res) => {
             classification: x.classification
         }
         acts.push(a);
-        console.log(acts);
     }
     console.log(acts);
     let dailyProgram = new DailyProgram({
@@ -536,12 +535,9 @@ app.post('/dailyRecord/dp/dailyProgram', (req, res) => {
         activities: acts
     });
     console.log(acts);
-    for (f of dailyProgram.activities) {
-        console.log(f);
-    }
+    for (f of dailyProgram.activities) {}
     dailyProgram.save((err, dpDB) => {
         if (err) {
-            console.log(err);
             return res.status(500).json({
                 success: false,
                 err
@@ -562,7 +558,6 @@ app.get('/dailyRecord/dp/dailyProgram', (req, res) => {
         //.skip(desde)
         //.limit(limite)
         .sort('date')
-        .populate('activities', 'name classification')
         .exec((err, dps) => {
             if (err) {
                 return res.status(400).json({
