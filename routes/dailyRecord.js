@@ -516,39 +516,14 @@ app.put('/dailyRecord/meal/:id', (req, res) => {
     });
 });
 
-
-//Registra un DailyProgram 
-// app.post('/dailyRecord/dp/dailyProgram', (req, res) => {
-//     let fecha = new Date();
-//     let acts = [];
-//     for (x of req.body.activities) {
-//         let a = {
-//             name: x.name,
-//             classification: x.classification
-//         }
-//         acts.push(a);
-//     }
-//     let dailyProgram = new DailyProgram({
-//         date: fecha,
-//         phase: req.body.phase,
-//         activities: acts
-//     });
-//     for (f of dailyProgram.activities) {}
-//     dailyProgram.save((err, dpDB) => {
-//         if (err) {
-//             return res.status(500).json({
-//                 success: false,
-//                 err
-//             });
-//         }
-//         res.json({
-//             success: true,
-//             dailyProgram: dpDB
-//         });
-//     });
-// });
 app.post('/dailyRecord/dp/dailyProgram', (req, res) => {
-    let fecha = new Date();
+    //Guardar fecha sin horas
+    let fechaInicial = new Date(req.params.date);
+    let dia = fechaInicial.getDate();
+    let mes = fechaInicial.getMonth();
+    let anio = fechaInicial.getFullYear();
+
+    let fecha = new Date(anio, mes, dia);
     let acts = req.body.activities;
     let attention = [];
     let calculus = [];
@@ -649,7 +624,37 @@ app.get('/dailyRecord/dp/dailyProgram', (req, res) => {
         })
 });
 
-// Guardar Comida para el DailyRecord
+//Obtiene dailYProgram de hoy por fase
+app.get('/dailyRecord/dp/dailyProgram/:fase', (req, res) => {
+    //Crear fecha de hoy para usar en filtro
+    let fechaInicial = new Date();
+    let dia = fechaInicial.getDate();
+    let mes = fechaInicial.getMonth();
+    let anio = fechaInicial.getFullYear();
+    let fecha = new Date(anio, mes, dia);
+
+    let fase = req.params.fase;
+    let regex = new RegExp(fase, 'i');
+    DailyProgram.findOne({ date: fecha, phase: regex })
+        .sort('date')
+        .exec((err, dps) => {
+            if (err) {
+                return res.status(400).json({
+                    success: false,
+                    err
+                });
+            }
+            DailyProgram.countDocuments({}, (err, conteo) => {
+                res.json({
+                    success: true,
+                    cuantos: conteo,
+                    dps
+                });
+            })
+        })
+});
+
+// Guardar Physio para el DailyRecord
 app.put('/dailyRecord/physio/:id', (req, res) => {
     let id = req.params.id;
     let body = req.body;
@@ -699,5 +704,6 @@ app.put('/dailyRecord/physio/:id', (req, res) => {
         });
     });
 });
+
 
 module.exports = app;
