@@ -7,6 +7,10 @@ let dailyRecordSchema = new Schema({
         type: Date,
         required: [true, 'La fecha de Asistencia es requerida']
     },
+    enterHour: {
+        type: Date,
+        required: false
+    },
     exitHour: {
         type: Date,
         required: false

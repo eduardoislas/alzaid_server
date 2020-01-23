@@ -71,9 +71,8 @@ app.get('/dailyRecord/today', (req, res) => {
     let anio = fechaInicial.getFullYear();
 
     let fecha = new Date(anio, mes, dia);
-    let manana = new Date(anio, mes, dia + 1)
 
-    DailyRecord.find({ $and: [{ date: { $gte: fecha } }, { date: { $lt: manana } }], exit: false })
+    DailyRecord.find({ date: { $eq: fecha }, exit: false })
         //.skip(desde)
         //.limit(limite)
         .sort('date')
@@ -85,7 +84,7 @@ app.get('/dailyRecord/today', (req, res) => {
                     err
                 });
             }
-            DailyRecord.countDocuments({ $and: [{ date: { $gte: fecha } }, { date: { $lt: manana } }], exit: false }, (err, conteo) => {
+            DailyRecord.countDocuments({ date: { $eq: fecha }, exit: false }, (err, conteo) => {
                 res.json({
                     success: true,
                     cuantos: conteo,
@@ -105,9 +104,8 @@ app.get('/dailyRecord/date/:date', (req, res) => {
     let anio = fechaInicial.getFullYear();
 
     let fecha = new Date(anio, mes, dia);
-    let manana = new Date(anio, mes, dia + 1)
 
-    DailyRecord.find({ $and: [{ date: { $gte: fecha } }, { date: { $lt: manana } }] })
+    DailyRecord.find({ date: { $eq: fecha } })
         //.skip(desde)
         //.limit(limite)
         .sort('date')
@@ -119,7 +117,7 @@ app.get('/dailyRecord/date/:date', (req, res) => {
                     err
                 });
             }
-            DailyRecord.countDocuments({ "date": { "$eq": fecha } }, (err, conteo) => {
+            DailyRecord.countDocuments({ date: { $eq: fecha } }, (err, conteo) => {
                 res.json({
                     success: true,
                     cuantos: conteo,
@@ -159,10 +157,15 @@ app.get('/dailyRecord/patient/:id', (req, res) => {
 //Registra una asistencia en el DailyRecord
 app.post('/dailyRecord/:id', (req, res) => {
     let idP = req.params.id;
-    let fecha = new Date();
+    let fechaInicial = new Date();
+    let dia = fechaInicial.getDate();
+    let mes = fechaInicial.getMonth();
+    let anio = fechaInicial.getFullYear();
+    let fecha = new Date(anio, mes, dia);
     let dailyRecord = new DailyRecord({
         // date: fecha.setHours(fecha.getHours() - 7),
         date: fecha,
+        enterHour: fechaInicial,
         patient: idP
     });
 
