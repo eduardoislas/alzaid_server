@@ -636,7 +636,7 @@ app.get('/dailyRecord/dp/dailyProgram/:fase', (req, res) => {
 
     let fase = req.params.fase;
     let regex = new RegExp(fase, 'i');
-    DailyProgram.findOne({ date: fecha, phase: regex })
+    DailyProgram.findOne({ date: { $eq: fecha }, phase: regex })
         .sort('date')
         .exec((err, dps) => {
             if (err) {
@@ -645,7 +645,7 @@ app.get('/dailyRecord/dp/dailyProgram/:fase', (req, res) => {
                     err
                 });
             }
-            DailyProgram.countDocuments({}, (err, conteo) => {
+            DailyProgram.countDocuments({ date: { $eq: fecha }, phase: regex }, (err, conteo) => {
                 res.json({
                     success: true,
                     cuantos: conteo,
