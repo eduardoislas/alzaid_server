@@ -518,12 +518,13 @@ app.put('/dailyRecord/meal/:id', (req, res) => {
 
 app.post('/dailyRecord/dp/dailyProgram', (req, res) => {
     //Guardar fecha sin horas
-    let fechaInicial = new Date(req.params.date);
+    let fechaInicial = new Date();
     let dia = fechaInicial.getDate();
     let mes = fechaInicial.getMonth();
     let anio = fechaInicial.getFullYear();
 
     let fecha = new Date(anio, mes, dia);
+
     let acts = req.body.activities;
     let attention = [];
     let calculus = [];
