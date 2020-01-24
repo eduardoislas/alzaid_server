@@ -60,6 +60,10 @@ let patientSchema = new Schema({
         name: {
             type: String,
             required: false
+        },
+        status: {
+            type: Boolean,
+            default: true
         }
     }],
     diagnosis: [{

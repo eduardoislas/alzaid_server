@@ -107,11 +107,11 @@ app.post('/patient', (req, res) => {
         patient.technicalSupport = ts;
 
         //Diagnósticos
-        for (let x of body.diagnosis) {
-            let a = { name: x };
-            diag.push(a);
-        }
-        patient.diagnosis = diag;
+        // for (let x of body.diagnosis) {
+        //     let a = { name: x };
+        //     diag.push(a);
+        // }
+        // patient.diagnosis = diag;
 
         //Alergias
         for (let x of body.allergies) {
@@ -121,11 +121,11 @@ app.post('/patient', (req, res) => {
         patient.allergies = allergies;
 
         //Medicinas
-        for (let x of body.medicines) {
-            let a = { name: x };
-            med.push(a);
-        }
-        patient.medicines = med;
+        // for (let x of body.medicines) {
+        //     let a = { name: x };
+        //     med.push(a);
+        // }
+        // patient.medicines = med;
 
         //Limitaciones físicas
         for (let x of body.physicalLimitations) {
