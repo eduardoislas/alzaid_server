@@ -662,9 +662,9 @@ app.get('/dailyRecord/dp/dailyProgram/:fase', (req, res) => {
 app.put('/dailyRecord/phase/:id', (req, res) => {
     let id = req.params.id;
     let body = req.body;
-
+    console.log(body);
     let acts = [];
-    for (x of req.body.activities) {
+    for (x of body.activities) {
         let a = {
             name: x.name,
             classification: x.classification,
