@@ -94,6 +94,47 @@ app.get('/dailyRecord/today', (req, res) => {
         })
 });
 
+//Obtiene todos los dailyRecords del día por fase
+// app.get('/dailyRecord/today/:fase', (req, res) => {
+//     //let desde = Number(req.query.desde || 0);
+//     //let limite = Number(req.query.limite || 100);
+//     let fechaInicial = new Date();
+//     let dia = fechaInicial.getDate();
+//     let mes = fechaInicial.getMonth();
+//     let anio = fechaInicial.getFullYear();
+
+//     let fecha = new Date(anio, mes, dia);
+
+//     let fase = req.params.fase;
+//     let regex = new RegExp(fase, 'i');
+
+//     let dr = []
+
+//     DailyRecord.find({ date: { $eq: fecha } })
+//         //.skip(desde)
+//         //.limit(limite)
+//         .sort('date')
+//         .populate('patient', 'name lastName lastNameSecond phase img')
+//         .exec((err, drs) => {
+//             if (err) {
+//                 return res.status(400).json({
+//                     success: false,
+//                     err
+//                 });
+//             }
+//             for (x of drs){
+//                 if ( x.patient.phase)
+//             }
+//             DailyRecord.countDocuments({ date: { $eq: fecha } }, (err, conteo) => {
+//                 res.json({
+//                     success: true,
+//                     cuantos: conteo,
+//                     drs
+//                 });
+//             })
+//         })
+// });
+
 //Obtiene todos los dailyRecords por fecha dada
 app.get('/dailyRecord/date/:date', (req, res) => {
     //let desde = Number(req.query.desde || 0);
@@ -693,6 +734,58 @@ app.put('/dailyRecord/phase/:id', (req, res) => {
             activities: acts
         };
         drDB.phaseBinnacle = a;
+        drDB.save((err, drSaved) => {
+            if (err) {
+                return res.status(500).json({
+                    success: false,
+                    err
+                });
+            }
+            res.json({
+                success: true,
+                patient: drSaved
+            })
+        });
+    });
+});
+
+
+// Guarda Bitácora de actividades de Fisio en DailyRecord
+app.put('/dailyRecord/physio/:id', (req, res) => {
+    let id = req.params.id;
+    let body = req.body.physioBinnacle;
+    let acts = [];
+    for (x of body.activities) {
+        let a = {
+            name: x.name,
+            classification: x.classification,
+            performance: x.performance
+        }
+        acts.push(a);
+    }
+    DailyRecord.findById(id, (err, drDB) => {
+        if (err) {
+            return res.status(500).json({
+                success: false,
+                err
+            });
+        }
+        if (!drDB) {
+            return res.status(400).json({
+                success: false,
+                err: {
+                    message: 'El DailyRecord no existe'
+                }
+            });
+        }
+        let a = {
+            startMood: body.startMood,
+            endMood: body.endMood,
+            startTime: body.startTime,
+            endTime: body.endTime,
+            activities: acts
+        };
+        drDB.physioBinnacle = a;
         drDB.save((err, drSaved) => {
             if (err) {
                 return res.status(500).json({
