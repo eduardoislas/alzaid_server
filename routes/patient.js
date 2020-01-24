@@ -77,8 +77,11 @@ app.get('/patient/:fase', (req, res) => {
 app.post('/patient', (req, res) => {
     let body = req.body;
     let fecha = new Date();
-    let ts = body.technicalSupport;
-    let temp = [];
+    let ts = [];
+    let pl = [];
+    let med = [];
+    let diag = [];
+    let allergies = [];
     Patient.countDocuments({}, (err, conteo) => {
         let patient = new Patient({
             name: body.name,
@@ -89,20 +92,49 @@ app.post('/patient', (req, res) => {
             phase: body.phase,
             img: body.img,
         });
+        //Historial de fase
         let ph = {
             phase: body.phase,
             date: fecha
         };
         patient.phaseHistory = [ph];
-        for (let x of ts) {
+
+        // Apoyo técnico
+        for (let x of body.technicalSupport) {
             let a = { name: x };
-            temp.push(a);
+            ts.push(a);
         }
-        patient.technicalSupport = temp;
-        patient.diagnosis = body.diagnosis;
-        patient.allergies = body.allergies;
-        patient.medicines = body.medicines;
-        patient.physicalLimitations = body.physicalLimitations;
+        patient.technicalSupport = ts;
+
+        //Diagnósticos
+        for (let x of body.diagnosis) {
+            let a = { name: x };
+            diag.push(a);
+        }
+        patient.diagnosis = diag;
+
+        //Alergias
+        for (let x of body.allergies) {
+            let a = { name: x };
+            allergies.push(a);
+        }
+        patient.allergies = allergies;
+
+        //Medicinas
+        for (let x of body.medicines) {
+            let a = { name: x };
+            med.push(a);
+        }
+        patient.medicines = med;
+
+        //Limitaciones físicas
+        for (let x of body.physicalLimitations) {
+            let a = { name: x };
+            pl.push(a);
+        }
+        patient.physicalLimitations = pl;
+
+        //Expediente Autoincremental 
         patient.expedient = conteo + 1;
         patient.save((err, patientDB) => {
             if (err) {

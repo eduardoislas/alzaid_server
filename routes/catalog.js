@@ -56,7 +56,7 @@ app.get('/catalog/:type', (req, res) => {
     let type = req.params.type;
     let regex = new RegExp(type, 'i');
 
-    Catalog.find({ type: regex })
+    Catalog.find({ type: regex, status: true })
         .sort('name')
         .exec((err, catalogs) => {
             if (err) {
@@ -65,7 +65,7 @@ app.get('/catalog/:type', (req, res) => {
                     err
                 });
             }
-            Catalog.countDocuments({ type: regex }, (err, conteo) => {
+            Catalog.countDocuments({ type: regex, status: true }, (err, conteo) => {
                 res.json({
                     success: true,
                     cuantos: conteo,

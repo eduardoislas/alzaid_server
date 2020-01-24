@@ -658,10 +658,11 @@ app.get('/dailyRecord/dp/dailyProgram/:fase', (req, res) => {
         })
 });
 
-// Guardar Physio para el DailyRecord
-app.put('/dailyRecord/physio/:id', (req, res) => {
+// Guarda Bitácora de actividades de fase en DailyRecord
+app.put('/dailyRecord/phase/:id', (req, res) => {
     let id = req.params.id;
     let body = req.body;
+
     let acts = [];
     for (x of req.body.activities) {
         let a = {
@@ -687,13 +688,12 @@ app.put('/dailyRecord/physio/:id', (req, res) => {
             });
         }
         let a = {
-            startMood: body.startMood,
-            endMood: body.endMood,
-            startTime: body.startTime,
-            endTime: body.endTime,
+            orientation: body.orientation,
+            date: body.date,
+            observation: body.observation,
             activities: acts
         };
-        drDB.meal.push(a);
+        drDB.phaseBinnacle = a;
         drDB.save((err, drSaved) => {
             if (err) {
                 return res.status(500).json({
