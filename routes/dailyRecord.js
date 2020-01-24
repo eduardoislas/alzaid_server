@@ -661,8 +661,7 @@ app.get('/dailyRecord/dp/dailyProgram/:fase', (req, res) => {
 // Guarda Bitácora de actividades de fase en DailyRecord
 app.put('/dailyRecord/phase/:id', (req, res) => {
     let id = req.params.id;
-    let body = req.body;
-    console.log(body);
+    let body = req.body.phaseBinnacle;
     let acts = [];
     for (x of body.activities) {
         let a = {
