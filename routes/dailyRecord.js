@@ -731,7 +731,8 @@ app.put('/dailyRecord/phase/:id', (req, res) => {
             orientation: body.orientation,
             date: body.date,
             observation: body.observation,
-            activities: acts
+            activities: acts,
+            status: true
         };
         drDB.phaseBinnacle = a;
         drDB.save((err, drSaved) => {
@@ -783,7 +784,8 @@ app.put('/dailyRecord/physio/:id', (req, res) => {
             endMood: body.endMood,
             startTime: body.startTime,
             endTime: body.endTime,
-            activities: acts
+            activities: acts,
+            status: true
         };
         drDB.physioBinnacle = a;
         drDB.save((err, drSaved) => {

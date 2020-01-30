@@ -160,7 +160,11 @@ let dailyRecordSchema = new Schema({
                 type: Number,
                 required: false
             }
-        }]
+        }],
+        status: {
+            type: Boolean,
+            default: false
+        }
     },
     physioBinnacle: {
         startMood: {
@@ -192,7 +196,11 @@ let dailyRecordSchema = new Schema({
                 type: Number,
                 required: false
             }
-        }]
+        }],
+        status: {
+            type: Boolean,
+            default: false
+        }
     }
 });
 
