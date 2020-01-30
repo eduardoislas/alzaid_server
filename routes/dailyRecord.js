@@ -58,7 +58,7 @@ app.get('/dailyrecord/id/:id', (req, res) => {
             success: true,
             dr
         })
-    }).populate('patient', 'name lastName lastNameSecond phase img');
+    }).populate('patient');
 })
 
 //Obtiene todos los dailyRecords
