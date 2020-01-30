@@ -107,11 +107,11 @@ app.post('/patient', (req, res) => {
         patient.technicalSupport = ts;
 
         //Diagnósticos
-        // for (let x of body.diagnosis) {
-        //     let a = { name: x };
-        //     diag.push(a);
-        // }
-        // patient.diagnosis = diag;
+        for (let x of body.diagnosis) {
+            let a = { name: x };
+            diag.push(a);
+        }
+        patient.diagnosis = diag;
 
         //Alergias
         for (let x of body.allergies) {
