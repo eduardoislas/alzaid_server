@@ -147,7 +147,7 @@ app.get('/dailyRecord/date/:date', (req, res) => {
     let fecha = new Date(anio, mes, dia);
     let manana = new Date(anio, mes, dia + 1);
 
-    DailyRecord.find({ date: { $lt: manana } })
+    DailyRecord.find({ date: { "$gte": fecha, "$lt": manana } })
         //.skip(desde)
         //.limit(limite)
         .sort('date')
