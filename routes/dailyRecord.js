@@ -18,7 +18,7 @@ app.get('/dailyRecord', (req, res) => {
         //.skip(desde)
         //.limit(limite)
         .sort('date')
-        .populate('patient', 'name lastName lastNameSecond phase img')
+        .populate('patient')
         .exec((err, drs) => {
             if (err) {
                 return res.status(400).json({
@@ -71,12 +71,13 @@ app.get('/dailyRecord/today', (req, res) => {
     let anio = fechaInicial.getFullYear();
 
     let fecha = new Date(anio, mes, dia);
+    let manana = new Date(anio, mes, dia + 1);
 
-    DailyRecord.find({ date: { $eq: fecha }, exit: false })
+    DailyRecord.find({ date: { "$gte": fecha, "$lt": manana }, exit: false })
         //.skip(desde)
         //.limit(limite)
         .sort('date')
-        .populate('patient', 'name lastName lastNameSecond phase img')
+        .populate('patient')
         .exec((err, drs) => {
             if (err) {
                 return res.status(400).json({
@@ -84,7 +85,7 @@ app.get('/dailyRecord/today', (req, res) => {
                     err
                 });
             }
-            DailyRecord.countDocuments({ date: { $eq: fecha }, exit: false }, (err, conteo) => {
+            DailyRecord.countDocuments({ date: { "$gte": fecha, "$lt": manana }, exit: false }, (err, conteo) => {
                 res.json({
                     success: true,
                     cuantos: conteo,
@@ -146,8 +147,7 @@ app.get('/dailyRecord/date/:date', (req, res) => {
 
     let fecha = new Date(anio, mes, dia);
     let manana = new Date(anio, mes, dia + 1);
-
-    DailyRecord.find({ date: { "$gte": fecha, "$lte": manana } })
+    DailyRecord.find({ date: { "$gte": fecha, "$lt": manana } })
         //.skip(desde)
         //.limit(limite)
         .sort('date')
