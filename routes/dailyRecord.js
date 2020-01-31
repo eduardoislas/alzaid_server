@@ -147,7 +147,7 @@ app.get('/dailyRecord/date/:date', (req, res) => {
     let fecha = new Date(anio, mes, dia);
     let manana = new Date(anio, mes, dia + 1);
 
-    DailyRecord.find({ date: { "$gte": fecha, "$lt": manana } })
+    DailyRecord.find({ date: { "$gte": fecha, "$lte": manana } })
         //.skip(desde)
         //.limit(limite)
         .sort('date')
@@ -178,7 +178,7 @@ app.get('/dailyRecord/patient/:id', (req, res) => {
         //.skip(desde)
         //.limit(limite)
         .sort('date')
-        .populate('patient', 'name lastName lastNameSecond phase')
+        .populate('patient')
         .exec((err, drs) => {
             if (err) {
                 return res.status(400).json({
