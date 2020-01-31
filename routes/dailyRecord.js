@@ -145,12 +145,13 @@ app.get('/dailyRecord/date/:date', (req, res) => {
     let anio = fechaInicial.getFullYear();
 
     let fecha = new Date(anio, mes, dia);
+    let manana = new Date(anio, mes, dia + 1);
 
-    DailyRecord.find({ date: { $eq: fecha } })
+    DailyRecord.find({ date: { $lt: manana } })
         //.skip(desde)
         //.limit(limite)
         .sort('date')
-        .populate('patient', 'name lastName lastNameSecond phase img')
+        .populate('patient')
         .exec((err, drs) => {
             if (err) {
                 return res.status(400).json({
@@ -158,14 +159,14 @@ app.get('/dailyRecord/date/:date', (req, res) => {
                     err
                 });
             }
-            DailyRecord.countDocuments({ date: { $eq: fecha } }, (err, conteo) => {
+            DailyRecord.countDocuments({ date: { "$gte": fecha, "$lt": manana } }, (err, conteo) => {
                 res.json({
                     success: true,
                     cuantos: conteo,
                     drs
                 });
-            })
-        })
+            });
+        });
 });
 
 //Obtiene todos los dailyRecords por Paciente
