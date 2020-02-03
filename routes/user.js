@@ -74,8 +74,8 @@ app.post('/user', (req, res) => {
 
 app.put('/user/:id', (req, res) => {
     let id = req.params.id;
-    let body = req.body.userTemp;
-    User.findById(id, body, { new: true, runValidators: true }, (err, userDB) => {
+    let body = req.body;
+    User.findById(id, (err, userDB) => {
         if (err) {
             return res.status(500).json({
                 success: false,
@@ -90,7 +90,10 @@ app.put('/user/:id', (req, res) => {
                 }
             });
         }
-        userDB.password = bcrypt.hashSync(body.password, 10);
+        console.log(body.password);
+        if (!body.password === '') {
+            userDB.password = bcrypt.hashSync(body.password, 10);
+        }
         userDB.role = body.role;
         userDB.save((err, userSaved) => {
             if (err) {
