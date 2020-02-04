@@ -9,6 +9,18 @@ let validRoles = {
 let Schema = mongoose.Schema;
 
 let userSchema = new Schema({
+    firstName: {
+        type: String,
+        required: true
+    },
+    lastName: {
+        type: String,
+        required: true
+    },
+    lastNameSecond: {
+        type: String,
+        required: false
+    },
     name: {
         type: String,
         unique: true,

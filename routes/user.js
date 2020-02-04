@@ -9,7 +9,7 @@ const { verificaToken, verificaAdmin_Role } = require('../middlewares/authentica
 const app = express();
 
 app.get('/user', (req, res) => {
-    User.find({ status: true }, 'name role status')
+    User.find({ status: true }, 'firstName lastName lastNameSecond name role status')
         .exec((err, users) => {
             if (err) {
                 return res.status(400).json({
@@ -54,6 +54,9 @@ app.get('/user/:id', (req, res) => {
 app.post('/user', (req, res) => {
     let body = req.body;
     let user = new User({
+        firstName: body.firstName,
+        lastName: body.lastName,
+        lastNameSecond: body.lastNameSecond,
         name: body.name,
         password: bcrypt.hashSync(body.password, 10),
         role: body.role
@@ -90,10 +93,12 @@ app.put('/user/:id', (req, res) => {
                 }
             });
         }
-        console.log(body.password);
         if (!body.password === '') {
             userDB.password = bcrypt.hashSync(body.password, 10);
         }
+        userDB.firstName = body.firstName;
+        userDB.lastName = body.lastName;
+        userDB.lastNameSecond = body.lastNameSecond;
         userDB.role = body.role;
         userDB.save((err, userSaved) => {
             if (err) {
