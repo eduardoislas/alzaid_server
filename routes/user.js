@@ -51,6 +51,30 @@ app.get('/user/:id', (req, res) => {
     })
 });
 
+app.get('/user/name/:name', (req, res) => {
+    let name = req.params.name;
+    User.findOne({ name: name }, (err, user) => {
+        if (err) {
+            return res.status(500).json({
+                sucess: false,
+                err
+            });
+        };
+        if (!user) {
+            return res.status(400).json({
+                success: false,
+                err: {
+                    message: 'Usuario no encontrado'
+                }
+            })
+        }
+        res.json({
+            success: true,
+            user
+        })
+    })
+});
+
 app.post('/user', (req, res) => {
     let body = req.body;
     let user = new User({
