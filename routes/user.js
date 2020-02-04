@@ -93,7 +93,7 @@ app.put('/user/:id', (req, res) => {
                 }
             });
         }
-        if (!body.password === '') {
+        if (body.password) {
             userDB.password = bcrypt.hashSync(body.password, 10);
         }
         userDB.firstName = body.firstName;
