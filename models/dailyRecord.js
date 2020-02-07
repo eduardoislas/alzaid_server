@@ -201,7 +201,11 @@ let dailyRecordSchema = new Schema({
             type: Boolean,
             default: false
         }
-    }
+    },
+    physicalActivation: {
+        type: Number,
+        required: false
+    },
 });
 
 

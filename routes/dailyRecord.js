@@ -805,5 +805,42 @@ app.put('/dailyRecord/physio/:id', (req, res) => {
     });
 });
 
+// Guarda activación física en Bitácora de Fisio 
+app.put('/dailyRecord/physio/activation', (req, res) => {
+    let activation = req.body.activation;
+    promesas = []
+    for (x of activation) {
+        promesas.push(insertarRegistroActivacion(x.id, x.performance))
+    }
+    Promise.all(promesas)
+        .then(respuestas => {
+            res.status(200).json({
+                success: true,
+                respuestas
+            })
+        })
+})
+
+
+function insertarRegistroActivacion(id, performance) {
+    return new Promise((resolve, reject) => {
+        DailyRecord.findById(id, (err, drDB) => {
+            if (err) {
+                reject('Error al buscar DailyRecord', err);
+            } else {
+                drDB.physicalActivation = performance;
+                drDB.save((err, drSaved) => {
+                    if (err) {
+                        reject('Error al guardar activación física', err);
+                    } else {
+                        resolve(drSaved);
+                    }
+                });
+            };
+        });
+    })
+}
+
+
 
 module.exports = app;
