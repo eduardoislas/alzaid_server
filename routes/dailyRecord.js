@@ -806,7 +806,7 @@ app.put('/dailyRecord/physio/:id', (req, res) => {
 });
 
 // Guarda activación física en Bitácora de Fisio 
-app.put('/dailyRecord/physio/activation', (req, res) => {
+app.put('/dailyRecord/physio/activation/todos', (req, res) => {
     let activation = req.body.activation;
     promesas = []
     for (x of activation) {
