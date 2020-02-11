@@ -519,8 +519,6 @@ app.put('/dailyRecord/meal/:id', (req, res) => {
     let id = req.params.id;
     let meal = {}
     meal = req.body.meal;
-    //let meal = { type: 'Colacion', performance: 5 };
-    //let meal = { type: 'Comida', performance: 5, quantity: "Poco", foodType: "Papilla", independence: 4, functional: 3, chewingPerformance: 5 };
     DailyRecord.findById(id, (err, drDB) => {
         if (err) {
             return res.status(500).json({
@@ -537,15 +535,13 @@ app.put('/dailyRecord/meal/:id', (req, res) => {
             });
         }
         let a = {
-            type: meal.type,
-            performance: meal.performance,
             quantity: meal.quantity,
             foodType: meal.foodType,
             independence: meal.independence,
             functional: meal.functional,
             chewingPerformance: meal.chewingPerformance
         };
-        drDB.meal.push(a);
+        drDB.meal = a;
         drDB.save((err, drSaved) => {
             if (err) {
                 return res.status(500).json({
@@ -805,7 +801,7 @@ app.put('/dailyRecord/physio/:id', (req, res) => {
     });
 });
 
-// Guarda activación física en Bitácora de Fisio 
+// Guarda activación física masivamente en DalyRecord 
 app.put('/dailyRecord/physio/activation/todos', (req, res) => {
     let activation = req.body.activation;
     promesas = []
@@ -832,6 +828,41 @@ function insertarRegistroActivacion(id, performance) {
                 drDB.save((err, drSaved) => {
                     if (err) {
                         reject('Error al guardar activación física', err);
+                    } else {
+                        resolve(drSaved);
+                    }
+                });
+            };
+        });
+    })
+}
+
+// Guarda colación en Daily Record 
+app.put('/dailyRecord/meal/collation/todos', (req, res) => {
+    let collation = req.body.collation;
+    promesas = []
+    for (x of collation) {
+        promesas.push(insertarCollation(x.id, x.performance))
+    }
+    Promise.all(promesas)
+        .then(respuestas => {
+            res.status(200).json({
+                success: true,
+                respuestas
+            })
+        })
+})
+
+function insertarCollation(id, performance) {
+    return new Promise((resolve, reject) => {
+        DailyRecord.findById(id, (err, drDB) => {
+            if (err) {
+                reject('Error al buscar DailyRecord', err);
+            } else {
+                drDB.collation = performance;
+                drDB.save((err, drSaved) => {
+                    if (err) {
+                        reject('Error al guardar colación', err);
                     } else {
                         resolve(drSaved);
                     }

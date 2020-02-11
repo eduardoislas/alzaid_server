@@ -104,17 +104,9 @@ let dailyRecordSchema = new Schema({
             required: false
         }
     }],
-    meal: [{
-        type: {
-            type: String,
-            required: false
-        },
-        performance: {
-            type: Number,
-            required: false
-        },
+    meal: {
         quantity: {
-            type: String,
+            type: Number,
             required: false
         },
         foodType: {
@@ -133,7 +125,7 @@ let dailyRecordSchema = new Schema({
             type: Number,
             required: false
         }
-    }],
+    },
     phaseBinnacle: {
         orientation: {
             type: Boolean,
@@ -206,6 +198,10 @@ let dailyRecordSchema = new Schema({
         type: Number,
         required: false
     },
+    collation: {
+        type: Number,
+        required: false
+    }
 });
 
 
