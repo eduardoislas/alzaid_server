@@ -17,7 +17,7 @@ app.get('/dailyRecord', (req, res) => {
     DailyRecord.find({})
         //.skip(desde)
         //.limit(limite)
-        .sort('date')
+        .sort('-date')
         .populate('patient')
         .exec((err, drs) => {
             if (err) {
