@@ -1,5 +1,6 @@
 const express = require('express');
 const Notification = require('../models/notification');
+const Patient = require('../models/patient');
 
 const app = express();
 
@@ -49,14 +50,32 @@ app.get('/notification', (req, res) => {
 
 //Registra una notificación
 app.post('/notification', (req, res) => {
-    let body = req.body;
+    let body = req.body.notification;
     let fecha = new Date();
     let areas = [];
+    let pat;
 
     for (x of body.areas) {
         areas.push(x);
     }
 
+    Patient.findById(id, (err, dbPat) => {
+        if (err) {
+            return res.status(500).json({
+                success: false,
+                err
+            });
+        }
+        if (!dbPat) {
+            return res.status(400).json({
+                success: false,
+                err: {
+                    message: 'El paciente no existe'
+                }
+            });
+        }
+        pat = dbPat
+    })
     let notification = new Notification({
         date: fecha,
         expiration_date: Date.parse(body.expiration),
@@ -64,8 +83,8 @@ app.post('/notification', (req, res) => {
         description: body.description,
         type: body.type,
         area: areas,
-        patient: body.patient,
-        user: body.user
+        patient: pat
+            //user: body.user
     });
 
     notification.save((err, notificationDB) => {

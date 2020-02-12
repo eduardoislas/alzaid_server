@@ -35,7 +35,7 @@ let notificationSchema = new Schema({
     user: {
         type: Schema.Types.ObjectId,
         ref: 'User',
-        required: true
+        required: false
     },
     status: {
         type: Boolean,
