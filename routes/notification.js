@@ -81,7 +81,7 @@ app.post('/notification', (req, res) => {
             patient: dbPat
                 //user: body.user
         });
-
+        console.log(notification);
         notification.save((err, notificationDB) => {
             if (err) {
                 return res.status(500).json({
