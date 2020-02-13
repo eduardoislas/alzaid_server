@@ -52,14 +52,13 @@ app.get('/notification', (req, res) => {
 app.post('/notification', (req, res) => {
     let body = req.body.notification;
     let fecha = new Date();
-    let areas = [];
+    let area = [];
     let pat;
-
-    for (x of body.areas) {
-        areas.push(x);
+    for (x of body.area) {
+        area.push(x);
     }
 
-    Patient.findById(id, (err, dbPat) => {
+    Patient.findById(body.patient, (err, dbPat) => {
         if (err) {
             return res.status(500).json({
                 success: false,
@@ -82,7 +81,7 @@ app.post('/notification', (req, res) => {
         high_priority: body.priority,
         description: body.description,
         type: body.type,
-        area: areas,
+        area: this.area,
         patient: pat
             //user: body.user
     });
