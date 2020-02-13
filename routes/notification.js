@@ -78,8 +78,8 @@ app.post('/notification', (req, res) => {
             description: body.description,
             type: body.type,
             area: area,
-            patient: dbPat
-                //user: body.user
+            patient: dbPat,
+            user: body.user
         });
 
         notification.save((err, notificationDB) => {
