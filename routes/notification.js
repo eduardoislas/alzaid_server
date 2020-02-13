@@ -73,7 +73,7 @@ app.post('/notification', (req, res) => {
         }
         let notification = new Notification({
             date: fecha,
-            expiration_date: Date.parse(body.expiration),
+            expiration_date: Date.parse(body.expiration_date),
             high_priority: body.priority,
             description: body.description,
             type: body.type,
@@ -81,7 +81,7 @@ app.post('/notification', (req, res) => {
             patient: dbPat
                 //user: body.user
         });
-        console.log(notification);
+
         notification.save((err, notificationDB) => {
             if (err) {
                 return res.status(500).json({
