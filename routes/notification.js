@@ -53,11 +53,9 @@ app.post('/notification', (req, res) => {
     let body = req.body.notification;
     let fecha = new Date();
     let area = [];
-    let pat;
     for (x of body.area) {
         area.push(x);
     }
-
     Patient.findById(body.patient, (err, dbPat) => {
         if (err) {
             return res.status(500).json({
@@ -73,31 +71,30 @@ app.post('/notification', (req, res) => {
                 }
             });
         }
-        pat = dbPat
-    })
-    let notification = new Notification({
-        date: fecha,
-        expiration_date: Date.parse(body.expiration),
-        high_priority: body.priority,
-        description: body.description,
-        type: body.type,
-        area: this.area,
-        patient: pat
-            //user: body.user
-    });
-
-    notification.save((err, notificationDB) => {
-        if (err) {
-            return res.status(500).json({
-                success: false,
-                err
-            });
-        }
-        res.json({
-            success: true,
-            notification: notificationDB
+        let notification = new Notification({
+            date: fecha,
+            expiration_date: Date.parse(body.expiration),
+            high_priority: body.priority,
+            description: body.description,
+            type: body.type,
+            area: this.area,
+            patient: dbPat
+                //user: body.user
         });
-    });
+
+        notification.save((err, notificationDB) => {
+            if (err) {
+                return res.status(500).json({
+                    success: false,
+                    err
+                });
+            }
+            res.json({
+                success: true,
+                notification: notificationDB
+            });
+        });
+    })
 });
 
 
