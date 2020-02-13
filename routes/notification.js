@@ -77,7 +77,7 @@ app.post('/notification', (req, res) => {
             high_priority: body.priority,
             description: body.description,
             type: body.type,
-            area: this.area,
+            area: area,
             patient: dbPat
                 //user: body.user
         });
