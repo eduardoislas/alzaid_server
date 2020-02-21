@@ -247,5 +247,41 @@ app.delete('/patient/:id', (req, res) => {
     })
 });
 
+//Editar un paciente, actualizando su historial de Fase
+app.put('/patient/assistance/:id', (req, res) => {
+    let id = req.params.id;
+    let body = req.body.assistance;
+    Patient.findById(id, (err, patientDB) => {
+        if (err) {
+            return res.status(500).json({
+                success: false,
+                err
+            });
+        }
+        if (!patientDB) {
+            return res.status(400).json({
+                success: false,
+                err: {
+                    message: 'Paciente no encontrado'
+                }
+            });
+        }
+        patientDB.assistance = body;
+        //Se manda a guardar el objeto Paciente con sus nuevos campos
+        patientDB.save((err, patientSaved) => {
+            if (err) {
+                return res.status(500).json({
+                    success: false,
+                    err
+                });
+            }
+            res.json({
+                success: true,
+                assistance: patientSaved.assistance
+            })
+        })
+    })
+})
+
 
 module.exports = app;

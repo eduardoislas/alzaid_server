@@ -16,7 +16,7 @@ app.get('/dailyRecord', (req, res) => {
     //let limite = Number(req.query.limite || 100);
     DailyRecord.find({})
         //.skip(desde)
-        //.limit(limite)
+        .limit(100)
         .sort('-date')
         .populate('patient')
         .exec((err, drs) => {
@@ -298,50 +298,49 @@ app.put('/dailyRecord/vitalSign/:id', (req, res) => {
     });
 });
 
-// Guardar attitudes en el DailyRecord
-app.put('/dailyRecord/attitude/:id', (req, res) => {
-    let id = req.params.id;
-    let attitudes = [{}];
-    attitudes = req.body.attitudes;
-    // let attitudes = [{ name: 'Delirio', time: 'Mañana', score: 4 }, { name: 'Enfado', time: 'Tarde', score: 3 }];
+// // Guardar attitudes en el DailyRecord
+// app.put('/dailyRecord/attitude/:id', (req, res) => {
+//     let id = req.params.id;
+//     let attitudes = [{}];
+//     attitudes = req.body.attitudes;
 
-    DailyRecord.findById(id, (err, drDB) => {
-        if (err) {
-            return res.status(500).json({
-                success: false,
-                err
-            });
-        }
-        if (!drDB) {
-            return res.status(400).json({
-                success: false,
-                err: {
-                    message: 'El DailyRecord no existe'
-                }
-            });
-        }
-        for (let x of attitudes) {
-            let a = {
-                name: x.name,
-                time: x.time,
-                score: x.score
-            };
-            drDB.attitude.push(a);
-        };
-        drDB.save((err, drSaved) => {
-            if (err) {
-                return res.status(500).json({
-                    success: false,
-                    err
-                });
-            }
-            res.json({
-                success: true,
-                patient: drSaved
-            })
-        });
-    });
-});
+//     DailyRecord.findById(id, (err, drDB) => {
+//         if (err) {
+//             return res.status(500).json({
+//                 success: false,
+//                 err
+//             });
+//         }
+//         if (!drDB) {
+//             return res.status(400).json({
+//                 success: false,
+//                 err: {
+//                     message: 'El DailyRecord no existe'
+//                 }
+//             });
+//         }
+//         for (let x of attitudes) {
+//             let a = {
+//                 name: x.name,
+//                 time: x.time,
+//                 score: x.score
+//             };
+//             drDB.attitude.push(a);
+//         };
+//         drDB.save((err, drSaved) => {
+//             if (err) {
+//                 return res.status(500).json({
+//                     success: false,
+//                     err
+//                 });
+//             }
+//             res.json({
+//                 success: true,
+//                 patient: drSaved
+//             })
+//         });
+//     });
+// });
 
 // Guardar behaviors en el DailyRecord
 app.put('/dailyRecord/behavior/:id', (req, res) => {
@@ -387,45 +386,45 @@ app.put('/dailyRecord/behavior/:id', (req, res) => {
     });
 });
 
-// Guardar crisis en el DailyRecord
-app.put('/dailyRecord/crisis/:id', (req, res) => {
-    let id = req.params.id;
-    let crisis = req.body.crisis;
-    DailyRecord.findById(id, (err, drDB) => {
-        if (err) {
-            return res.status(500).json({
-                success: false,
-                err
-            });
-        }
-        if (!drDB) {
-            return res.status(400).json({
-                success: false,
-                err: {
-                    message: 'El DailyRecord no existe'
-                }
-            });
-        }
-        let c = {
-            name: crisis.name,
-            time: crisis.time,
-            observation: crisis.observation
-        }
-        drDB.crisis.push(c);
-        drDB.save((err, drSaved) => {
-            if (err) {
-                return res.status(500).json({
-                    success: false,
-                    err
-                });
-            }
-            res.json({
-                success: true,
-                patient: drSaved
-            })
-        });
-    });
-});
+// // Guardar crisis en el DailyRecord
+// app.put('/dailyRecord/crisis/:id', (req, res) => {
+//     let id = req.params.id;
+//     let crisis = req.body.crisis;
+//     DailyRecord.findById(id, (err, drDB) => {
+//         if (err) {
+//             return res.status(500).json({
+//                 success: false,
+//                 err
+//             });
+//         }
+//         if (!drDB) {
+//             return res.status(400).json({
+//                 success: false,
+//                 err: {
+//                     message: 'El DailyRecord no existe'
+//                 }
+//             });
+//         }
+//         let c = {
+//             name: crisis.name,
+//             time: crisis.time,
+//             observation: crisis.observation
+//         }
+//         drDB.crisis.push(c);
+//         drDB.save((err, drSaved) => {
+//             if (err) {
+//                 return res.status(500).json({
+//                     success: false,
+//                     err
+//                 });
+//             }
+//             res.json({
+//                 success: true,
+//                 patient: drSaved
+//             })
+//         });
+//     });
+// });
 
 // Guardar Hygiene en el DailyRecord
 app.put('/dailyRecord/hygiene/:id', (req, res) => {

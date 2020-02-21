@@ -100,7 +100,11 @@ let patientSchema = new Schema({
             type: Boolean,
             default: true
         }
-    }]
+    }],
+    assistance: {
+        type: Boolean,
+        default: false
+    }
 });
 
 
