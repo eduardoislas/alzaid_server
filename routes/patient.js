@@ -1,7 +1,8 @@
 const express = require('express');
 const _ = require('underscore');
 const Patient = require('../models/patient');
-
+const fs = require('fs');
+const path = require('path');
 const app = express();
 
 
@@ -281,6 +282,23 @@ app.put('/patient/assistance/:id', (req, res) => {
             })
         })
     })
+})
+
+
+app.get('/patient/imagen/:img', (req, res) => {
+
+    let img = req.params.img;
+
+    let pathImagen = path.resolve(__dirname, `../uploads/patients/${img}`);
+
+    if (fs.existsSync(pathImagen)) {
+        res.sendFile(pathImagen)
+    } else {
+        let noImagePath = path.resolve(__dirname, '../assets/no-image.jpg');
+        res.sendFile(noImagePath)
+    }
+
+
 })
 
 
