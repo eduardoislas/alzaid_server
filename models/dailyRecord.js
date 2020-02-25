@@ -48,20 +48,6 @@ let dailyRecordSchema = new Schema({
             required: false
         }
     }],
-    attitude: [{
-        name: {
-            type: String,
-            required: false
-        },
-        time: {
-            type: String,
-            required: false
-        },
-        score: {
-            type: Number,
-            required: false
-        }
-    }],
     behavior: [{
         name: {
             type: String,
@@ -73,20 +59,6 @@ let dailyRecordSchema = new Schema({
         },
         score: {
             type: Number,
-            required: false
-        }
-    }],
-    crisis: [{
-        name: {
-            type: String,
-            required: false
-        },
-        time: {
-            type: String,
-            required: false
-        },
-        observation: {
-            type: String,
             required: false
         }
     }],

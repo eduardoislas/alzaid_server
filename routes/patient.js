@@ -1,7 +1,8 @@
 const express = require('express');
 const _ = require('underscore');
 const Patient = require('../models/patient');
-
+const fs = require('fs');
+const path = require('path');
 const app = express();
 
 
@@ -246,6 +247,59 @@ app.delete('/patient/:id', (req, res) => {
         })
     })
 });
+
+//Editar un paciente, actualizando su historial de Fase
+app.put('/patient/assistance/:id', (req, res) => {
+    let id = req.params.id;
+    let body = req.body.assistance;
+    Patient.findById(id, (err, patientDB) => {
+        if (err) {
+            return res.status(500).json({
+                success: false,
+                err
+            });
+        }
+        if (!patientDB) {
+            return res.status(400).json({
+                success: false,
+                err: {
+                    message: 'Paciente no encontrado'
+                }
+            });
+        }
+        patientDB.assistance = body;
+        //Se manda a guardar el objeto Paciente con sus nuevos campos
+        patientDB.save((err, patientSaved) => {
+            if (err) {
+                return res.status(500).json({
+                    success: false,
+                    err
+                });
+            }
+            res.json({
+                success: true,
+                assistance: patientSaved.assistance
+            })
+        })
+    })
+})
+
+
+app.get('/patient/imagen/:img', (req, res) => {
+
+    let img = req.params.img;
+
+    let pathImagen = path.resolve(__dirname, `../uploads/patients/${img}`);
+
+    if (fs.existsSync(pathImagen)) {
+        res.sendFile(pathImagen)
+    } else {
+        let noImagePath = path.resolve(__dirname, '../assets/no-image.jpg');
+        res.sendFile(noImagePath)
+    }
+
+
+})
 
 
 module.exports = app;
