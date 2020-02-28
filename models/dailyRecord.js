@@ -43,10 +43,8 @@ let dailyRecordSchema = new Schema({
         }
     }],
     technicalSupport: [{
-        name: {
-            type: String,
-            required: false
-        }
+        type: String,
+        required: false
     }],
     behavior: [{
         name: {

@@ -390,7 +390,7 @@ app.put('/dailyRecord/hygiene/:id', (req, res) => {
 // Guardar Apoyo técnico en el DailyRecord
 app.put('/dailyRecord/technicalsupport/:id', (req, res) => {
     let id = req.params.id;
-    let ts = [{}];
+    let ts = [];
     ts = req.body.ts;
 
     DailyRecord.findById(id, (err, drDB) => {
@@ -409,10 +409,7 @@ app.put('/dailyRecord/technicalsupport/:id', (req, res) => {
             });
         }
         for (let x of ts) {
-            let a = {
-                name: x.name
-            };
-            drDB.technicalSupport.push(a);
+            drDB.technicalSupport.push(x);
         };
         drDB.save((err, drSaved) => {
             if (err) {
