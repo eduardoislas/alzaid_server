@@ -2,6 +2,7 @@ const express = require('express');
 const Patient = require('../models/patient');
 const Caregiver = require('../models/caregiver');
 const User = require('../models/user');
+const bcrypt = require('bcrypt');
 
 const app = express();
 
@@ -69,18 +70,18 @@ app.post('/caregiver', (req, res) => {
         email: body.email,
         patient: body.patient,
         relation: body.relation,
-        registerdate: new Date()
+        registerdate: new Date(),
+        user: new User({
+            firstName: body.name,
+            lastName: body.lastName,
+            lastNameSecond: body.lastNameSecond,
+            name: body.username,
+            password: bcrypt.hashSync(body.password, 10),
+            role: "FAMILIAR"
+        })
     });
-    let user = new User({
-        firstName: body.name,
-        lastName: body.lastName,
-        lastNameSecond: body.lastNameSecond,
-        name: body.username,
-        password: bcrypt.hashSync(body.password, 10),
-        role: "FAMILIAR"
-    });
-    caregiver.user = user;
-    promesas.push(crearUsuario(user));
+    console.log(caregiver);
+    promesas.push(crearUsuario(caregiver.user));
     promesas.push(crearCaregiver(caregiver));
     Promise.all(promesas)
         .then(respuestas => {
@@ -106,7 +107,7 @@ function crearUsuario(user) {
 
 function crearCaregiver(caregiver) {
     return new Promise((resolve, reject) => {
-        user.save((err, caregiverDB) => {
+        caregiver.save((err, caregiverDB) => {
             if (err) {
                 reject('Error al guardar el cuidador', err);
             } else {
