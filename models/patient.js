@@ -20,6 +20,10 @@ let patientSchema = new Schema({
         type: String,
         required: false
     },
+    gender: {
+        type: String,
+        required: false
+    },
     birthdate: {
         type: Date,
         required: [true, 'La fecha de nacimiento es requerida']
