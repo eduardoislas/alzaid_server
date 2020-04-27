@@ -11,7 +11,8 @@ const app = express();
 app.get('/caregiver', (req, res) => {
     //El parámetro status solicita los cuidadores activos
     Caregiver.find({ status: true })
-        .populate('patient', 'user')
+        .populate('patient')
+        .populate('user')
         .exec((err, caregivers) => {
             if (err) {
                 return res.status(400).json({
@@ -33,25 +34,26 @@ app.get('/caregiver', (req, res) => {
 app.get('/caregiver/:id', (req, res) => {
     let id = req.params.id;
     Caregiver.findById(id, (err, caregiver) => {
-        if (err) {
-            return res.status(500).json({
-                sucess: false,
-                err
-            });
-        };
-        if (!caregiver) {
-            return res.status(400).json({
-                success: false,
-                err: {
-                    message: 'Cuidador no encontrado'
-                }
+            if (err) {
+                return res.status(500).json({
+                    sucess: false,
+                    err
+                });
+            };
+            if (!caregiver) {
+                return res.status(400).json({
+                    success: false,
+                    err: {
+                        message: 'Cuidador no encontrado'
+                    }
+                })
+            }
+            res.json({
+                success: true,
+                caregiver
             })
-        }
-        res.json({
-            success: true,
-            caregiver
-        })
-    }).populate('patient', 'user')
+        }).populate('patient')
+        .populate('user')
 })
 
 app.post('/caregiver', (req, res) => {
