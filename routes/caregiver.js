@@ -11,6 +11,7 @@ const app = express();
 app.get('/caregiver', (req, res) => {
     //El parámetro status solicita los cuidadores activos
     Caregiver.find({ status: true })
+        .populate()
         .exec((err, caregivers) => {
             if (err) {
                 return res.status(400).json({
@@ -117,6 +118,33 @@ function crearCaregiver(caregiver) {
     });
 }
 
+//Eliminar un cuidador
+app.delete('/caregiver/:id', (req, res) => {
+    let id = req.params.id;
+    let changeStatus = {
+        status: false
+    }
+    Caregiver.findByIdAndUpdate(id, changeStatus, { new: true }, (err, caregiverDeleted) => {
+        if (err) {
+            return res.status(500).json({
+                sucess: false,
+                err
+            });
+        };
+        if (!caregiverDeleted) {
+            return res.status(400).json({
+                success: false,
+                err: {
+                    message: 'Cuidador no encontrado'
+                }
+            })
+        }
+        res.json({
+            success: true,
+            caregiver: caregiverDeleted
+        })
+    })
+});
 
 
 
