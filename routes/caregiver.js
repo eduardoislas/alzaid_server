@@ -11,7 +11,7 @@ const app = express();
 app.get('/caregiver', (req, res) => {
     //El parámetro status solicita los cuidadores activos
     Caregiver.find({ status: true })
-        .populate('patient')
+        .populate('patient', 'user')
         .exec((err, caregivers) => {
             if (err) {
                 return res.status(400).json({
@@ -51,7 +51,7 @@ app.get('/caregiver/:id', (req, res) => {
             success: true,
             caregiver
         })
-    }).populate('patient')
+    }).populate('patient', 'user')
 })
 
 app.post('/caregiver', (req, res) => {
