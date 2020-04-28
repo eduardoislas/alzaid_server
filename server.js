@@ -1,6 +1,10 @@
 // Archivo de configuraciones
 require('./config/config.js')
 
+//HTTPS
+const fs = require('fs');
+const https = require('https');
+
 //Importación de librerías
 const express = require('express')
 const mongoose = require('mongoose');
@@ -32,7 +36,17 @@ mongoose.connect(process.env.URLDB, { useNewUrlParser: true, useCreateIndex: tru
         console.log('Base de datos ONLINE');
     });
 
+//Crear Servidor HTTPS
+// https.createServer({
+//     key: fs.readFileSync('acislab_key.key'),
+//     cert: fs.readFileSync('acislab_crt.crt')
+// }, app).listen(process.env.PORT, () => {
+//     console.log('Escuchando puerto: ', process.env.PORT);
+// });
 
+
+
+//Crear Servidor
 app.listen(process.env.PORT, () => {
     console.log('Escuchando puerto: ', process.env.PORT);
 });
