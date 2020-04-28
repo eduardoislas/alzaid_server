@@ -12,7 +12,6 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 
 const app = express()
-const httpsLocalhost = require("https-localhost")()
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -37,16 +36,16 @@ mongoose.connect(process.env.URLDB, { useNewUrlParser: true, useCreateIndex: tru
     });
 
 //Crear Servidor HTTPS
-https.createServer({
-    key: fs.readFileSync('acislab_key.key'),
-    cert: fs.readFileSync('acislab_crt.crt')
-}, app).listen(process.env.PORT, () => {
-    console.log('Escuchando puerto: ', process.env.PORT);
-});
+// https.createServer({
+//     key: fs.readFileSync('acislab_key.key'),
+//     cert: fs.readFileSync('acislab_crt.crt')
+// }, app).listen(process.env.PORT, () => {
+//     console.log('Escuchando puerto: ', process.env.PORT);
+// });
 
 
 
 //Crear Servidor
-// app.listen(process.env.PORT, () => {
-//     console.log('Escuchando puerto: ', process.env.PORT);
-// });
+app.listen(process.env.PORT, () => {
+    console.log('Escuchando puerto: ', process.env.PORT);
+});
