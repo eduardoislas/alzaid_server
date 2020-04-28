@@ -1,5 +1,6 @@
 const express = require('express');
-const app = express();
+//const app = express();
+const app = require("https-localhost")()
 
 app.use(require('./user'));
 app.use(require('./patient'));

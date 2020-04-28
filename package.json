@@ -17,6 +17,7 @@
         "express-fileupload": "^1.1.6",
         "fs": "0.0.1-security",
         "https": "^1.0.0",
+        "https-localhost": "^4.5.2",
         "jsonwebtoken": "^8.5.1",
         "mongoose": "^5.8.1",
         "mongoose-unique-validator": "^2.0.3",
