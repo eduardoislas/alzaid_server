@@ -60,6 +60,8 @@ app.get('/caregiver/:id', (req, res) => {
 app.get('/caregiver/user/:userid', (req, res) => {
     let userid = req.params.userid;
     Caregiver.find({ user: userid })
+        .populate('patient')
+        .populate('user')
         .exec((err, caregiver) => {
             if (err) {
                 return res.status(500).json({
@@ -79,8 +81,7 @@ app.get('/caregiver/user/:userid', (req, res) => {
                 success: true,
                 caregiver
             });
-        }).populate('patient')
-        .populate('user')
+        })
 })
 
 app.post('/caregiver', (req, res) => {
