@@ -56,6 +56,33 @@ app.get('/caregiver/:id', (req, res) => {
         .populate('user')
 })
 
+//Devuelve un cuidador por user ID
+app.get('/caregiver/user/:userid', (req, res) => {
+    let userid = req.params.userid;
+    Caregiver.find({ user: userid })
+        .exec((err, caregiver) => {
+            if (err) {
+                return res.status(500).json({
+                    sucess: false,
+                    err
+                });
+            };
+            if (!caregiver) {
+                return res.status(400).json({
+                    success: false,
+                    err: {
+                        message: 'Cuidador no encontrado'
+                    }
+                });
+            }
+            res.json({
+                success: true,
+                caregiver
+            });
+        }).populate('patient')
+        .populate('user')
+})
+
 app.post('/caregiver', (req, res) => {
     promesas = []
     let body = req.body;
