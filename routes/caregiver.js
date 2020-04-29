@@ -1,5 +1,5 @@
 const express = require('express');
-const Patient = require('../models/patient');
+const SelfEfficacy = require('../models/selfefficacy')
 const Caregiver = require('../models/caregiver');
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
@@ -176,7 +176,27 @@ app.delete('/caregiver/:id', (req, res) => {
     })
 });
 
-
+app.post('/caregiver/se', (req, res) => {
+    let body = req.body;
+    let se = new SelfEfficacy({
+        date: body.date,
+        answers: body.answers,
+        scale: body.scale,
+        caregiver: body.caregiver
+    });
+    se.save((err, seDB) => {
+        if (err) {
+            return res.status(500).json({
+                success: false,
+                err
+            });
+        }
+        res.json({
+            success: true,
+            selfEfficacy: seDB
+        });
+    });
+});
 
 
 module.exports = app;
