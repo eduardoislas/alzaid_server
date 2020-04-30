@@ -32,6 +32,10 @@ let caregiverSchema = new Schema({
         type: String,
         required: false
     },
+    religion: {
+        type: String,
+        required: false
+    },
     school: {
         type: String,
         required: false

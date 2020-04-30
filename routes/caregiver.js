@@ -95,6 +95,7 @@ app.post('/caregiver', (req, res) => {
         age: body.age,
         gender: body.gender,
         civilStatus: body.civilStatus,
+        religion: body.religion,
         school: body.school,
         occupation: body.occupation,
         phone: body.phone,
