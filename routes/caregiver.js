@@ -183,7 +183,7 @@ app.post('/caregiver/se', (req, res) => {
         date: body.date,
         answers: body.answers,
         scale: body.scale,
-        caregiver: body.caregiver
+        caregiver: body.caregiver._id
     });
     console.log(se);
     se.save((err, seDB) => {
@@ -200,5 +200,26 @@ app.post('/caregiver/se', (req, res) => {
     });
 });
 
+//Obtener todos los registros de autoeficacia por id del cuidador
+app.get('/caregiver/se/:id', (req, res) => {
+    let id = req.params.id;
+    SelfEfficacy.find({ caregiver: id })
+        .sort('date')
+        .exec((err, sesDB) => {
+            if (err) {
+                return res.status(400).json({
+                    success: false,
+                    err
+                });
+            }
+            SelfEfficacy.countDocuments({ caregiver: id }, (err, conteo) => {
+                res.json({
+                    success: true,
+                    count: conteo,
+                    sesDB
+                });
+            })
+        })
+})
 
 module.exports = app;
