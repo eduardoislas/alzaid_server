@@ -11,7 +11,7 @@ app.post('/binnacle/homeactivity', (req, res) => {
     let mes = fechaInicial.getMonth();
     let anio = fechaInicial.getFullYear();
     let fecha = new Date(anio, mes, dia);
-
+    fecha.setSeconds(1);
     let ha = new HomeActivity({
         date: fecha,
         type: body.type,
@@ -39,11 +39,11 @@ app.get('/binnacle/homeactivity/today', (req, res) => {
     let dia = fechaInicial.getDate();
     let mes = fechaInicial.getMonth();
     let anio = fechaInicial.getFullYear();
-
     let fecha = new Date(anio, mes, dia);
-    let manana = new Date(anio, mes, dia + 1);
-
-    HomeActivity.find({ date: { "$gte": fecha, "$lt": manana } })
+    fecha.setSeconds(1);
+    //let manana = new Date(anio, mes, dia + 1);
+    //{ date: { "$gte": fecha, "$lt": manana } }
+    HomeActivity.find({ date: fecha, status: true })
         .sort('date')
         .exec((err, has) => {
             if (err) {
@@ -52,7 +52,7 @@ app.get('/binnacle/homeactivity/today', (req, res) => {
                     err
                 });
             }
-            HomeActivity.countDocuments({ date: { "$gte": fecha, "$lt": manana } }, (err, conteo) => {
+            HomeActivity.countDocuments({ date: fecha, status: true }, (err, conteo) => {
                 res.json({
                     success: true,
                     count: conteo,
