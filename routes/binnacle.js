@@ -6,12 +6,11 @@ const app = express();
 // Guarda actividades diarias para el hogar
 app.post('/binnacle/homeactivity', (req, res) => {
     let body = req.body;
-    let fechaInicial = new Date(body.date);
+    let fechaInicial = new Date.UTC(body.date);
     let dia = fechaInicial.getDate();
     let mes = fechaInicial.getMonth();
     let anio = fechaInicial.getFullYear();
-    let fecha = new Date(anio, mes, dia);
-    fecha.setSeconds(1);
+    let fecha = new Date.UTC(anio, mes, dia);
     let ha = new HomeActivity({
         date: fecha,
         type: body.type,
@@ -35,12 +34,11 @@ app.post('/binnacle/homeactivity', (req, res) => {
 
 //Obtener el listado de actividades del hogar del día
 app.get('/binnacle/homeactivity/today', (req, res) => {
-    let fechaInicial = new Date();
+    let fechaInicial = new Date.UTC();
     let dia = fechaInicial.getDate();
     let mes = fechaInicial.getMonth();
     let anio = fechaInicial.getFullYear();
-    let fecha = new Date(anio, mes, dia);
-    fecha.setSeconds(1);
+    let fecha = new Date.UTC(anio, mes, dia);
     //let manana = new Date(anio, mes, dia + 1);
     //{ date: { "$gte": fecha, "$lt": manana } }
     HomeActivity.find({ date: fecha, status: true })
