@@ -62,6 +62,27 @@ app.get('/binnacle/homeactivity/today', (req, res) => {
         })
 });
 
+//Obtener el listado de actividades del hogar activas
+app.get('/binnacle/homeactivity', (req, res) => {
+    HomeActivity.find({ status: true })
+        .sort('date')
+        .exec((err, has) => {
+            if (err) {
+                return res.status(400).json({
+                    success: false,
+                    err
+                });
+            }
+            HomeActivity.countDocuments({ status: true }, (err, conteo) => {
+                res.json({
+                    success: true,
+                    count: conteo,
+                    has
+                });
+            })
+        })
+});
+
 //Desactivar una actividad
 app.delete('/binnacle/homeactivity/:id', (req, res) => {
     let id = req.params.id;
