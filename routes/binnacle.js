@@ -67,7 +67,7 @@ app.get('/binnacle/homeactivity/today', (req, res) => {
 //Obtener el listado de actividades del hogar activas
 app.get('/binnacle/homeactivity', (req, res) => {
     HomeActivity.find({ status: true })
-        .sort('date')
+        .sort('-date')
         .exec((err, has) => {
             if (err) {
                 return res.status(400).json({
