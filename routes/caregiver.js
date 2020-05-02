@@ -66,7 +66,7 @@ app.get('/caregiver/user/:userid', (req, res) => {
             if (err) {
                 return res.status(500).json({
                     sucess: false,
-                    err
+                    err: err
                 });
             };
             if (!caregiver) {
@@ -79,7 +79,7 @@ app.get('/caregiver/user/:userid', (req, res) => {
             }
             res.json({
                 success: true,
-                caregiver
+                caregiver: caregiver
             });
         })
 })
@@ -119,7 +119,7 @@ app.post('/caregiver', (req, res) => {
         .then(respuestas => {
             res.status(200).json({
                 success: true,
-                respuestas
+                respuestas: respuestas
             })
         })
 });
@@ -159,22 +159,22 @@ app.delete('/caregiver/:id', (req, res) => {
         if (err) {
             return res.status(500).json({
                 sucess: false,
-                err
+                err: err
             });
-        };
+        }
         if (!caregiverDeleted) {
             return res.status(400).json({
                 success: false,
                 err: {
                     message: 'Cuidador no encontrado'
                 }
-            })
+            });
         }
         res.json({
             success: true,
             caregiver: caregiverDeleted
-        })
-    })
+        });
+    });
 });
 
 app.post('/caregiver/se', (req, res) => {
@@ -217,8 +217,8 @@ app.get('/caregiver/se/:id', (req, res) => {
                     count: conteo,
                     sesDB
                 });
-            })
-        })
+            });
+        });
 })
 
 module.exports = app;

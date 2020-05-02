@@ -19,6 +19,14 @@ let homeActivitySchema = new Schema({
         type: String,
         required: true
     },
+    instructions: {
+        type: String,
+        required: false
+    },
+    resources: {
+        type: String,
+        required: false
+    },
     status: {
         type: Boolean,
         default: true

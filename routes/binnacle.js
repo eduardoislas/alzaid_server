@@ -16,7 +16,9 @@ app.post('/binnacle/homeactivity', (req, res) => {
         date: fecha,
         type: body.type,
         activity: body.activity,
-        phase: body.phase
+        phase: body.phase,
+        instructions: body.instructions,
+        resources: body.resources
     });
     ha.save((err, haDB) => {
         if (err) {
