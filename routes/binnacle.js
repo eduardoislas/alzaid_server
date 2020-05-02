@@ -85,6 +85,28 @@ app.get('/binnacle/homeactivity', (req, res) => {
         })
 });
 
+//Obtener el listado de actividades del hogar por fase
+app.get('/binnacle/homeactivity/:fase', (req, res) => {
+    let fase = req.params.fase;
+    HomeActivity.find({ phase: fase, status: true })
+        .sort('-date')
+        .exec((err, has) => {
+            if (err) {
+                return res.status(400).json({
+                    success: false,
+                    err: err
+                });
+            }
+            HomeActivity.countDocuments({ phase: fase, status: true }, (err, conteo) => {
+                res.json({
+                    success: true,
+                    count: conteo,
+                    has: has
+                });
+            })
+        })
+});
+
 //Desactivar una actividad
 app.delete('/binnacle/homeactivity/:id', (req, res) => {
     let id = req.params.id;
