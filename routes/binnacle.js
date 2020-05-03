@@ -235,19 +235,10 @@ app.get('/binnacle/patient/activitydone/:idp&:ida', (req, res) => {
     let idp = req.params.idp;
     let ida = req.params.ida;
     BinnacleActivityPatient.findOne({ patient: idp, activity: ida })
-        .exec((err, pa) => {
-            if (err) {
-                return res.status(500).json({
-                    success: false,
-                    err
-                });
-            }
+        .exec((pa) => {
             if (!pa) {
-                return res.status(400).json({
+                res.json({
                     success: false,
-                    err: {
-                        message: 'PA no encontrado'
-                    }
                 })
             }
             res.json({
