@@ -17,6 +17,18 @@ let binnacleActivityPatientSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'HomeActivity',
         required: true
+    },
+    answers: [{
+        type: Number,
+        required: true,
+    }],
+    difficulty: {
+        type: String,
+        required: false
+    },
+    observation: {
+        type: String,
+        required: false
     }
 });
 

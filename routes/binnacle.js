@@ -279,7 +279,10 @@ app.post('/binnacle/patient/activity', (req, res) => {
     let pb = new BinnacleActivityPatient({
         date: body.date,
         patient: body.patient,
-        activity: body.activity
+        activity: body.activity,
+        answers: body.answers,
+        difficulty: body.difficulty,
+        observation: body.observation
     });
     pb.save((err, pbDB) => {
         if (err) {
