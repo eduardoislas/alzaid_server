@@ -233,6 +233,26 @@ app.get('/binnacle/patient/activity/:id', (req, res) => {
         });
 })
 
+//Obtener la bitácora de actividades 
+app.get('/binnacle/patient/activity', (req, res) => {
+    BinnacleActivityPatient.find({})
+        .sort('-date')
+        .exec((err, pabDB) => {
+            if (err) {
+                return res.status(400).json({
+                    success: false,
+                    err
+                });
+            }
+            BinnacleActivityPatient.countDocuments({}, (err, conteo) => {
+                res.json({
+                    success: true,
+                    count: conteo,
+                    pabDB: pabDB
+                });
+            });
+        });
+})
 
 //Devuelve true si la actividad existe en las realizadas por paciente
 app.get('/binnacle/patient/activitydone/:idp&:ida', (req, res) => {
