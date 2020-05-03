@@ -85,7 +85,7 @@ app.get('/caregiver/user/:userid', (req, res) => {
 })
 
 app.post('/caregiver', (req, res) => {
-    promesas = []
+    promesas = [];
     let body = req.body;
     let caregiver = new Caregiver({
         name: body.name,
@@ -112,7 +112,6 @@ app.post('/caregiver', (req, res) => {
             role: "FAMILIAR"
         })
     });
-    console.log(caregiver);
     promesas.push(crearUsuario(caregiver.user));
     promesas.push(crearCaregiver(caregiver));
     Promise.all(promesas)
