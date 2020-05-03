@@ -240,10 +240,12 @@ app.get('/binnacle/patient/activitydone/:idp&:ida', (req, res) => {
                 res.json({
                     success: false,
                 })
+            } else {
+                res.json({
+                    success: true
+                });
             }
-            res.json({
-                success: true
-            });
+
         });
 })
 
