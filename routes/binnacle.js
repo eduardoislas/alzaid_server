@@ -1,6 +1,7 @@
 const express = require('express');
 const HomeActivity = require('../models/homeActivity');
 const BinnacleCaregiver = require('../models/binnaclecaregiver');
+const BinnacleActivityPatient = require('../models/binnacleactivitypatient');
 
 const app = express();
 
@@ -136,7 +137,7 @@ app.delete('/binnacle/homeactivity/:id', (req, res) => {
     })
 });
 
-
+/////////////////////////////////////////////////////////////////////
 // Bitácora del cuidador
 app.post('/binnacle/caregiver', (req, res) => {
     let body = req.body;
@@ -175,12 +176,57 @@ app.get('/binnacle/caregiver/:id', (req, res) => {
                 res.json({
                     success: true,
                     count: conteo,
-                    cbsDB
+                    cbsDB: cbsDB
                 });
             });
         });
 })
 
+///////////////////////////////////////////////////////////////////
+// Bitácora del paciente
 
+//Obtener la bitácora de actividades por paciente
+app.get('/binnacle/patient/activity/:id', (req, res) => {
+    let id = req.params.id;
+    BinnacleActivityPatient.find({ patient: id })
+        .sort('-date')
+        .exec((err, pabDB) => {
+            if (err) {
+                return res.status(400).json({
+                    success: false,
+                    err
+                });
+            }
+            BinnacleActivityPatient.countDocuments({ patient: id }, (err, conteo) => {
+                res.json({
+                    success: true,
+                    count: conteo,
+                    pabDB: pabDB
+                });
+            });
+        });
+})
+
+//Guardar un registro de bitácora de actividades
+app.post('/binnacle/patient/activity', (req, res) => {
+    let body = req.body;
+    let pb = new BinnacleActivityPatient({
+        date: body.date,
+        patient: body.patient,
+        activity: body.activity
+    });
+    pb.save((err, pbDB) => {
+        if (err) {
+            return res.status(500).json({
+                success: false,
+                err: err
+            });
+        }
+        res.json({
+            success: true,
+            pbDB: pbDB
+        });
+    });
+});
 
 module.exports = app;
