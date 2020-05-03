@@ -207,6 +207,55 @@ app.get('/binnacle/patient/activity/:id', (req, res) => {
         });
 })
 
+//Obtener la bitácora de actividades por paciente
+app.get('/binnacle/patient/activity/:id', (req, res) => {
+    let id = req.params.id;
+    BinnacleActivityPatient.find({ patient: id })
+        .sort('-date')
+        .exec((err, pabDB) => {
+            if (err) {
+                return res.status(400).json({
+                    success: false,
+                    err
+                });
+            }
+            BinnacleActivityPatient.countDocuments({ patient: id }, (err, conteo) => {
+                res.json({
+                    success: true,
+                    count: conteo,
+                    pabDB: pabDB
+                });
+            });
+        });
+})
+
+
+//Devuelve true si la actividad existe en las realizadas por paciente
+app.get('/binnacle/patient/activitydone/:idp&:ida', (req, res) => {
+    let idp = req.params.idp;
+    let ida = req.params.ida;
+    BinnacleActivityPatient.findOne({ patient: idp, activity: ida })
+        .exec((err, pa) => {
+            if (err) {
+                return res.status(500).json({
+                    success: false,
+                    err
+                });
+            }
+            if (!pa) {
+                return res.status(400).json({
+                    success: false,
+                    err: {
+                        message: 'PA no encontrado'
+                    }
+                })
+            }
+            res.json({
+                success: true
+            });
+        });
+})
+
 //Guardar un registro de bitácora de actividades
 app.post('/binnacle/patient/activity', (req, res) => {
     let body = req.body;
