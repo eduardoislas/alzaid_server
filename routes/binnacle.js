@@ -37,6 +37,31 @@ app.post('/binnacle/homeactivity', (req, res) => {
 });
 
 
+//Obtener una actividad por ID
+app.get('/binnacle/homeactivity/id/:id', (req, res) => {
+    let id = req.params.id;
+    HomeActivity.findById(id, (err, ha) => {
+        if (err) {
+            return res.status(500).json({
+                sucess: false,
+                err: err
+            });
+        };
+        if (!ha) {
+            return res.status(400).json({
+                success: false,
+                err: {
+                    message: 'Actividad no encontrada'
+                }
+            })
+        }
+        res.json({
+            success: true,
+            ha: ha
+        });
+    });
+})
+
 //Obtener el listado de actividades del hogar del día
 app.get('/binnacle/homeactivity/today', (req, res) => {
     let fechaInicial = new Date();
@@ -190,28 +215,7 @@ app.get('/binnacle/patient/activity/:id', (req, res) => {
     let id = req.params.id;
     BinnacleActivityPatient.find({ patient: id })
         .sort('-date')
-        .exec((err, pabDB) => {
-            if (err) {
-                return res.status(400).json({
-                    success: false,
-                    err
-                });
-            }
-            BinnacleActivityPatient.countDocuments({ patient: id }, (err, conteo) => {
-                res.json({
-                    success: true,
-                    count: conteo,
-                    pabDB: pabDB
-                });
-            });
-        });
-})
-
-//Obtener la bitácora de actividades por paciente
-app.get('/binnacle/patient/activity/:id', (req, res) => {
-    let id = req.params.id;
-    BinnacleActivityPatient.find({ patient: id })
-        .sort('-date')
+        .limit(5)
         .exec((err, pabDB) => {
             if (err) {
                 return res.status(400).json({
