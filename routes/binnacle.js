@@ -1,5 +1,6 @@
 const express = require('express');
 const HomeActivity = require('../models/homeActivity');
+const BinnacleCaregiver = require('../models/binnaclecaregiver');
 
 const app = express();
 
@@ -136,8 +137,49 @@ app.delete('/binnacle/homeactivity/:id', (req, res) => {
 });
 
 
+// Bitácora del cuidador
+app.post('/binnacle/caregiver', (req, res) => {
+    let body = req.body;
+    let cb = new BinnacleCaregiver({
+        date: body.date,
+        answers: body.answers,
+        caregiver: body.caregiver._id
+    });
+    cb.save((err, cbDB) => {
+        if (err) {
+            return res.status(500).json({
+                success: false,
+                err: err
+            });
+        }
+        res.json({
+            success: true,
+            cbDB: cbDB
+        });
+    });
+});
 
-
+//Obtener todos los registros de bitácora por id del cuidador
+app.get('/binnacle/caregiver/:id', (req, res) => {
+    let id = req.params.id;
+    BinnacleCaregiver.find({ caregiver: id })
+        .sort('-date')
+        .exec((err, cbsDB) => {
+            if (err) {
+                return res.status(400).json({
+                    success: false,
+                    err
+                });
+            }
+            BinnacleCaregiver.countDocuments({ caregiver: id }, (err, conteo) => {
+                res.json({
+                    success: true,
+                    count: conteo,
+                    cbsDB
+                });
+            });
+        });
+})
 
 
 

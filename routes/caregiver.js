@@ -177,6 +177,7 @@ app.delete('/caregiver/:id', (req, res) => {
     });
 });
 
+//Autodiagnóstico de autoeficacia
 app.post('/caregiver/se', (req, res) => {
     let body = req.body;
     let se = new SelfEfficacy({
@@ -189,7 +190,7 @@ app.post('/caregiver/se', (req, res) => {
         if (err) {
             return res.status(500).json({
                 success: false,
-                err
+                err: err
             });
         }
         res.json({
@@ -203,7 +204,7 @@ app.post('/caregiver/se', (req, res) => {
 app.get('/caregiver/se/:id', (req, res) => {
     let id = req.params.id;
     SelfEfficacy.find({ caregiver: id })
-        .sort('date')
+        .sort('-date')
         .exec((err, sesDB) => {
             if (err) {
                 return res.status(400).json({
