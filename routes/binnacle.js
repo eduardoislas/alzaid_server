@@ -182,38 +182,5 @@ app.get('/binnacle/caregiver/:id', (req, res) => {
 })
 
 
-// Obtener el caregiver y el listado de actividades por su fase
-app.get('/binnacle/caregiver/activity/:id', (req, res) => {
-    let id = req.params.userid;
-    promesas = [];
-    promesas.push(encontrarCuidador(id));
-
-    Promise.all(promesas)
-        .then(respuestas => {
-            res.status(200).json({
-                success: true,
-                respuestas
-            });
-        });
-});
-
-function encontrarCuidador(id) {
-    return new Promise((resolve, reject) => {
-        Caregiver.find({ _id: id })
-            .populate('patient')
-            .populate('user')
-            .exec((err, caregiver) => {
-                if (err) {
-                    reject('Error al buscar cuidador', err);
-                } else if (!caregiver) {
-                    reject('Cuidador no encontrado', err);
-                } else {
-                    resolve(caregiver);
-                }
-            });
-    });
-}
-
-
 
 module.exports = app;
