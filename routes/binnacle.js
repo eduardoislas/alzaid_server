@@ -261,33 +261,24 @@ app.get('/binnacle/patient/activitydone/:idp&:ida', (req, res) => {
     let ida = req.params.ida;
     console.log(idp);
     console.log(ida);
-    BinnacleActivityPatient.find({ patient: idp, activity: ida })
-        .exec((err, pa) => {
-            if (err) {
-                return res.status(500).json({
-                    success: false,
-                    err
-                });
-            }
-            if (!pa) {
-                return res.status(400).json({
-                    success: false,
-                    pa
-                })
-            }
-            if (pa == null) {
-                res.json({
-                    success: false,
-                    pa
-                });
-            } else {
-                res.json({
-                    success: true,
-                    pa
-                });
-            }
-
+    BinnacleActivityPatient.findOne({ patient: idp, activity: ida }, (req, res) => {
+        if (err) {
+            return res.status(500).json({
+                success: false,
+                err
+            });
+        }
+        if (!pa) {
+            return res.status(400).json({
+                success: false,
+                pa
+            })
+        }
+        res.json({
+            success: true,
+            pa
         });
+    });
 })
 
 //Guardar un registro de bitácora de actividades
