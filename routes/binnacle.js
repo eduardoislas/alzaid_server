@@ -13,7 +13,9 @@ app.post('/binnacle/homeactivity', (req, res) => {
     let mes = fechaInicial.getMonth();
     let anio = fechaInicial.getFullYear();
     let fecha = new Date(anio, mes, dia);
-    fecha.setHours(7);
+    // console.log(fecha);
+    // fecha.setHours(7);
+    // console.log(fecha);
     let ha = new HomeActivity({
         date: fecha,
         type: body.type,
@@ -69,7 +71,7 @@ app.get('/binnacle/homeactivity/today', (req, res) => {
     let mes = fechaInicial.getMonth();
     let anio = fechaInicial.getFullYear();
     let fecha = new Date(anio, mes, dia);
-    fecha.setHours(7);
+    //fecha.setHours(7);
     //let manana = new Date(anio, mes, dia + 1);
     //{ date: { "$gte": fecha, "$lt": manana } }
     HomeActivity.find({ date: fecha, status: true })
