@@ -14,10 +14,10 @@ app.post('/binnacle/homeactivity', (req, res) => {
     // let anio = fechaInicial.getFullYear();
     // let fecha = new Date(anio, mes, dia);
     // console.log(body.date);
-    body.date.setHours(7);
+    fecha = new Date(body.date).setHours(7);
     // console.log(fecha);
     let ha = new HomeActivity({
-        date: body.date,
+        date: fecha,
         type: body.type,
         activity: body.activity,
         phase: body.phase,
