@@ -261,7 +261,7 @@ app.get('/binnacle/patient/activitydone/:idp&:ida', (req, res) => {
     let ida = req.params.ida;
     console.log(idp);
     console.log(ida);
-    BinnacleActivityPatient.findOne({ patient: idp, activity: ida }, (req, res) => {
+    BinnacleActivityPatient.findOne({ patient: idp, activity: ida }, (err, pa) => {
         if (err) {
             return res.status(500).json({
                 success: false,
