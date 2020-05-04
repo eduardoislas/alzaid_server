@@ -269,10 +269,10 @@ app.get('/binnacle/patient/activitydone/:idp&:ida', (req, res) => {
             });
         }
         if (!pa) {
-            return res.status(400).json({
+            res.json({
                 success: false,
                 pa
-            })
+            });
         }
         res.json({
             success: true,
