@@ -275,10 +275,18 @@ app.get('/binnacle/patient/activitydone/:idp&:ida', (req, res) => {
                     pa
                 })
             }
-            res.json({
-                success: true,
-                pa
-            });
+            if (pa == null) {
+                res.json({
+                    success: false,
+                    pa
+                });
+            } else {
+                res.json({
+                    success: true,
+                    pa
+                });
+            }
+
         });
 })
 
