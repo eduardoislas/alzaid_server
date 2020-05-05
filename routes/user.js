@@ -57,7 +57,7 @@ app.get('/user/name/:name', (req, res) => {
         if (err) {
             return res.status(500).json({
                 sucess: false,
-                err
+                err: err
             });
         };
         if (!user) {
@@ -70,8 +70,8 @@ app.get('/user/name/:name', (req, res) => {
         }
         res.json({
             success: true,
-            user
-        })
+            user: user
+        });
     })
 });
 
