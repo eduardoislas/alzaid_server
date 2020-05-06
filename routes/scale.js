@@ -12,8 +12,8 @@ app.post('/scale', (req, res) => {
         answers: body.answers,
         scaleType: body.scaleType,
         scale: body.scale,
-        caregiver: body.caregiver._id,
-        valoration: body.valoration._id
+        caregiver: body.caregiver._id
+            //valoration: body.valoration._id
     });
     scale.save((err, scaleDB) => {
         if (err) {
