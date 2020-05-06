@@ -83,11 +83,7 @@ app.delete('/valoration/:id', (req, res) => {
             })
         })
     });
-})
-
-
-
-
+});
 
 
 
