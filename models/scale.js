@@ -34,7 +34,7 @@ let ScaleSchema = new Schema({
     valoration: {
         type: Schema.Types.ObjectId,
         ref: 'Valorations',
-        required: true
+        required: false
     }
 });
 
