@@ -176,49 +176,49 @@ app.delete('/caregiver/:id', (req, res) => {
     });
 });
 
-//Autodiagnóstico de autoeficacia
-app.post('/caregiver/se', (req, res) => {
-    let body = req.body;
-    let se = new SelfEfficacy({
-        date: body.date,
-        answers: body.answers,
-        scale: body.scale,
-        caregiver: body.caregiver._id
-    });
-    se.save((err, seDB) => {
-        if (err) {
-            return res.status(500).json({
-                success: false,
-                err: err
-            });
-        }
-        res.json({
-            success: true,
-            selfEfficacy: seDB
-        });
-    });
-});
+// //Autodiagnóstico de autoeficacia
+// app.post('/caregiver/se', (req, res) => {
+//     let body = req.body;
+//     let se = new SelfEfficacy({
+//         date: body.date,
+//         answers: body.answers,
+//         scale: body.scale,
+//         caregiver: body.caregiver._id
+//     });
+//     se.save((err, seDB) => {
+//         if (err) {
+//             return res.status(500).json({
+//                 success: false,
+//                 err: err
+//             });
+//         }
+//         res.json({
+//             success: true,
+//             selfEfficacy: seDB
+//         });
+//     });
+// });
 
-//Obtener todos los registros de autoeficacia por id del cuidador
-app.get('/caregiver/se/:id', (req, res) => {
-    let id = req.params.id;
-    SelfEfficacy.find({ caregiver: id })
-        .sort('-date')
-        .exec((err, sesDB) => {
-            if (err) {
-                return res.status(400).json({
-                    success: false,
-                    err
-                });
-            }
-            SelfEfficacy.countDocuments({ caregiver: id }, (err, conteo) => {
-                res.json({
-                    success: true,
-                    count: conteo,
-                    sesDB
-                });
-            });
-        });
-})
+// //Obtener todos los registros de autoeficacia por id del cuidador
+// app.get('/caregiver/se/:id', (req, res) => {
+//     let id = req.params.id;
+//     SelfEfficacy.find({ caregiver: id })
+//         .sort('-date')
+//         .exec((err, sesDB) => {
+//             if (err) {
+//                 return res.status(400).json({
+//                     success: false,
+//                     err
+//                 });
+//             }
+//             SelfEfficacy.countDocuments({ caregiver: id }, (err, conteo) => {
+//                 res.json({
+//                     success: true,
+//                     count: conteo,
+//                     sesDB
+//                 });
+//             });
+//         });
+// })
 
 module.exports = app;
