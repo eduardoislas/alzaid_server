@@ -25,6 +25,32 @@ app.get('/valoration', (req, res) => {
         });
 });
 
+
+//Devuelve una valoración por ID
+app.get('/valoration/:id', (req, res) => {
+    let id = req.params.id;
+    Valoration.findById(id, (err, valoration) => {
+        if (err) {
+            return res.status(500).json({
+                sucess: false,
+                err
+            });
+        };
+        if (!valoration) {
+            return res.status(400).json({
+                success: false,
+                err: {
+                    message: 'Valoración no encontrada'
+                }
+            })
+        }
+        res.json({
+            success: true,
+            valoration
+        });
+    });
+});
+
 // Guarda Valoracion
 app.post('/valoration', (req, res) => {
     let body = req.body;
