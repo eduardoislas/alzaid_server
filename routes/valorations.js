@@ -65,10 +65,10 @@ app.delete('/valoration/:id', (req, res) => {
                 }
             });
         }
-        if (val.status) {
-            val.status = false;
+        if (valDB.status) {
+            valDB.status = false;
         } else {
-            val.status = true;
+            valDB.status = true;
         }
         valDB.save((err, valSaved) => {
             if (err) {
