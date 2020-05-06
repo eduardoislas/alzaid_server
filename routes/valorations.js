@@ -48,7 +48,7 @@ app.post('/valoration', (req, res) => {
 });
 
 //Actualiza estado de cuiaddor
-app.put('/valoration/:id', (req, res) => {
+app.delete('/valoration/:id', (req, res) => {
     let id = req.params.id;
     Valoration.findById(id, (err, valDB) => {
         if (err) {
