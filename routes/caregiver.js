@@ -1,5 +1,4 @@
 const express = require('express');
-const SelfEfficacy = require('../models/selfefficacy');
 const Caregiver = require('../models/caregiver');
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
