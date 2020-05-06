@@ -26,9 +26,9 @@ app.get('/caregiver', (req, res) => {
                     count: conteo,
                     caregivers
                 });
-            })
-        })
-})
+            });
+        });
+});
 
 //Devuelve un cuidador por ID
 app.get('/caregiver/:id', (req, res) => {

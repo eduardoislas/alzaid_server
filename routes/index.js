@@ -10,6 +10,7 @@ app.use(require('./catalog'));
 app.use(require('./notification'));
 app.use(require('./upload'));
 app.use(require('./binnacle'));
+app.use(require('./valoration'));
 
 
 
