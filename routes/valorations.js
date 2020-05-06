@@ -15,7 +15,7 @@ app.get('/valoration', (req, res) => {
                     err
                 });
             }
-            Caregiver.countDocuments({}, (err, conteo) => {
+            Valoration.countDocuments({}, (err, conteo) => {
                 res.json({
                     success: true,
                     count: conteo,
