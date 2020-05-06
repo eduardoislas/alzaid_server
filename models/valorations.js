@@ -8,6 +8,10 @@ let valorationsSchema = new Schema({
         type: Number,
         required: true,
     },
+    numPeriod: {
+        type: Number,
+        required: true,
+    },
     period: {
         type: String,
         required: true,

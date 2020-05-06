@@ -31,6 +31,7 @@ app.post('/valoration', (req, res) => {
 
     let val = new Valoration({
         year: body.year,
+        numPeriod: body.numPeriod,
         period: body.period
     });
     val.save((err, valDB) => {

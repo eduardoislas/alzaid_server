@@ -2,8 +2,14 @@ const mongoose = require('mongoose');
 
 let Schema = mongoose.Schema;
 
+// Escalas:  
+// 1 - Autoeficacia
+// 2 - Ansiedad
+// 3 - Depresión
+// 4 - Sobrecarga
+// 5 - Apoyo Social
 
-let selfEfficacySchema = new Schema({
+let ScaleSchema = new Schema({
     date: {
         type: Date,
         required: [true, 'La fecha de registro es requerida']
@@ -12,6 +18,10 @@ let selfEfficacySchema = new Schema({
         type: Number,
         required: true,
     }],
+    scaleType: {
+        type: Number,
+        required: true,
+    },
     scale: {
         type: String,
         required: [true, 'El nombre es requerido']
@@ -20,9 +30,14 @@ let selfEfficacySchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Caregiver',
         required: true
+    },
+    valoration: {
+        type: Schema.Types.ObjectId,
+        ref: 'Valorations',
+        required: true
     }
 });
 
 
 
-module.exports = mongoose.model('SelfEfficacy', selfEfficacySchema);
+module.exports = mongoose.model('Scale', ScaleSchema);
