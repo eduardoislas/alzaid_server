@@ -55,7 +55,7 @@ app.get('/scale/:id', (req, res) => {
 //Obtener todos los registros por id del cuidador y Tipo de escala
 app.get('/scale/done/:idc&:type&:idv', (req, res) => {
     let idc = req.params.idc;
-    let type = int(req.params.type);
+    let type = parseInt(req.params.type);
     let idv = req.params.idv;
     Scale.findOne({ caregiver: idc, scaleType: type, valoration: idv }, (err, scale) => {
         if (err) {
