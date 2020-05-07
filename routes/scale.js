@@ -53,26 +53,29 @@ app.get('/scale/:id', (req, res) => {
 
 
 //Obtener todos los registros por id del cuidador y Tipo de escala
-app.get('/scale/type/:id&:type', (req, res) => {
-    let id = req.params.id;
+app.get('/scale/done/:idc&:type&:idv', (req, res) => {
+    let idc = req.params.idc;
     let type = int(req.params.type);
-    Scale.find({ caregiver: id, scaleType: type })
-        .sort('-date')
-        .exec((err, scales) => {
-            if (err) {
-                return res.status(400).json({
-                    success: false,
-                    err
-                });
-            }
-            Scale.countDocuments({ caregiver: id, scaleType: type }, (err, conteo) => {
-                res.json({
-                    success: true,
-                    count: conteo,
-                    scales
-                });
+    let idv = req.params.idv;
+    Scale.findOne({ caregiver: idc, scaleType: type, valoration: idv }, (err, scale) => {
+        if (err) {
+            return res.status(500).json({
+                success: false,
+                err
             });
-        });
+        }
+        if (!scale) {
+            res.json({
+                success: false,
+                scale
+            });
+        } else {
+            res.json({
+                success: true,
+                scale
+            });
+        }
+    });
 });
 
 //Obtener todos los registros por id del cuidador y valoración
