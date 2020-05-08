@@ -18,6 +18,10 @@ let ScaleSchema = new Schema({
         type: Number,
         required: true,
     }],
+    score: {
+        type: Number,
+        required: true,
+    },
     scaleType: {
         type: Number,
         required: true,

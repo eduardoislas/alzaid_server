@@ -10,6 +10,7 @@ app.post('/scale', (req, res) => {
     let scale = new Scale({
         date: body.date,
         answers: body.answers,
+        score: body.score,
         scaleType: body.scaleType,
         scale: body.scale,
         caregiver: body.caregiver._id,
