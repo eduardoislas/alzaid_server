@@ -1,6 +1,7 @@
 const express = require('express');
 const HomeActivity = require('../models/homeActivity');
 const BinnacleCaregiver = require('../models/binnaclecaregiver');
+const BinnaclePatient = require('../models/binnaclepatient');
 const BinnacleActivityPatient = require('../models/binnacleactivitypatient');
 
 const app = express();
@@ -210,6 +211,36 @@ app.get('/binnacle/caregiver/:id', (req, res) => {
 
 ///////////////////////////////////////////////////////////////////
 // Bitácora del paciente
+
+// Guarda la bitácora del paciente
+app.post('/binnacle/patient', (req, res) => {
+    let body = req.body;
+    let pb = new BinnaclePatient({
+        date: body.date,
+        evacuation: body.evacuation,
+        urination: body.urination,
+        constipation: body.constipation,
+        incontinence: body.incontinence,
+        medicine: body.medicine,
+        incidence: body.incidence,
+        observation: body.observation,
+        behaviors: body.behaviors,
+        patient: body.patient
+    });
+    pb.save((err, pbDB) => {
+        if (err) {
+            return res.status(500).json({
+                success: false,
+                err: err
+            });
+        }
+        res.json({
+            success: true,
+            pbDB: pbDB
+        });
+    });
+});
+
 
 //Obtener la bitácora de actividades por paciente
 app.get('/binnacle/patient/activity/:id', (req, res) => {
