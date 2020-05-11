@@ -219,6 +219,7 @@ app.post('/binnacle/patient', (req, res) => {
         date: body.date,
         evacuation: body.evacuation,
         urination: body.urination,
+        sleep: body.sleep,
         constipation: body.constipation,
         incontinence: body.incontinence,
         medicine: body.medicine,

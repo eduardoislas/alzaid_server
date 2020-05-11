@@ -16,6 +16,10 @@ let binnaclePatientSchema = new Schema({
         type: Number,
         required: false,
     },
+    sleep: {
+        type: Number,
+        required: false,
+    },
     constipation: {
         type: Boolean,
         required: false,
