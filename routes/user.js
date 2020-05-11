@@ -139,6 +139,41 @@ app.put('/user/:id', (req, res) => {
     });
 })
 
+// Cambiar solo password
+app.put('/user/pass/:id', (req, res) => {
+    let id = req.params.id;
+    let body = req.body;
+    User.findById(id, (err, userDB) => {
+        if (err) {
+            return res.status(500).json({
+                success: false,
+                err
+            });
+        }
+        if (!userDB) {
+            return res.status(400).json({
+                success: false,
+                err: {
+                    message: 'Usuario no encontrado'
+                }
+            });
+        }
+        userDB.password = bcrypt.hashSync(body.password, 10);
+        userDB.save((err, userSaved) => {
+            if (err) {
+                return res.status(500).json({
+                    success: false,
+                    err
+                });
+            }
+            res.json({
+                success: true,
+                user: userSaved
+            })
+        })
+    });
+})
+
 app.delete('/user/:id', (req, res) => {
     let id = req.params.id;
     let changeStatus = {
