@@ -3,8 +3,8 @@ const Scale = require('../models/scale');
 
 const app = express();
 
-////////////////////// AUTOEFICACIA ////////////////////////////
-//Autodiagnóstico de autoeficacia
+////////////////////// Escalas ////////////////////////////
+//Guardar una escala
 app.post('/scale', (req, res) => {
     let body = req.body;
     let scale = new Scale({
@@ -102,5 +102,28 @@ app.get('/scale/val/:id&:idVal', (req, res) => {
         });
 });
 
+
+//Obtener todos los registros de escalas por id de valoración haciendo distinct por caregiver
+app.get('/scale/valoration/:id', (req, res) => {
+    let id = req.params.id;
+    Scale.find({ valoration: id })
+        .sort('-date')
+        .distinct("caregiver")
+        .exec((err, scales) => {
+            if (err) {
+                return res.status(400).json({
+                    success: false,
+                    err
+                });
+            }
+            Scale.countDocuments({ valoration: id }, (err, conteo) => {
+                res.json({
+                    success: true,
+                    count: conteo,
+                    scales
+                });
+            });
+        });
+});
 
 module.exports = app;
