@@ -82,7 +82,7 @@ app.get('/scale/done/:idc&:type&:idv', (req, res) => {
 //Obtener todos los registros por id del cuidador y valoración
 app.get('/scale/val/:id&:idVal', (req, res) => {
     let id = req.params.id;
-    let val = req.params.val;
+    let val = req.params.idVal;
     Scale.find({ caregiver: id, valoration: val })
         .sort('-date')
         .exec((err, scales) => {
