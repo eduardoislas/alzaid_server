@@ -215,8 +215,15 @@ app.get('/binnacle/caregiver/:id', (req, res) => {
 // Guarda la bitácora del paciente
 app.post('/binnacle/patient', (req, res) => {
     let body = req.body;
+    let fechaInicial = new Date(body.date);
+    let dia = fechaInicial.getDate();
+    let mes = fechaInicial.getMonth();
+    let anio = fechaInicial.getFullYear();
+    let fecha = new Date(anio, mes, dia + 1);
+
+    fecha.setHours(7);
     let pb = new BinnaclePatient({
-        date: body.date,
+        date: fecha,
         evacuation: body.evacuation,
         urination: body.urination,
         sleep: body.sleep,
