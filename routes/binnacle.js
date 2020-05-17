@@ -285,7 +285,7 @@ app.get('/binnacle/patient/binnacle/:id', (req, res) => {
                     err
                 });
             }
-            BinnaclePatient.countDocuments({ patient: id }, (err, conteo) => {
+            BinnaclePatient.countDocuments({ _id: id }, (err, conteo) => {
                 res.json({
                     success: true,
                     count: conteo,
@@ -312,6 +312,29 @@ app.get('/binnacle/patient/activity/:id', (req, res) => {
                 });
             }
             BinnacleActivityPatient.countDocuments({ patient: id }, (err, conteo) => {
+                res.json({
+                    success: true,
+                    count: conteo,
+                    pabDB: pabDB
+                });
+            });
+        });
+})
+
+//Obtener la bitácora de actividades por idBitácoraActividades
+app.get('/binnacle/patient/activitybinnacle/:id', (req, res) => {
+    let id = req.params.id;
+    BinnacleActivityPatient.find({ _id: id })
+        .sort('-date')
+        .populate('patient')
+        .exec((err, pabDB) => {
+            if (err) {
+                return res.status(400).json({
+                    success: false,
+                    err
+                });
+            }
+            BinnaclePatient.countDocuments({ patient: id }, (err, conteo) => {
                 res.json({
                     success: true,
                     count: conteo,
