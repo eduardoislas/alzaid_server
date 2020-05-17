@@ -193,6 +193,7 @@ app.get('/binnacle/caregiver/:id', (req, res) => {
     let id = req.params.id;
     BinnacleCaregiver.find({ caregiver: id })
         .sort('-date')
+        .populate('caregiver')
         .exec((err, cbsDB) => {
             if (err) {
                 return res.status(400).json({
@@ -205,6 +206,29 @@ app.get('/binnacle/caregiver/:id', (req, res) => {
                     success: true,
                     count: conteo,
                     cbsDB: cbsDB
+                });
+            });
+        });
+})
+
+//Obtener la bitácora de cuidador por idBitácoraCuidador
+app.get('/binnacle/caregiver/binnacle/:id', (req, res) => {
+    let id = req.params.id;
+    BinnacleCaregiver.find({ _id: id })
+        .sort('-date')
+        .populate('caregiver')
+        .exec((err, cbDB) => {
+            if (err) {
+                return res.status(400).json({
+                    success: false,
+                    err
+                });
+            }
+            BinnacleCaregiver.countDocuments({ _id: id }, (err, conteo) => {
+                res.json({
+                    success: true,
+                    count: conteo,
+                    cbDB: cbDB
                 });
             });
         });
