@@ -305,6 +305,7 @@ app.get('/binnacle/patient/activity/:id', (req, res) => {
     BinnacleActivityPatient.find({ patient: id })
         .sort('-date')
         .populate('patient')
+        .populate('activity')
         .exec((err, pabDB) => {
             if (err) {
                 return res.status(400).json({
@@ -328,6 +329,7 @@ app.get('/binnacle/patient/activitybinnacle/:id', (req, res) => {
     BinnacleActivityPatient.find({ _id: id })
         .sort('-date')
         .populate('patient')
+        .populate('activity')
         .exec((err, pabDB) => {
             if (err) {
                 return res.status(400).json({
