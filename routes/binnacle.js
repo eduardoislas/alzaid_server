@@ -119,6 +119,7 @@ app.get('/binnacle/homeactivity/:fase', (req, res) => {
     let fase = req.params.fase;
     HomeActivity.find({ phase: fase, status: true })
         .sort('-date')
+        .limit(7)
         .exec((err, has) => {
             if (err) {
                 return res.status(400).json({
@@ -303,7 +304,7 @@ app.get('/binnacle/patient/activity/:id', (req, res) => {
     let id = req.params.id;
     BinnacleActivityPatient.find({ patient: id })
         .sort('-date')
-        .limit(10)
+        .populate('patient')
         .exec((err, pabDB) => {
             if (err) {
                 return res.status(400).json({
