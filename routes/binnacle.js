@@ -169,8 +169,15 @@ app.delete('/binnacle/homeactivity/:id', (req, res) => {
 // Bitácora del cuidador
 app.post('/binnacle/caregiver', (req, res) => {
     let body = req.body;
+    let fechaInicial = new Date(body.date);
+    let dia = fechaInicial.getDate();
+    let mes = fechaInicial.getMonth();
+    let anio = fechaInicial.getFullYear();
+    let fecha = new Date(anio, mes, dia + 1);
+    fecha.setHours(7);
+
     let cb = new BinnacleCaregiver({
-        date: body.date,
+        date: fecha,
         answers: body.answers,
         caregiver: body.caregiver._id
     });
