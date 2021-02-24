@@ -189,8 +189,8 @@ app.get('/dailyRecord/patient/:id', (req, res) => {
             DailyRecord.countDocuments({ patient: idP }, (err, conteo) => {
                 res.json({
                     success: true,
-                    drs: drs,
-                    cuantos: conteo
+                    cuantos: conteo,
+                    drs: drs
                 });
             })
         })

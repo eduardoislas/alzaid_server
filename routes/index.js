@@ -12,6 +12,7 @@ app.use(require('./upload'));
 app.use(require('./binnacle'));
 app.use(require('./valorations'));
 app.use(require('./scale'));
+app.use(require('./queries'));
 
 
 
