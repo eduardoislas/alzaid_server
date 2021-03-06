@@ -13,20 +13,21 @@ const cors = require('cors');
 
 const app = express()
 
+//CORS
+app.use(cors());
+
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
     // parse application/json
 app.use(bodyParser.json());
 
-//CORS
-app.use(cors());
+
 
 //Configuración global de rutas
 app.use(require('./routes/index'));
 
 //Servir el contenido público
 app.use(express.static(__dirname + '/public'));
-
 
 //Conexión a MongoDB
 mongoose.connect(process.env.URLDB, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true },

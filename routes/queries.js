@@ -7,7 +7,6 @@ const Record = require('../models/Record');
 const app = express();
 
 ////////////////////////////  HIGIENE ////////////////////////////////
-
 //Obtiene todos los registros de higiene de los pacientes
 app.get('/queries/hygiene', (req, res) => {
     let record = new Record();
@@ -440,11 +439,13 @@ app.get('/queries/nutrition', (req, res) => {
 });
 
 
+
 //Obtiene todos los registros de comida de un paciente por ID
 app.get('/queries/nutrition/:id', (req, res) => {
     let id = req.params.id;
     let record = new Record();
     let records = [];
+
     DailyRecord.find({ patient: id })
         .sort('-date')
         .populate('patient')
