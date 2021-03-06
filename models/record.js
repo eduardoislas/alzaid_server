@@ -7,9 +7,11 @@ let RecordSchema = new Schema({
     id_patient: {
         type: String,
     },
+
     name: {
         type: String,
     },
+
     lastName: {
         type: String,
     },

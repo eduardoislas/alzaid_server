@@ -19,7 +19,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json());
 
 //CORS
-app.use(cors())
+app.use(cors());
 
 //Configuración global de rutas
 app.use(require('./routes/index'));
