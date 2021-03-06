@@ -7,6 +7,7 @@ const Record = require('../models/Record');
 const app = express();
 
 ////////////////////////////  HIGIENE ////////////////////////////////
+
 //Obtiene todos los registros de higiene de los pacientes
 app.get('/queries/hygiene', (req, res) => {
     let record = new Record();
