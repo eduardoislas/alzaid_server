@@ -41,4 +41,4 @@ let RecordSchema = new Schema({
 });
 
 
-module.exports = mongoose.model('Record', RecordSchema);
+module.exports = mongoose.model('Record', RecordSchema)
