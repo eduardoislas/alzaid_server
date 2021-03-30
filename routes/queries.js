@@ -2,7 +2,7 @@ const express = require('express');
 const json2csv = require('json2csv').parse;
 
 const DailyRecord = require('../models/dailyRecord');
-const Record = require('../models/Record');
+const Record = require('../models/record');
 
 const app = express();
 
