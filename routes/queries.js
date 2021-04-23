@@ -2,7 +2,7 @@ const express = require('express');
 const json2csv = require('json2csv').parse;
 
 const DailyRecord = require('../models/dailyRecord');
-const Record = require('../models/Record');
+const Record = require('../models/record');
 
 const app = express();
 
@@ -439,11 +439,13 @@ app.get('/queries/nutrition', (req, res) => {
 });
 
 
+
 //Obtiene todos los registros de comida de un paciente por ID
 app.get('/queries/nutrition/:id', (req, res) => {
     let id = req.params.id;
     let record = new Record();
     let records = [];
+
     DailyRecord.find({ patient: id })
         .sort('-date')
         .populate('patient')

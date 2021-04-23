@@ -7,9 +7,11 @@ let RecordSchema = new Schema({
     id_patient: {
         type: String,
     },
+
     name: {
         type: String,
     },
+
     lastName: {
         type: String,
     },
@@ -39,4 +41,4 @@ let RecordSchema = new Schema({
 });
 
 
-module.exports = mongoose.model('Record', RecordSchema);
+module.exports = mongoose.model('Record', RecordSchema)

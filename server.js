@@ -13,20 +13,21 @@ const cors = require('cors');
 
 const app = express()
 
+//CORS
+app.use(cors());
+
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(bodyParser.json());
 
-//CORS
-app.use(cors())
+
 
 //Configuración global de rutas
 app.use(require('./routes/index'));
 
 //Servir el contenido público
 app.use(express.static(__dirname + '/public'));
-
 
 //Conexión a MongoDB
 //let urlDB = "mongodb+srv://alzaid:alzaid2021@cluster0.amt3e.mongodb.net/Project 0?retryWrites=true&w=majority";
