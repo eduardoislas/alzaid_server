@@ -15,7 +15,7 @@ const app = express()
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
-    // parse application/json
+// parse application/json
 app.use(bodyParser.json());
 
 //CORS
@@ -29,6 +29,7 @@ app.use(express.static(__dirname + '/public'));
 
 
 //Conexión a MongoDB
+//let urlDB = "mongodb+srv://alzaid:alzaid2021@cluster0.amt3e.mongodb.net/Project 0?retryWrites=true&w=majority";
 mongoose.connect(process.env.URLDB, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true },
     (err, res) => {
         if (err) throw err;

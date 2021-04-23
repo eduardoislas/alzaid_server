@@ -79,6 +79,7 @@ app.post('/notification', (req, res) => {
             type: body.type,
             area: area,
             patient: dbPat,
+            unsubscribedPatients: [],
             user: body.user
         });
 
@@ -97,16 +98,85 @@ app.post('/notification', (req, res) => {
     })
 });
 
+// Agrega un usuario al arreglo de usuarios desuscritos de la notificacion
+app.put('/notification/unsubscribe/:id', (req, res) => {
+    let id = req.params.id;
+    let unsubscribedUser = req.body.unsubscribedUser;
 
+    Notification.findById(id, (err, notificationDB) => {
+        if (err) {
+            return res.status(500).json({
+                success: false,
+                err
+            });
+        }
+        if (!notificationDB) {
+            return res.status(400).json({
+                success: false,
+                err: {
+                    message: 'La notificacion no existe'
+                }
+            });
+        }
 
+        if (!notificationDB.unsubscribedUsers.includes(unsubscribedUser)) {
+            notificationDB.unsubscribedUsers.push(unsubscribedUser);
+        }
 
+        notificationDB.save((err, notificationSaved) => {
+            if (err) {
+                return res.status(500).json({
+                    success: false,
+                    err
+                });
+            }
+            res.json({
+                success: true,
+                notification: notificationSaved
+            })
+        });
+    });
+});
 
+// Elimina un usuario del arreglo de usuarios desuscritos de la notificacion
+app.put('/notification/subscribe/:id', (req, res) => {
+    let id = req.params.id;
+    let subscribedUser = req.body.subscribedUser;
 
+    Notification.findById(id, (err, notificationDB) => {
+        if (err) {
+            return res.status(500).json({
+                success: false,
+                err
+            });
+        }
+        if (!notificationDB) {
+            return res.status(400).json({
+                success: false,
+                err: {
+                    message: 'La notificacion no existe'
+                }
+            });
+        }
 
+        var index = notificationDB.unsubscribedUsers.indexOf(subscribedUser);
+        if (index !== -1) {
+            notificationDB.unsubscribedUsers.splice(index, 1);
+        }
 
-
-
-
-
+        notificationDB.save((err, notificationSaved) => {
+            if (err) {
+                return res.status(500).json({
+                    success: false,
+                    err
+                });
+            }
+            res.json({
+                success: true,
+                notification: notificationSaved
+            })
+        });
+    });
+});
 
 module.exports = app;

@@ -61,17 +61,21 @@ app.get('/dailyrecord/id/:id', (req, res) => {
     }).populate('patient');
 })
 
-//Obtiene todos los dailyRecords
+//Obtiene todos los dailyRecords del dia de hoy
 app.get('/dailyRecord/today', (req, res) => {
     //let desde = Number(req.query.desde || 0);
     //let limite = Number(req.query.limite || 100);
+
     let fechaInicial = new Date();
+    fechaInicial.setHours(fechaInicial.getHours() - 7);
     let dia = fechaInicial.getDate();
     let mes = fechaInicial.getMonth();
     let anio = fechaInicial.getFullYear();
 
-    let fecha = new Date(anio, mes, dia);
-    let manana = new Date(anio, mes, dia + 1);
+    let fecha = new Date(anio, mes, dia, 0, 0, 0, 0);
+    fecha.setHours(fecha.getHours() - 7);
+    let manana = new Date(anio, mes, dia + 1, 0, 0, 0, 0);
+    manana.setHours(manana.getHours() - 7);
 
     DailyRecord.find({ date: { "$gte": fecha, "$lt": manana } })
         //.skip(desde)
@@ -94,6 +98,7 @@ app.get('/dailyRecord/today', (req, res) => {
             })
         })
 });
+
 
 //Obtiene todos los dailyRecords del día por fase
 // app.get('/dailyRecord/today/:fase', (req, res) => {
@@ -196,6 +201,38 @@ app.get('/dailyRecord/patient/:id', (req, res) => {
         })
 });
 
+//Obtiene el daily record de hoy de un paciente determinado
+app.get('/dailyRecord/today/id/:id', (req, res) => {
+    let idP = req.params.id;
+    console.log(idP);
+    let fechaInicial = new Date();
+    let dia = fechaInicial.getDate();
+    let mes = fechaInicial.getMonth();
+    let anio = fechaInicial.getFullYear();
+
+    let fecha = new Date(anio, mes, dia);
+    let manana = new Date(anio, mes, dia + 1);
+
+    DailyRecord.find({ date: { "$gte": fecha, "$lt": manana }, patient: idP })
+        .sort('date')
+        .populate('patient')
+        .exec((err, drs) => {
+            if (err) {
+                return res.status(400).json({
+                    success: false,
+                    err
+                });
+            }
+            DailyRecord.countDocuments({ date: { "$gte": fecha, "$lt": manana }, patient: idP }, (err, conteo) => {
+                res.json({
+                    success: true,
+                    cuantos: conteo,
+                    drs
+                });
+            })
+        })
+});
+
 //Registra una asistencia en el DailyRecord
 app.post('/dailyRecord/:id', (req, res) => {
     let idP = req.params.id;
@@ -205,8 +242,8 @@ app.post('/dailyRecord/:id', (req, res) => {
     let anio = fechaInicial.getFullYear();
     let fecha = new Date(anio, mes, dia);
     let dailyRecord = new DailyRecord({
-        // date: fecha.setHours(fecha.getHours() - 7),
-        date: fecha,
+        date: fecha.setHours(fecha.getHours() - 7),
+        //date: fecha,
         enterHour: fechaInicial,
         patient: idP
     });

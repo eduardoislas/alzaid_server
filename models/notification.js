@@ -32,6 +32,11 @@ let notificationSchema = new Schema({
         ref: 'Patient',
         required: true
     },
+    unsubscribedUsers: [{
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+        required: false
+    }],
     user: {
         type: String,
         required: false
@@ -41,9 +46,5 @@ let notificationSchema = new Schema({
         default: true
     }
 });
-
-
-
-
 
 module.exports = mongoose.model('Notification', notificationSchema)
