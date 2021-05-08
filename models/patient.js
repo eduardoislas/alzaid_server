@@ -108,7 +108,8 @@ let patientSchema = new Schema({
     assistance: {
         type: Boolean,
         default: false
-    }
+    },
+    incidences: []
 });
 
 
