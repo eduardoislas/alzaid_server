@@ -1,5 +1,4 @@
 const express = require('express');
-const json2csv = require('json2csv').parse;
 
 const DailyRecord = require('../models/dailyRecord');
 const Record = require('../models/record');
@@ -11,6 +10,12 @@ const app = express();
 app.get('/queries/hygiene', (req, res) => {
     let record = new Record();
     let records = [];
+    let bano = 0;
+    let protectores = 0;
+    let ropa = 0;
+    let estrenimiento = 0;
+    let evacuacion = 0;
+    let miccion = 0;
     DailyRecord.find({})
         .sort('-date')
         .populate('patient')
@@ -36,9 +41,30 @@ app.get('/queries/hygiene', (req, res) => {
                     records.push(record);
                 }
             }
+            for (r of records) {
+                if (r.h_incidence === "Baño") {
+                    bano++;
+                } else if (r.h_incidence === "Cambio de protectores") {
+                    protectores++;
+                } else if (r.h_incidence === "Estreñimiento") {
+                    estrenimiento++;
+                } else if (r.h_incidence === "Cambio de ropa") {
+                    ropa++;
+                } else if (r.h_incidence === "Evacuación") {
+                    evacuacion++;
+                } else if (r.h_incidence === "Micción") {
+                    miccion++;
+                }
+            }
             res.json({
                 success: true,
                 cuantos: records.length,
+                bano,
+                protectores,
+                estrenimiento,
+                ropa,
+                evacuacion,
+                miccion,
                 records: records
             });
         });
@@ -50,6 +76,12 @@ app.get('/queries/hygiene/:id', (req, res) => {
     let id = req.params.id;
     let record = new Record();
     let records = [];
+    let bano = 0;
+    let protectores = 0;
+    let ropa = 0;
+    let estrenimiento = 0;
+    let evacuacion = 0;
+    let miccion = 0;
     DailyRecord.find({ patient: id })
         .sort('-date')
         .populate('patient')
@@ -75,9 +107,30 @@ app.get('/queries/hygiene/:id', (req, res) => {
                     records.push(record);
                 }
             }
+            for (r of records) {
+                if (r.h_incidence === "Baño") {
+                    bano++;
+                } else if (r.h_incidence === "Cambio de protectores") {
+                    protectores++;
+                } else if (r.h_incidence === "Estreñimiento") {
+                    estrenimiento++;
+                } else if (r.h_incidence === "Cambio de ropa") {
+                    ropa++;
+                } else if (r.h_incidence === "Evacuación") {
+                    evacuacion++;
+                } else if (r.h_incidence === "Micción") {
+                    miccion++;
+                }
+            }
             res.json({
                 success: true,
                 cuantos: records.length,
+                bano,
+                protectores,
+                estrenimiento,
+                ropa,
+                evacuacion,
+                miccion,
                 records: records
             });
         })
@@ -88,6 +141,18 @@ app.get('/queries/hygiene/:id', (req, res) => {
 app.get('/queries/behaviors', (req, res) => {
     let record = new Record();
     let records = [];
+    let actRep = 0;
+    let agresividad = 0;
+    let ansiedad = 0;
+    let apatia = 0;
+    let cambioHumor = 0;
+    let deambulacion = 0;
+    let delirios = 0;
+    let demAtencion = 0;
+    let enfado = 0;
+    let llanto = 0;
+    let sexual = 0;
+    let somnolencia = 0;
     DailyRecord.find({})
         .sort('-date')
         .populate('patient')
@@ -112,9 +177,48 @@ app.get('/queries/behaviors', (req, res) => {
                     records.push(record);
                 }
             }
+            for (r of records) {
+                if (r.behavior === "Actitudes repetitivas") {
+                    actRep++;
+                } else if (r.behavior === "Agresividad") {
+                    agresividad++;
+                } else if (r.behavior === "Ansiedad") {
+                    ansiedad++;
+                } else if (r.behavior === "Apatía") {
+                    apatia++;
+                } else if (r.behavior === "Cambio de Humor") {
+                    cambioHumor++;
+                } else if (r.behavior === "Deambulación") {
+                    deambulacion++;
+                } else if (r.behavior === "Delirios") {
+                    deambulacion++;
+                } else if (r.behavior === "Demandante de atención") {
+                    demAtencion++;
+                } else if (r.behavior === "Enfado/Molestia") {
+                    enfado++;
+                } else if (r.behavior === "Llanto") {
+                    llanto++;
+                } else if (r.behavior === "Sexual") {
+                    sexual++;
+                } else if (r.behavior === "Somnolencia") {
+                    somnolencia++;
+                }
+            }
             res.json({
                 success: true,
                 cuantos: records.length,
+                actRep,
+                agresividad,
+                ansiedad,
+                apatia,
+                cambioHumor,
+                deambulacion,
+                delirios,
+                demAtencion,
+                enfado,
+                llanto,
+                sexual,
+                somnolencia,
                 records: records
             });
         });
@@ -125,6 +229,18 @@ app.get('/queries/behaviors/:id', (req, res) => {
     let id = req.params.id;
     let record = new Record();
     let records = [];
+    let actRep = 0;
+    let agresividad = 0;
+    let ansiedad = 0;
+    let apatia = 0;
+    let cambioHumor = 0;
+    let deambulacion = 0;
+    let delirios = 0;
+    let demAtencion = 0;
+    let enfado = 0;
+    let llanto = 0;
+    let sexual = 0;
+    let somnolencia = 0;
     DailyRecord.find({ patient: id })
         .sort('-date')
         .populate('patient')
@@ -149,9 +265,48 @@ app.get('/queries/behaviors/:id', (req, res) => {
                     records.push(record);
                 }
             }
+            for (r of records) {
+                if (r.behavior === "Actitudes repetitivas") {
+                    actRep++;
+                } else if (r.behavior === "Agresividad") {
+                    agresividad++;
+                } else if (r.behavior === "Ansiedad") {
+                    ansiedad++;
+                } else if (r.behavior === "Apatía") {
+                    apatia++;
+                } else if (r.behavior === "Cambio de Humor") {
+                    cambioHumor++;
+                } else if (r.behavior === "Deambulación") {
+                    deambulacion++;
+                } else if (r.behavior === "Delirios") {
+                    deambulacion++;
+                } else if (r.behavior === "Demandante de atención") {
+                    demAtencion++;
+                } else if (r.behavior === "Enfado/Molestia") {
+                    enfado++;
+                } else if (r.behavior === "Llanto") {
+                    llanto++;
+                } else if (r.behavior === "Sexual") {
+                    sexual++;
+                } else if (r.behavior === "Somnolencia") {
+                    somnolencia++;
+                }
+            }
             res.json({
                 success: true,
                 cuantos: records.length,
+                actRep,
+                agresividad,
+                ansiedad,
+                apatia,
+                cambioHumor,
+                deambulacion,
+                delirios,
+                demAtencion,
+                enfado,
+                llanto,
+                sexual,
+                somnolencia,
                 records: records
             });
         });
