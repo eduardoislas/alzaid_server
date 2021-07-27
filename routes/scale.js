@@ -108,7 +108,7 @@ app.get('/scale/valoration/:id', (req, res) => {
     let id = req.params.id;
     Scale.find({ valoration: id })
         .sort('-date')
-        // .distinct("caregiver")
+        .distinct("caregiver")
         .populate('caregiver')
         .exec((err, scales) => {
             if (err) {
