@@ -400,6 +400,10 @@ app.get('/queries/activities/:id', (req, res) => {
 app.get('/queries/vitalsigns', (req, res) => {
     let record = new Record();
     let records = [];
+    let presion = 0;
+    let glucosa = 0;
+    let frecardiaca = 0;
+    let oxigeno = 0;
     DailyRecord.find({})
         .sort('-date')
         .populate('patient')
@@ -425,9 +429,24 @@ app.get('/queries/vitalsigns', (req, res) => {
                     records.push(record);
                 }
             }
+            for (r of records) {
+                if (r.vitalSign === "Presion arterial") {
+                    presion++;
+                } else if (r.vitalSign === "Glucosa") {
+                    glucosa++;
+                } else if (r.vitalSign === "Frecuencia cardiaca") {
+                    frecardiaca++;
+                } else if (r.vitalSign === "Saturacion de oxigeno") {
+                    oxigeno++;
+                }
+            }
             res.json({
                 success: true,
                 cuantos: records.length,
+                presion,
+                glucosa,
+                frecardiaca,
+                oxigeno,
                 records: records
             });
         });
@@ -438,6 +457,10 @@ app.get('/queries/vitalsigns/:id', (req, res) => {
     let id = req.params.id;
     let record = new Record();
     let records = [];
+    let presion = 0;
+    let glucosa = 0;
+    let frecardiaca = 0;
+    let oxigeno = 0;
     DailyRecord.find({ patient: id })
         .sort('-date')
         .populate('patient')
@@ -463,9 +486,24 @@ app.get('/queries/vitalsigns/:id', (req, res) => {
                     records.push(record);
                 }
             }
+            for (r of records) {
+                if (r.vitalSign === "Presion arterial") {
+                    presion++;
+                } else if (r.vitalSign === "Glucosa") {
+                    glucosa++;
+                } else if (r.vitalSign === "Frecuencia cardiaca") {
+                    frecardiaca++;
+                } else if (r.vitalSign === "Saturacion de oxigeno") {
+                    oxigeno++;
+                }
+            }
             res.json({
                 success: true,
                 cuantos: records.length,
+                presion,
+                glucosa,
+                frecardiaca,
+                oxigeno,
                 records: records
             });
         });

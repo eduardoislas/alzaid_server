@@ -109,6 +109,7 @@ app.get('/scale/valoration/:id', (req, res) => {
     Scale.find({ valoration: id })
         .sort('-date')
         .distinct("caregiver")
+        .populate('patient')
         .exec((err, scales) => {
             if (err) {
                 return res.status(400).json({
