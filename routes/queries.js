@@ -1,6 +1,7 @@
 const express = require('express');
 
 const DailyRecord = require('../models/dailyRecord');
+const Patient = require("../models/patient")
 const Record = require('../models/record');
 
 const app = express();
@@ -671,5 +672,64 @@ app.get('/queries/nutrition/:id', (req, res) => {
             });
         })
 });
+
+
+////////////////////////////  Pacientes ////////////////////////////////
+//Obtiene la lista de todos los pacientes
+
+app.get("/queries/patients", (req, res) => {
+
+    //El parámetro status solicita los pacientes activos
+    Patient.find().exec((err, patients) => {
+        if (err) {
+            return res.status(400).json({
+                success: false,
+                err,
+            });
+        }
+        Patient.countDocuments((err, conteo) => {
+            res.json({
+                success: true,
+                count: conteo,
+                patients,
+            });
+        });
+    });
+
+});
+
+
+app.get('/queries/dailyrecord', (req, res) => {
+    let record = new Record();
+    let records = [];
+    DailyRecord.find({})
+        .sort('-date')
+        .populate('patient')
+        .exec((err, drs) => {
+            if (err) {
+                return res.status(400).json({
+                    success: false,
+                    err
+                });
+            }
+            for (x of drs) {
+                record = {
+                    id_patient: x.patient._id,
+                    name: x.patient.name + " " + x.patient.lastName + " " + x.patient.lastNameSecond,
+                    gender: x.patient.gender,
+                    phase: x.patient.phase,
+                    date: x.date.getDate() + "/" + (x.date.getMonth() + 1) + "/" + x.date.getFullYear()
+                }
+                records.push(record);
+            }
+            res.json({
+                success: true,
+                cuantos: records.length,
+                records: records
+            });
+        });
+});
+
+
 
 module.exports = app;
