@@ -277,7 +277,7 @@ app.delete("/patient/:id", (req, res) => {
     verificaToken(req, res, next);
 });
 
-//Editar un paciente, actualizando su historial de Fase
+//Editar un paciente, actualizando su campo de asistencia
 app.put("/patient/assistance/:id", (req, res) => {
     let next = () => {
         let id = req.params.id;
@@ -309,6 +309,61 @@ app.put("/patient/assistance/:id", (req, res) => {
                 res.json({
                     success: true,
                     assistance: patientSaved.assistance,
+                });
+            });
+        });
+    };
+
+    verificaToken(req, res, next);
+});
+
+//Editar un paciente, actualizando su fase e historial de fase
+app.put("/patient/changephase/:id", (req, res) => {
+    let next = () => {
+        let id = req.params.id;
+        let body = req.body.newPhase;
+        let fecha = new Date();
+        Patient.findById(id, (err, patientDB) => {
+            if (err) {
+                return res.status(500).json({
+                    success: false,
+                    err,
+                });
+            }
+            if (!patientDB) {
+                return res.status(400).json({
+                    success: false,
+                    err: {
+                        message: "Paciente no encontrado",
+                    },
+                });
+            }
+            let faseAnterior = patientDB.phase;
+            patientDB.phase = body;
+            // Si hubo cambios de Fase, se busca la fase activa del paciente y se cambia status a falso
+            if (String(faseAnterior) !== String(patientDB.phase)) {
+                for (let x of patientDB.phaseHistory) {
+                    if (x.status == true) {
+                        x.status = false;
+                    }
+                }
+                let ph = {
+                    phase: patientDB.phase,
+                    date: fecha,
+                };
+                patientDB.phaseHistory.push(ph);
+            }
+            //Se manda a guardar el objeto Paciente con sus nuevos campos
+            patientDB.save((err, patientSaved) => {
+                if (err) {
+                    return res.status(500).json({
+                        success: false,
+                        err,
+                    });
+                }
+                res.json({
+                    success: true,
+                    phase: patientSaved.phase,
                 });
             });
         });
