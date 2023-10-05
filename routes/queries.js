@@ -28,12 +28,20 @@ app.get('/queries/hygiene', (req, res) => {
                 });
             }
             for (x of drs) {
+                let phase = x.patient.phase;
+                if (x.patient.phaseHistory.length > 1) {
+                    for (ph of x.patient.phaseHistory){
+                        if (ph.date < x.date){
+                            phase = ph.phase
+                        }
+                    }
+                }
                 for (h of x.hygiene) {
                     record = {
                         id_patient: x.patient._id,
                         name: x.patient.name + " " + x.patient.lastName + " " + x.patient.lastNameSecond,
                         gender: x.patient.gender,
-                        phase: x.patient.phase,
+                        phase: phase,
                         date: x.date.getDate() + "/" + (x.date.getMonth() + 1) + "/" + x.date.getFullYear(),
                         h_incidence: h.name,
                         h_time: h.time,
@@ -94,12 +102,20 @@ app.get('/queries/hygiene/:id', (req, res) => {
                 });
             }
             for (x of drs) {
+                let phase = x.patient.phase;
+                if (x.patient.phaseHistory.length > 1) {
+                    for (ph of x.patient.phaseHistory){
+                        if (ph.date < x.date){
+                            phase = ph.phase
+                        }
+                    }
+                }
                 for (h of x.hygiene) {
                     record = {
                         id_patient: x.patient._id,
                         name: x.patient.name + " " + x.patient.lastName + " " + x.patient.lastNameSecond,
                         gender: x.patient.gender,
-                        phase: x.patient.phase,
+                        phase: phase,
                         date: x.date.getDate() + "/" + (x.date.getMonth() + 1) + "/" + x.date.getFullYear(),
                         h_incidence: h.name,
                         h_time: h.time,
@@ -165,12 +181,20 @@ app.get('/queries/behaviors', (req, res) => {
                 });
             }
             for (x of drs) {
+                let phase = x.patient.phase;
+                if (x.patient.phaseHistory.length > 1) {
+                    for (ph of x.patient.phaseHistory){
+                        if (ph.date < x.date){
+                            phase = ph.phase
+                        }
+                    }
+                }
                 for (b of x.behavior) {
                     record = {
                         id_patient: x.patient._id,
                         name: x.patient.name + " " + x.patient.lastName + " " + x.patient.lastNameSecond,
                         gender: x.patient.gender,
-                        phase: x.patient.phase,
+                        phase: phase,
                         date: x.date.getDate() + "/" + (x.date.getMonth() + 1) + "/" + x.date.getFullYear(),
                         behavior: b.name,
                         b_score: b.score
@@ -253,12 +277,20 @@ app.get('/queries/behaviors/:id', (req, res) => {
                 });
             }
             for (x of drs) {
+                let phase = x.patient.phase;
+                if (x.patient.phaseHistory.length > 1) {
+                    for (ph of x.patient.phaseHistory){
+                        if (ph.date < x.date){
+                            phase = ph.phase
+                        }
+                    }
+                }
                 for (b of x.behavior) {
                     record = {
                         id_patient: x.patient._id,
                         name: x.patient.name + " " + x.patient.lastName + " " + x.patient.lastNameSecond,
                         gender: x.patient.gender,
-                        phase: x.patient.phase,
+                        phase: phase,
                         date: x.date.getDate() + "/" + (x.date.getMonth() + 1) + "/" + x.date.getFullYear(),
                         behavior: b.name,
                         b_score: b.score
@@ -328,12 +360,20 @@ app.get('/queries/activities', (req, res) => {
                 });
             }
             for (x of drs) {
+                let phase = x.patient.phase;
+                if (x.patient.phaseHistory.length > 1) {
+                    for (ph of x.patient.phaseHistory){
+                        if (ph.date < x.date){
+                            phase = ph.phase
+                        }
+                    }
+                }
                 for (a of x.phaseBinnacle.activities) {
                     record = {
                         id_patient: x.patient._id,
                         name: x.patient.name + " " + x.patient.lastName + " " + x.patient.lastNameSecond,
                         gender: x.patient.gender,
-                        phase: x.patient.phase,
+                        phase: phase,
                         date: x.date.getDate() + "/" + (x.date.getMonth() + 1) + "/" + x.date.getFullYear(),
                         space_orientation: x.phaseBinnacle.orientation,
                         time_orientation: x.phaseBinnacle.date,
@@ -369,12 +409,20 @@ app.get('/queries/activities/:id', (req, res) => {
                 });
             }
             for (x of drs) {
+                let phase = x.patient.phase;
+                if (x.patient.phaseHistory.length > 1) {
+                    for (ph of x.patient.phaseHistory){
+                        if (ph.date < x.date){
+                            phase = ph.phase
+                        }
+                    }
+                }
                 for (a of x.phaseBinnacle.activities) {
                     record = {
                         id_patient: x.patient._id,
                         name: x.patient.name + " " + x.patient.lastName + " " + x.patient.lastNameSecond,
                         gender: x.patient.gender,
-                        phase: x.patient.phase,
+                        phase: phase,
                         date: x.date.getDate() + "/" + (x.date.getMonth() + 1) + "/" + x.date.getFullYear(),
                         space_orientation: x.phaseBinnacle.orientation,
                         time_orientation: x.phaseBinnacle.date,
@@ -416,12 +464,20 @@ app.get('/queries/vitalsigns', (req, res) => {
                 });
             }
             for (x of drs) {
+                let phase = x.patient.phase;
+                if (x.patient.phaseHistory.length > 1) {
+                    for (ph of x.patient.phaseHistory){
+                        if (ph.date < x.date){
+                            phase = ph.phase
+                        }
+                    }
+                }
                 for (v of x.vitalSigns) {
                     record = {
                         id_patient: x.patient._id,
                         name: x.patient.name + " " + x.patient.lastName + " " + x.patient.lastNameSecond,
                         gender: x.patient.gender,
-                        phase: x.patient.phase,
+                        phase: phase,
                         date: x.date.getDate() + "/" + (x.date.getMonth() + 1) + "/" + x.date.getFullYear(),
                         vitalSign: v.vitalSign,
                         value: v.value,
@@ -473,12 +529,20 @@ app.get('/queries/vitalsigns/:id', (req, res) => {
                 });
             }
             for (x of drs) {
+                let phase = x.patient.phase;
+                if (x.patient.phaseHistory.length > 1) {
+                    for (ph of x.patient.phaseHistory){
+                        if (ph.date < x.date){
+                            phase = ph.phase
+                        }
+                    }
+                }
                 for (v of x.vitalSigns) {
                     record = {
                         id_patient: x.patient._id,
                         name: x.patient.name + " " + x.patient.lastName + " " + x.patient.lastNameSecond,
                         gender: x.patient.gender,
-                        phase: x.patient.phase,
+                        phase: phase,
                         date: x.date.getDate() + "/" + (x.date.getMonth() + 1) + "/" + x.date.getFullYear(),
                         vitalSign: v.vitalSign,
                         value: v.value,
@@ -526,12 +590,20 @@ app.get('/queries/physio', (req, res) => {
                 });
             }
             for (x of drs) {
+                let phase = x.patient.phase;
+                if (x.patient.phaseHistory.length > 1) {
+                    for (ph of x.patient.phaseHistory){
+                        if (ph.date < x.date){
+                            phase = ph.phase
+                        }
+                    }
+                }
                 for (a of x.physioBinnacle.activities) {
                     record = {
                         id_patient: x.patient._id,
                         name: x.patient.name + " " + x.patient.lastName + " " + x.patient.lastNameSecond,
                         gender: x.patient.gender,
-                        phase: x.patient.phase,
+                        phase: phase,
                         date: x.date.getDate() + "/" + (x.date.getMonth() + 1) + "/" + x.date.getFullYear(),
                         startMood: x.physioBinnacle.startMood,
                         endMood: x.physioBinnacle.endMood,
@@ -568,12 +640,20 @@ app.get('/queries/physio/:id', (req, res) => {
                 });
             }
             for (x of drs) {
+                let phase = x.patient.phase;
+                if (x.patient.phaseHistory.length > 1) {
+                    for (ph of x.patient.phaseHistory){
+                        if (ph.date < x.date){
+                            phase = ph.phase
+                        }
+                    }
+                }
                 for (a of x.physioBinnacle.activities) {
                     record = {
                         id_patient: x.patient._id,
                         name: x.patient.name + " " + x.patient.lastName + " " + x.patient.lastNameSecond,
                         gender: x.patient.gender,
-                        phase: x.patient.phase,
+                        phase: phase,
                         date: x.date.getDate() + "/" + (x.date.getMonth() + 1) + "/" + x.date.getFullYear(),
                         startMood: x.physioBinnacle.startMood,
                         endMood: x.physioBinnacle.endMood,
@@ -610,11 +690,19 @@ app.get('/queries/nutrition', (req, res) => {
                 });
             }
             for (x of drs) {
+                let phase = x.patient.phase;
+                if (x.patient.phaseHistory.length > 1) {
+                    for (ph of x.patient.phaseHistory){
+                        if (ph.date < x.date){
+                            phase = ph.phase
+                        }
+                    }
+                }
                 record = {
                     id_patient: x.patient._id,
                     name: x.patient.name + " " + x.patient.lastName + " " + x.patient.lastNameSecond,
                     gender: x.patient.gender,
-                    phase: x.patient.phase,
+                    phase: phase,
                     date: x.date.getDate() + "/" + (x.date.getMonth() + 1) + "/" + x.date.getFullYear(),
                     foodType: x.meal.foodType,
                     meal_quantity: x.meal.quantity,
@@ -651,11 +739,19 @@ app.get('/queries/nutrition/:id', (req, res) => {
                 });
             }
             for (x of drs) {
+                let phase = x.patient.phase;
+                if (x.patient.phaseHistory.length > 1) {
+                    for (ph of x.patient.phaseHistory){
+                        if (ph.date < x.date){
+                            phase = ph.phase
+                        }
+                    }
+                }
                 record = {
                     id_patient: x.patient._id,
                     name: x.patient.name + " " + x.patient.lastName + " " + x.patient.lastNameSecond,
                     gender: x.patient.gender,
-                    phase: x.patient.phase,
+                    phase: phase,
                     date: x.date.getDate() + "/" + (x.date.getMonth() + 1) + "/" + x.date.getFullYear(),
                     foodType: x.meal.foodType,
                     meal_quantity: x.meal.quantity,
@@ -713,11 +809,19 @@ app.get('/queries/dailyrecord', (req, res) => {
                 });
             }
             for (x of drs) {
+                let phase = x.patient.phase;
+                if (x.patient.phaseHistory.length > 1) {
+                    for (ph of x.patient.phaseHistory){
+                        if (ph.date < x.date){
+                            phase = ph.phase
+                        }
+                    }
+                }
                 record = {
                     id_patient: x.patient._id,
                     name: x.patient.name + " " + x.patient.lastName + " " + x.patient.lastNameSecond,
                     gender: x.patient.gender,
-                    phase: x.patient.phase,
+                    phase: phase,
                     date: x.date.getDate() + "/" + (x.date.getMonth() + 1) + "/" + x.date.getFullYear()
                 }
                 records.push(record);
@@ -730,6 +834,44 @@ app.get('/queries/dailyrecord', (req, res) => {
         });
 });
 
-
+app.get('/queries/dailyrecord/:id', (req, res) => {
+    let id = req.params.id;
+    let record = new Record();
+    let records = [];
+    DailyRecord.find({patient: id})
+        .sort('-date')
+        .populate('patient')
+        .exec((err, drs) => {
+            if (err) {
+                return res.status(400).json({
+                    success: false,
+                    err
+                });
+            }
+            for (x of drs) {
+                let phase = x.patient.phase;
+                if (x.patient.phaseHistory.length > 1) {
+                    for (ph of x.patient.phaseHistory){
+                        if (ph.date < x.date){
+                            phase = ph.phase
+                        }
+                    }
+                }
+                record = {
+                    id_patient: x.patient._id,
+                    name: x.patient.name + " " + x.patient.lastName + " " + x.patient.lastNameSecond,
+                    gender: x.patient.gender,
+                    phase: phase,
+                    date: x.date.getDate() + "/" + (x.date.getMonth() + 1) + "/" + x.date.getFullYear()
+                }
+                records.push(record);
+            }
+            res.json({
+                success: true,
+                cuantos: records.length,
+                records: records
+            });
+        });
+});
 
 module.exports = app;
