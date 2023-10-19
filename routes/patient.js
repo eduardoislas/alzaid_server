@@ -2,6 +2,7 @@ const express = require("express");
 const _ = require("underscore");
 const Patient = require("../models/patient");
 const Incidence = require("../models/incidence");
+const Evaluation = require("../models/evaluation");
 let { verificaToken } = require("../middlewares/authentication");
 const fs = require("fs");
 const path = require("path");
@@ -442,6 +443,54 @@ app.put("/patient/incidence/:id", (req, res) => {
     };
 
     verificaToken(req, res, next);
+});
+
+////////////////////// Evaluaciones ////////////////////////////
+//Guardar una evaluación
+app.post('/patient/evaluation', (req, res) => {
+    let body = req.body;
+    let evaluation = new Evaluation({
+        date: body.date,
+        score: body.score,
+        evaluationName: body.evaluationName,
+        patientPhase: body.patientPhase,
+        patient: body.patient._id
+    });
+    evaluation.save((err, evaluationDB) => {
+        if (err) {
+            console.log(err);
+            return res.status(500).json({
+                success: false,
+                err: err
+            });
+        }
+        res.json({
+            success: true,
+            evaluation: evaluationDB
+        });
+    });
+});
+
+//Obtener todos los registros de evaluaciones por id del paciente
+app.get('/patient/evaluation/:id', (req, res) => {
+    let id = req.params.id;
+    Evaluation.find({ patient: id })
+        .sort('-date')
+        .exec((err, evaluations) => {
+            if (err) {
+                return res.status(400).json({
+                    success: false,
+                    err
+                });
+            }
+            Evaluation.countDocuments({ patient: id }, (err, conteo) => {
+                res.json({
+                    success: true,
+                    count: conteo,
+                    evaluations
+                });
+            });
+        });
 });
 
 module.exports = app;
