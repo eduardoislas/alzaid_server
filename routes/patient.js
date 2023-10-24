@@ -493,4 +493,31 @@ app.get('/patient/evaluation/:id', (req, res) => {
         });
 });
 
+app.delete('/patient/evaluation/:id', (req, res) => {
+    let next = () => {
+        let id = req.params.id;
+        Evaluation.findByIdAndDelete(id, (err, evaluationDeleted) => {
+            if (err) {
+                return res.status(500).json({
+                    sucess: false,
+                    err
+                });
+            };
+            if (!evaluationDeleted) {
+                return res.status(400).json({
+                    success: false,
+                    err: {
+                        message: 'Evaluación no encontrada'
+                    }
+                })
+            }
+            res.json({
+                success: true,
+                catalog: evaluationDeleted
+            })
+        })
+    }
+    verificaToken(req, res, next);
+});
+
 module.exports = app;

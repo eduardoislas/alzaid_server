@@ -3,6 +3,7 @@ const express = require('express');
 const DailyRecord = require('../models/dailyRecord');
 const Patient = require("../models/patient")
 const Record = require('../models/record');
+const Evaluation = require('../models/evaluation');
 
 const app = express();
 
@@ -863,6 +864,74 @@ app.get('/queries/dailyrecord/:id', (req, res) => {
                     gender: x.patient.gender,
                     phase: phase,
                     date: x.date.getDate() + "/" + (x.date.getMonth() + 1) + "/" + x.date.getFullYear()
+                }
+                records.push(record);
+            }
+            res.json({
+                success: true,
+                cuantos: records.length,
+                records: records
+            });
+        });
+});
+
+// Evaluaciones de pacientes
+app.get('/queries/evaluations', (req, res) => {
+    let record = new Evaluation();
+    let records = [];
+    Evaluation.find({})
+        .sort('-date')
+        .populate('patient')
+        .exec((err, evas) => {
+            if (err) {
+                return res.status(400).json({
+                    success: false,
+                    err
+                });
+            }
+            for (x of evas) {
+                record = {
+                    id_patient: x.patient._id,
+                    name: x.patient.name + " " + x.patient.lastName + " " + x.patient.lastNameSecond,
+                    gender: x.patient.gender,
+                    phase: x.patientPhase,
+                    date: x.date.getDate() + "/" + (x.date.getMonth() + 1) + "/" + x.date.getFullYear(),
+                    evaluationName: x.evaluationName,
+                    score: x.score
+                }
+                records.push(record);
+            }
+            res.json({
+                success: true,
+                cuantos: records.length,
+                records: records
+            });
+        });
+});
+
+app.get('/queries/evaluations/:id', (req, res) => {
+    let id = req.params.id;
+    let record = new Record();
+    let records = [];
+    Evaluation.find({patient: id})
+        .sort('-date')
+        .populate('patient')
+        .exec((err, evas) => {
+            if (err) {
+                return res.status(400).json({
+                    success: false,
+                    err
+                });
+            }
+            for (x of evas) {
+                record = {
+                    id_patient: x.patient._id,
+                    name: x.patient.name + " " + x.patient.lastName + " " + x.patient.lastNameSecond,
+                    gender: x.patient.gender,
+                    phase: x.patientPhase,
+                    date: x.date.getDate() + "/" + (x.date.getMonth() + 1) + "/" + x.date.getFullYear(),
+                    evaluationName: x.evaluationName,
+                    score: x.score
                 }
                 records.push(record);
             }
